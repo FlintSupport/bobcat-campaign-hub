@@ -1,0 +1,1510 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style><meta name="robots" content="noindex, nofollow">
+<title>Bobcat Campaign Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
+</head><body>
+<style>
+/* Layout: placeholder Flint brand (steel blue) leads; Bobcat orange appears only on the partner mark.
+   Three switchable desktop layouts share one data set, one detail drawer and one enrollment flow. */
+:root {
+  /* Neutrals: charcoal and warm grays (follows Bobcat black/white) so orange and cyan are the only colors */
+  /* Off-whites: a warm, slightly dirty paper tone; cards a shade lighter than the page, nothing pure white */
+  --bg: #efe9df;
+  --surface: #f7f3ec;
+  --how-bg: #f5e2d6;       /* How it works band: light Bobcat orange tint */
+  --ink: #1a1a1a;
+  --muted: #5f5b54;
+  --line: #dcd4c7;
+  --neutral-soft: #e6dfd3; /* minimum pills, internal flags */
+  --band: #e5ddd0;         /* footer: a shade deeper than the page */
+  --on-band: #1a1a1a;
+  /* Flint Direct brand cyan, sampled from the flame logo */
+  --accent: #1bbed7;       /* fills, timer, wordmark, big numbers */
+  --accent-soft: #dcefee;  /* cyan tint, warmed to sit on the off-white */
+  --accent-text: #0a7487;  /* same hue, dark enough for small text on white */
+  --on-accent: #062a31;    /* text on cyan fills (white is too faint on this cyan) */
+  --partner: #ff3600;      /* Bobcat orange, RGB 255, 54, 0 (brand guide) */
+  --partner-text: #c72a00; /* same orange, deepened only for small text on white */
+  --bobcat-black: #000000; /* Bobcat guide: CMYK 0,0,0,100 */
+  --bobcat-white: #ffffff; /* Bobcat guide: CMYK 0,0,0,0 */
+  --sky: var(--accent);
+  /* Status: green = added / co-op savings; red = errors and duplicate flags only */
+  --good: #1f7a4d;
+  --good-soft: #e3f3ea;
+  --warn: #c0262d;
+  --warn-soft: #fbe9ea;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 6px 20px rgba(0, 0, 0, .06);
+  --display: "Barlow Condensed", "Arial Narrow", Arial, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--body); padding-bottom: 96px; }
+[hidden] { display: none !important; }
+h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.05; margin: 0; text-wrap: balance; letter-spacing: .01em; }
+h1 { font-size: 3rem; }
+h2 { font-size: 1.9rem; }
+h3 { font-size: 1.45rem; }
+p { margin: 0; }
+button { font: inherit; cursor: pointer; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.num { font-variant-numeric: tabular-nums; }
+.wrap { max-width: 1200px; margin: 0 auto; padding-inline: 32px; }
+
+/* Review bar: not part of the dealer page */
+.review { background: var(--ink); color: var(--bg); font-size: .9rem; }
+.review .wrap { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; padding-block: 10px; }
+.review strong { letter-spacing: .06em; text-transform: uppercase; font-size: .78rem; }
+.review .opts { display: flex; gap: 6px; flex-wrap: wrap; }
+.review button { background: transparent; color: var(--bg); border: 1px solid color-mix(in srgb, var(--bg) 40%, transparent); border-radius: 999px; padding: 4px 14px; }
+.review button[aria-pressed="true"] { background: var(--bg); color: var(--ink); }
+.review .note { margin-left: auto; opacity: .75; }
+
+/* Site header */
+.site-head { background: var(--surface); border-bottom: 1px solid var(--line); }
+.site-head .wrap { display: flex; align-items: center; gap: 16px; padding-block: 16px; }
+.brand { display: flex; align-items: center; gap: 10px; }
+.logo { height: 34px; width: auto; display: block; }
+.wordmark { font-family: var(--display); font-size: 1.2rem; font-weight: 700; letter-spacing: .08em; color: var(--accent); }
+.partner { display: flex; align-items: center; gap: .3em; color: var(--bobcat-black); font-family: var(--display); font-size: 1.2rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; line-height: 1; padding-left: 16px; border-left: 1px solid var(--line); }
+.site-head .help .help-email { color: var(--sky); }
+.partner b { color: var(--partner); font: inherit; }
+.site-head .help { margin-left: auto; display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-size: .95rem; font-weight: 700; }
+/* Phone spacing: hero, How it works and sections tightened so more of the page shows per screen */
+@media (max-width: 640px) {
+  body .hero .wrap { padding-block: 22px 26px; gap: 18px; }
+  body .hero-kicker { font-size: 1.1rem; letter-spacing: .04em; }
+  body .hero h1 { font-size: 2.2rem; margin-top: 4px !important; }
+  body .hero p.lead { font-size: 1rem; margin-top: 8px; }
+  body .deadline-box { padding: 16px; gap: 10px; }
+  body .how .wrap { padding-block: 20px 10px; gap: 12px; }
+  body .how-title { font-size: 1.3rem; }
+  body .how-steps { row-gap: 2px; gap: 0; }
+  body .how-steps li { margin-bottom: 14px; grid-template-columns: 38px minmax(0, 1fr); }
+  body .how-steps li::before { width: 34px; height: 34px; font-size: 1.1rem; }
+  body .how-steps span { font-size: .9rem; }
+  body section { padding-block: 24px; }
+  body .section-head { margin-bottom: 12px; }
+  body .section-head h2 { font-size: 1.6rem; }
+}
+/* Phone header: one line — flame + FLINT DIRECT | BOBCAT PARTNER; the email lives in the closing section and footer */
+@media (max-width: 640px) {
+  .site-head .wrap { gap: 12px; padding-block: 12px; }
+  .site-head .help { display: none; }
+  .partner { font-size: 1.05rem; padding-left: 12px; white-space: nowrap; }
+  .site-head .wordmark { font-size: 1.05rem; white-space: nowrap; }
+  .site-head .logo { height: 28px; }
+}
+.site-head .help svg { width: 18px; height: 18px; color: var(--accent); flex: none; }
+
+/* Shared bits */
+.eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.chip { display: inline-flex; align-items: center; font-size: .78rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent-text); }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; }
+.pill.open { background: var(--good-soft); color: var(--good); }
+.pill.pre { background: var(--accent-soft); color: var(--accent-text); }
+.pill.closed { background: var(--line); color: var(--muted); }
+.pill.min { background: var(--neutral-soft); color: var(--ink); }
+.btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 8px; padding: 8px 16px; font-weight: 600; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn.primary:hover { background: color-mix(in srgb, var(--accent) 85%, var(--on-accent)); }
+.btn.added { background: var(--good-soft); border-color: var(--good); color: var(--good); }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+.link { background: none; border: 0; color: var(--accent-text); font-weight: 600; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+section { padding-block: 32px; }
+.section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
+.section-head p { color: var(--muted); }
+.section-head h2 { text-transform: uppercase; letter-spacing: .04em; }
+
+/* Campaign card */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card.is-added { border-color: var(--good); box-shadow: inset 0 0 0 1px var(--good); }
+.card-top { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; margin-bottom: -4px; }
+.ch-tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: flex-start; align-content: flex-start; }
+/* Channel tags: one soft cyan style; the icon and label tell channels apart */
+.ch { display: inline-flex; align-items: center; gap: 5px; font-size: .78rem; font-weight: 700; padding: 3px 10px 3px 8px; border-radius: 999px; color: var(--accent-text); background: var(--accent-soft); }
+.ch svg { width: 14px; height: 14px; flex: none; }
+.card h3 { font-size: 1.85rem; }
+.card h3 { text-transform: uppercase; letter-spacing: .02em; } /* titles stay in caps; details read in normal case */
+.grid > .card p.blurb, .feature-card p.blurb { text-transform: none; letter-spacing: 0; font-size: .95rem; }
+/* Line up each tile's parts (title, tags, text, price, rows, buttons) across a grid row */
+@supports (grid-template-rows: subgrid) {
+  .grid > .card { display: grid; grid-row: span 6; grid-template-rows: subgrid; row-gap: 12px; align-content: start; }
+  .grid > .card.no-tags { grid-row: span 5; }
+}
+.card p.blurb { color: var(--muted); font-size: .95rem; line-height: 1.45; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.price-band { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-block: 1px solid var(--line); padding-block: 12px; flex-wrap: wrap; }
+.price-big { font-family: var(--display); font-size: 2.2rem; font-weight: 700; line-height: 1; }
+.price-unit { font-size: .85rem; color: var(--muted); margin-top: 2px; }
+.coop { font-size: .78rem; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: var(--good-soft); color: var(--good); white-space: nowrap; }
+.coop-math { display: flex; justify-content: space-between; gap: 12px; background: var(--good-soft); color: var(--good); border-radius: 8px; padding: 10px 14px; font-weight: 600; flex-wrap: wrap; }
+.rows { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 0; font-size: .92rem; }
+.rows dt { color: var(--muted); }
+.rows dd { margin: 0; }
+.card .rows dd { font-weight: 400; color: var(--ink); } /* every value on a tile has the same weight; labels stay gray */
+.goal { text-transform: uppercase; font-weight: 700; letter-spacing: .04em; }
+.price { display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+.price strong { font-family: var(--display); font-size: 1.8rem; }
+.price span { color: var(--muted); font-size: .9rem; }
+.meta { font-size: .88rem; color: var(--muted); }
+.meta b { color: var(--ink); }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.card-actions { display: flex; gap: 8px; margin-top: auto; padding-top: 4px; }
+.card-actions .btn { flex: 1; }
+.proof { font-size: .85rem; border-top: 1px dashed var(--line); padding-top: 10px; color: var(--muted); }
+.proof b { color: var(--ink); font-family: var(--display); font-size: 1.1rem; }
+
+/* Results strip */
+.results { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.result { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; text-align: left; color: var(--ink); display: flex; flex-direction: column; gap: 6px; }
+.result:hover { border-color: var(--accent); }
+.result .big { font-family: var(--display); font-size: 3rem; line-height: 1; color: var(--accent); }
+.result .unit { font-weight: 600; }
+.result .who { color: var(--muted); font-size: .88rem; }
+.program-band { background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 12px; }
+.program-label { font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.program-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.program-stats div { display: flex; flex-direction: column; gap: 2px; }
+.program-stats b { font-family: var(--display); font-size: 2.6rem; line-height: 1; color: var(--accent); }
+.program-stats span { font-size: .82rem; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; color: var(--muted); }
+.program-stats div { border-top: 1px solid var(--line); padding-top: 8px; }
+.featured { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 28px; align-items: center; background: var(--surface); border: 2px solid var(--partner); border-radius: 12px; padding: 24px 28px; margin-bottom: 16px; }
+.featured-main { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.featured-main p { color: var(--muted); max-width: 60ch; }
+.featured-big { font-family: var(--display); font-size: 4rem; font-weight: 700; line-height: 1; color: var(--accent); }
+.featured-unit { font-family: var(--display); font-size: 1.5rem; font-weight: 700; text-transform: uppercase; }
+.featured-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
+.featured-stats div { display: flex; flex-direction: column; border-top: 1px solid var(--line); padding-top: 8px; }
+.featured-stats b { font-family: var(--display); font-size: 2rem; line-height: 1.05; }
+.featured-stats span { font-size: .82rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; font-weight: 600; }
+@media (max-width: 900px) { .featured { grid-template-columns: 1fr; } }
+.result-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+.result-head { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.result-label { font-family: var(--display); font-size: 1.5rem; font-weight: 700; text-transform: uppercase; color: var(--accent); }
+.result .unit { font-weight: 400; color: var(--muted); }
+.result-stats { display: flex; gap: 14px; flex-wrap: wrap; font-size: .88rem; color: var(--muted); }
+.result-stats b { color: var(--ink); }
+@media (max-width: 900px) { .program-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.sample-tag { font-size: .72rem; color: var(--muted); font-style: italic; }
+
+/* Layout A: storefront */
+.hero { background: var(--surface); border-bottom: 1px solid var(--line); }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; padding-block: 40px; align-items: center; }
+.closer { background: var(--surface); border-top: 1px solid var(--line); }
+.closer .wrap { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: center; padding-block: 40px; }
+.closer-title { font-size: 2.6rem; text-transform: uppercase; margin-top: 6px; }
+.closer-actions { display: flex; flex-direction: column; gap: 10px; }
+.closer-actions .btn { padding-block: 12px; font-size: 1rem; }
+.closer-actions .hint { text-align: center; }
+.closer .help-email { color: var(--sky); }
+.site-foot { background: var(--band); color: var(--on-band); border-top: 1px solid var(--line); }
+.site-foot .wrap { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px 24px; padding-block: 28px; align-items: center; }
+.site-foot .wordmark { color: var(--accent); }
+.foot-brand { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.foot-partner { padding-left: 14px; border-left: 1px solid color-mix(in srgb, var(--on-band) 35%, transparent); line-height: 1; color: var(--on-band); font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: .95rem; }
+.foot-partner b { color: var(--partner); }
+.foot-links { display: flex; gap: 20px; font-size: .9rem; opacity: .85; flex-wrap: wrap; }
+.foot-note { grid-column: 1 / -1; font-size: .78rem; opacity: .65; max-width: 90ch; }
+@media (max-width: 900px) { .closer .wrap, .site-foot .wrap { grid-template-columns: 1fr; } }
+.how { background: var(--how-bg); color: var(--ink); border-bottom: 1px solid var(--line); }
+.how .wrap { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; padding-block: 24px; }
+.how-title { font-family: var(--display); font-size: 1.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--partner-text); }
+.how-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; counter-reset: step; }
+/* Each step shares two rows with its neighbours, so every headline and every description starts on the same line */
+.how-steps { grid-template-rows: auto auto; row-gap: 6px; }
+.how-steps li { counter-increment: step; display: grid; grid-row: span 2; grid-template-rows: subgrid; grid-template-columns: 44px minmax(0, 1fr); column-gap: 12px; align-items: start; }
+.how-steps li b { grid-column: 2; grid-row: 1; align-self: center; line-height: 1.15; }
+.how-steps li span { grid-column: 2; grid-row: 2; line-height: 1.45; }
+.how-steps li::before { content: counter(step); grid-column: 1; grid-row: 1; align-self: center; width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--partner); color: var(--partner-text); background: var(--surface); display: grid; place-items: center; font-family: var(--display); font-size: 1.3rem; font-weight: 700; }
+.how-steps b { font-family: var(--display); font-size: 1.15rem; text-transform: uppercase; letter-spacing: .04em; }
+.how-steps span { font-size: .9rem; opacity: .8; }
+@media (max-width: 900px) { .how .wrap, .how-steps { grid-template-columns: 1fr; } }
+.hero-kicker { font-family: var(--display); font-size: 1.6rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--partner); line-height: 1.1; }
+.hero p.lead { color: var(--muted); font-size: 1.15rem; margin-top: 12px; max-width: 52ch; }
+.deadline-box { border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 8px; background: var(--bg); }
+.deadline-box { gap: 12px; padding: 24px; align-items: center; text-align: center; }
+.deadline-box > div:last-child { width: 100%; }
+.deadline-box .eyebrow { font-size: 1.05rem; color: var(--ink); }
+.deadline-box .btn { flex: 1; padding-block: 10px; }
+.timer { display: flex; align-items: flex-start; justify-content: space-between; width: 100%; color: var(--accent); }
+.timer .unit { flex: 1; display: flex; flex-direction: column; align-items: center; }
+.timer b { font-family: var(--display); font-size: clamp(3rem, 5.2vw, 4.75rem); line-height: 1; }
+.timer i { font-family: var(--display); font-style: normal; font-size: clamp(2.4rem, 4.2vw, 3.8rem); line-height: 1.1; opacity: .45; }
+.timer small { font-size: .78rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.timer.urgent { color: var(--partner); }
+.strip { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 1fr); gap: 16px; overflow-x: auto; padding-bottom: 6px; }
+.grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid.one { grid-template-columns: minmax(0, 1fr); }
+/* Four tiles visible; any more scroll sideways */
+.grid.scroll-row { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: calc((100% - 3 * 16px) / 4); overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+.grid.scroll-row > .card { scroll-snap-align: start; }
+.grid.scroll-row .rows { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.grid.scroll-row .rows dt { font-size: .75rem; letter-spacing: .06em; }
+.grid.scroll-row .rows dd { margin-bottom: 6px; white-space: nowrap; }
+.grid.scroll-row .card h3 { font-size: 1.6rem; }
+.grid.scroll-row .card-actions .btn { padding-inline: 10px; white-space: nowrap; } /* keeps "Enroll now" on one line on the narrow seasonal cards */
+@media (max-width: 900px) { .grid.scroll-row { grid-auto-columns: 80%; } }
+/* Phone: Always-On becomes a swipeable row like Seasonal (one tile + the next peeking in) */
+.swipe-hint { display: none; }
+@media (max-width: 640px) {
+  #always-on .grid { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 84%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+  #always-on .grid > .card { scroll-snap-align: start; }
+  .grid.scroll-row { grid-auto-columns: 84%; }
+  .swipe-hint { display: block; font-size: .8rem; color: var(--muted); margin-top: 6px; }
+}
+.feature-card { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 32px; padding: 28px; border: 2px solid var(--accent); }
+.feature-card h3 { font-size: 2.6rem; }
+.feature-card p.blurb { font-size: .95rem; letter-spacing: 0; -webkit-line-clamp: 3; line-clamp: 3; min-height: 0; }
+.fc-main, .fc-side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.fc-flag { align-self: flex-start; }
+.pill.fc-flag { background: color-mix(in srgb, var(--partner) 12%, var(--surface)); color: var(--partner-text); } /* deadline urgency = Bobcat orange, like the countdown */
+.feature-card .price-band { border-top: 0; padding-top: 0; }
+@media (max-width: 900px) { .feature-card { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .grid.three, .grid.two { grid-template-columns: 1fr; } }
+.tabs { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--surface); }
+.tabs button { border: 0; background: none; padding: 6px 18px; border-radius: 999px; font-weight: 600; color: var(--muted); }
+.tabs button[aria-selected="true"] { background: var(--accent); color: var(--on-accent); }
+
+/* Layout B: catalog + sidebar */
+.cat { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 32px; align-items: start; padding-block: 32px; }
+.cat-intro { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+.cat-intro p { color: var(--muted); max-width: 60ch; }
+.cat .grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+.side { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 16px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.sel-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.sel-list li { display: flex; justify-content: space-between; gap: 8px; font-size: .95rem; }
+.sel-list button { border: 0; background: none; color: var(--muted); padding: 0 4px; }
+.totals { border-top: 1px solid var(--line); padding-top: 12px; display: flex; flex-direction: column; gap: 4px; font-size: .95rem; }
+.totals div { display: flex; justify-content: space-between; }
+.empty { color: var(--muted); font-size: .92rem; }
+.group-label { margin: 24px 0 12px; display: flex; align-items: baseline; gap: 12px; }
+.group-label:first-of-type { margin-top: 0; }
+
+/* Layout C: season calendar */
+.cal { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 20px; overflow-x: auto; }
+.cal-inner { min-width: 860px; }
+.cal-months { display: grid; grid-template-columns: 200px repeat(12, 1fr); font-size: .8rem; color: var(--muted); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+.cal-row { display: grid; grid-template-columns: 200px 1fr; align-items: center; border-bottom: 1px solid var(--line); min-height: 64px; }
+.cal-row:last-child { border-bottom: 0; }
+.cal-name { display: flex; flex-direction: column; gap: 2px; padding-right: 12px; }
+.cal-name b { font-family: var(--display); font-size: 1.15rem; }
+.cal-track { position: relative; height: 64px; }
+.cal-bar { position: absolute; top: 18px; height: 28px; border-radius: 6px; border: 1px solid var(--accent); background: var(--accent-soft); color: var(--ink); font-size: .8rem; font-weight: 600; text-align: left; padding: 0 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cal-bar.closed { border-color: var(--line); background: var(--bg); color: var(--muted); }
+.cal-bar.added { border-color: var(--good); background: var(--good-soft); }
+.cal-dl { position: absolute; top: 25px; width: 14px; height: 14px; transform: translateX(-7px) rotate(45deg); background: var(--ink); }
+.cal-today { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--partner); }
+.cal-legend { display: flex; gap: 20px; flex-wrap: wrap; font-size: .85rem; color: var(--muted); margin-top: 12px; }
+.cal-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.key-dl { width: 10px; height: 10px; background: var(--ink); transform: rotate(45deg); display: inline-block; }
+.key-today { width: 2px; height: 14px; background: var(--partner); display: inline-block; }
+.menu { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.c-split { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: start; }
+.stack { display: flex; flex-direction: column; gap: 16px; }
+
+/* Tray */
+.tray { position: fixed; left: 0; right: 0; bottom: 0; background: var(--surface); border-top: 1px solid var(--line); box-shadow: 0 -6px 20px rgba(0,0,0,.08); padding-bottom: env(safe-area-inset-bottom, 0px); z-index: 20; }
+.tray-bar { display: flex; align-items: center; gap: 24px; padding-block: 14px; flex-wrap: wrap; }
+.tray .count { font-weight: 700; }
+.tray .sums { display: flex; gap: 24px; color: var(--muted); flex-wrap: wrap; }
+.tray .sums b { color: var(--ink); }
+.tray-actions { margin-left: auto; display: flex; gap: 8px; }
+.t-short { display: none; }
+/* Phone: two-line bar — count over subtotals on the left, a tall Enroll button on the right */
+@media (max-width: 640px) {
+  .tray-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px; row-gap: 2px; padding-block: 10px; }
+  .tray .count { grid-column: 1; grid-row: 1; font-size: .95rem; }
+  .tray .sums { grid-column: 1; grid-row: 2; gap: 4px 12px; font-size: .8rem; }
+  .tray-actions { grid-column: 2; grid-row: 1 / span 2; margin-left: 0; align-self: stretch; }
+  .tray-actions .btn { padding-inline: 22px; font-size: 1rem; }
+  .t-long { display: none; }
+  .t-short { display: inline; }
+}
+.tray-panel { border-bottom: 1px solid var(--line); max-height: 62vh; overflow-y: auto; background: var(--bg); }
+.tray-panel-inner { display: flex; flex-direction: column; gap: 14px; padding-block: 20px; }
+.opt-empty { padding: 10px 14px; color: var(--muted); font-size: .92rem; }
+.tray-panel-head { display: flex; justify-content: space-between; align-items: center; }
+.tray-panel-head .remove { border: 0; background: none; color: var(--muted); font-size: 1.1rem; }
+.tray-dealer { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.tray-dealer .field { flex: 1; min-width: 240px; }
+.tray-dealer .options { max-height: 220px; overflow-y: auto; }
+.tray-row { display: grid; grid-template-columns: minmax(180px, 240px) minmax(0, 1fr) 140px 32px; gap: 16px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; }
+.tray-row .name b { font-family: var(--display); font-size: 1.2rem; display: block; }
+.tray-row .line-total { text-align: right; font-weight: 700; }
+.tray-row .remove { border: 0; background: none; color: var(--muted); font-size: 1rem; }
+.loc-chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.loc-chip { display: inline-flex; gap: 6px; align-items: center; border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: .9rem; cursor: pointer; background: var(--surface); }
+.loc-chip:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-text); font-weight: 600; }
+.manual-locs { display: flex; flex-direction: column; gap: 8px; }
+@media (max-width: 900px) { .tray-row { grid-template-columns: 1fr auto; } .tray-row .loc-chips { grid-column: 1 / -1; } }
+
+/* Drawer */
+.scrim { position: fixed; inset: 0; background: rgba(0, 0, 0, .45); z-index: 30; }
+.drawer { position: fixed; top: 0; right: 0; bottom: 0; width: min(560px, 100%); background: var(--surface); z-index: 31; display: flex; flex-direction: column; box-shadow: var(--shadow); }
+.drawer-body { overflow-y: auto; padding: 28px; display: flex; flex-direction: column; gap: 24px; }
+.drawer-foot { border-top: 1px solid var(--line); padding: 16px 28px; display: flex; gap: 12px; align-items: center; }
+.drawer-foot .btn { margin-left: auto; }
+.close { position: absolute; top: 14px; right: 14px; border: 0; background: var(--bg); width: 34px; height: 34px; border-radius: 50%; color: var(--ink); font-size: 1.1rem; }
+.dsec { display: flex; flex-direction: column; gap: 8px; }
+.dsec h4 { margin: 0; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.dsec ul { margin: 0; padding-left: 20px; }
+.demo { aspect-ratio: 16 / 9; max-width: 100%; border: 1px dashed var(--line); border-radius: 10px; background: repeating-linear-gradient(45deg, var(--bg), var(--bg) 10px, var(--surface) 10px, var(--surface) 20px); display: grid; place-items: center; text-align: center; color: var(--muted); padding: 16px; font-size: .9rem; }
+.cs-mini { border: 1px solid var(--line); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+.cs-mini .big { font-family: var(--display); font-size: 2.4rem; color: var(--accent); line-height: 1; }
+.statrow { display: flex; gap: 20px; flex-wrap: wrap; font-size: .9rem; color: var(--muted); }
+.statrow b { color: var(--ink); }
+details { border-bottom: 1px solid var(--line); padding-block: 8px; }
+summary { font-weight: 600; cursor: pointer; }
+details p { color: var(--muted); margin-top: 6px; }
+
+/* Campaign detail window */
+.dmodal { position: fixed; inset: 0; display: grid; place-items: center; z-index: 31; padding: 24px; }
+.dmodal-card { position: relative; z-index: 1; background: var(--surface); border-radius: 14px; width: min(1080px, 100%); max-height: calc(100vh - 48px); display: flex; flex-direction: column; box-shadow: var(--shadow); overflow: hidden; }
+.dm-head { padding: 22px 32px 16px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 8px; }
+.dm-title { font-size: 2.4rem; text-transform: uppercase; letter-spacing: .02em; }
+.dm-lead { color: var(--muted); font-size: 1rem; max-width: 70ch; }
+/* The demo always fills the column width; if the text below it doesn't fit, the window body scrolls */
+.dm-body { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 28px; padding: 20px 32px 24px; overflow-y: auto; align-items: start; min-height: 0; }
+.dm-main { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.dm-video { aspect-ratio: auto; height: clamp(170px, 30vh, 360px); }
+/* Campaign animation (demos/*.html): 16:9, width set by fitDemo() */
+.dm-demo { aspect-ratio: 16 / 9; width: 100%; height: auto; align-self: flex-start; max-width: 100%; border: 0; border-radius: 10px; display: block; background: #1a1a1a; }
+/* Phone: Details becomes a full-screen page that scrolls, with a sticky Enroll now button.
+   Order: name/tags → demo → price + co-op → goal/dates → What it is / What's included → FAQ */
+@media (max-width: 640px) {
+  body .dmodal { padding: 0; place-items: stretch; }
+  body .dmodal .dmodal-card { width: 100%; height: 100%; max-height: none; border-radius: 0; }
+  body .dmodal .dm-head { padding: 18px 18px 12px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); }
+  body .dmodal .dm-title { font-size: 2rem; padding-right: 40px; }
+  body .dmodal .dm-body { display: flex; flex-direction: column; gap: 14px; padding: 14px 18px 0; overflow-y: auto; }
+  body .dmodal .dm-main, body .dmodal .dm-side { display: contents; }
+  body .dmodal .dm-demo, body .dmodal .dm-video { order: 1; height: auto; aspect-ratio: 16 / 9; width: 100%; }
+  body .dmodal .dm-side .price-band { order: 2; border-top: 1px solid var(--line); padding-top: 12px; }
+  body .dmodal .dm-side .coop-math { order: 3; align-self: stretch; }
+  body .dmodal .dm-side > .hint { order: 4; }
+  body .dmodal .dm-side .rows { order: 5; }
+  body .dmodal .dm-two { order: 6; grid-template-columns: 1fr; }
+  body .dmodal .dm-faq { order: 7; }
+  body .dmodal .cs-body { padding: 14px 18px 24px; }
+  body .dmodal .cs-cta { flex-direction: column; align-items: stretch; }
+  body .dmodal .cs-cta .hint { margin: 0; }
+  body .dmodal .cs-cta .btn { width: 100%; padding-block: 12px; }
+  body .dmodal .dm-cta { order: 8; position: sticky; bottom: 0; width: calc(100% + 36px); margin: 4px -18px 0; border-radius: 0; padding-block: 16px calc(16px + env(safe-area-inset-bottom, 0px)); font-size: 1.05rem; box-shadow: 0 -6px 16px rgba(0,0,0,.12); }
+}
+.cs-card { width: min(720px, 100%); }
+.cs-body { padding: 20px 32px 28px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+.cs-hero { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.cs-quote { margin: 0; padding: 12px 16px; border-left: 3px solid var(--partner); background: var(--bg); font-style: italic; }
+.cs-cta { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 16px; }
+.cs-cta .hint { margin-right: auto; }
+/* Shorter laptop screens (e.g. 1366 × 768): tighten everything so the window still fits without scrolling */
+@media (max-height: 860px) {
+  .dmodal { padding: 16px; }
+  .dmodal-card { max-height: calc(100vh - 32px); }
+  .dm-head { padding: 16px 28px 12px; gap: 6px; }
+  .dm-title { font-size: 2rem; }
+  .dm-lead { font-size: .92rem; }
+  .dm-body { padding: 14px 28px 18px; gap: 24px; }
+  .dm-main { gap: 12px; }
+  .dm-video { height: clamp(150px, 25vh, 300px); }
+  .dm-two { font-size: .88rem; gap: 20px; }
+  .dm-two .dsec { gap: 4px; }
+  .dm-side { padding: 14px 16px; gap: 8px; }
+  .dm-side .price-big { font-size: 1.9rem; }
+  .dm-side .hint { font-size: .78rem; }
+  .dm-side .coop-math { padding: 8px 12px; }
+}
+.dm-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; font-size: .95rem; }
+.dm-two ul { margin: 0; padding-left: 18px; }
+.dm-side { display: flex; flex-direction: column; gap: 10px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; }
+.dm-side .price-band { border-top: 0; padding-top: 0; }
+.dm-side .btn { width: 100%; padding-block: 11px; }
+.dm-side .rows { font-size: .9rem; }
+.dm-side .rows dd { font-weight: 400; color: var(--ink); } /* same treatment as the tiles: gray labels, regular values */
+.dm-faq details { padding-block: 6px; font-size: .9rem; }
+.dm-faq details:last-child { border-bottom: 0; }
+@media (max-width: 900px), (max-height: 640px) { .dm-body { overflow-y: auto; } }
+@media (max-width: 900px) { .dm-body, .dm-two { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: no-preference) {
+  .dmodal-card { animation: pop .16s ease-out; }
+  @keyframes pop { from { transform: translateY(8px); opacity: .7; } to { transform: none; opacity: 1; } }
+}
+
+/* Checkout page (full screen) */
+.checkout-page { position: fixed; inset: 0; z-index: 40; background: var(--bg); overflow-y: auto; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.co-topbar { background: var(--surface); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 2; }
+.co-topbar .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 14px; }
+.co-page { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 32px; padding-block: 28px 48px; align-items: start; }
+.co-main { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.co-title { font-size: 2.4rem; text-transform: uppercase; }
+.co-step { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 20px 22px; display: flex; flex-direction: column; gap: 12px; }
+.co-step .co-h { display: flex; align-items: center; gap: 10px; }
+.co-num { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: var(--on-accent); display: grid; place-items: center; font-size: .95rem; flex: none; }
+.co-step .tray-row { background: var(--bg); grid-template-columns: minmax(140px, 170px) minmax(0, 1fr) 100px 28px; gap: 12px; }
+.co-step .loc-chip { font-size: .85rem; padding: 3px 10px; }
+.co-page .co-summary { position: sticky; top: 76px; }
+@media (max-width: 900px) { .co-page { grid-template-columns: 1fr; } .co-page .co-summary { position: static; } }
+/* Phone confirmation screen: full screen like Details and checkout */
+@media (max-width: 640px) {
+  body .modal { padding: 0; place-items: stretch; }
+  body .modal .modal-card { width: 100%; height: 100vh; height: 100dvh; max-height: none; border-radius: 0; }
+  body .modal .modal-body { padding: 18px 16px; padding-top: calc(18px + env(safe-area-inset-top, 0px)); }
+  body .modal .success h2 { font-size: 1.7rem; }
+  body .modal .modal-foot { padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); }
+  body .modal .modal-foot .btn { width: 100%; padding-block: 14px; }
+}
+/* Phone checkout: slim total bar at the top (tap to expand), full summary at the bottom, sticky Submit */
+.co-mini, .co-sticky { display: none; }
+@media (max-width: 640px) {
+  .co-topbar .wrap { padding-block: 10px; }
+  .co-mini { display: block; position: sticky; top: 49px; z-index: 2; background: var(--accent-soft); border-bottom: 1px solid var(--line); }
+  .co-mini-bar { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; border: 0; background: none; color: var(--ink); padding: 10px 16px; font-size: .92rem; text-align: left; }
+  .co-mini-list { list-style: none; margin: 0; padding: 0 16px 10px; display: flex; flex-direction: column; gap: 4px; font-size: .88rem; }
+  .co-mini-list li { display: flex; justify-content: space-between; gap: 12px; }
+  .co-page { padding-block: 18px 24px; gap: 18px; }
+  .co-title { font-size: 1.9rem; }
+  .co-step { padding: 16px; }
+  .co-summary .co-submit, .co-summary > .err, .co-summary > .privacy-note { display: none; }
+  .co-sticky { display: flex; flex-direction: column; gap: 6px; position: sticky; bottom: 0; z-index: 2; background: var(--surface); border-top: 1px solid var(--line); box-shadow: 0 -6px 16px rgba(0,0,0,.1); padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px)); }
+  .co-sticky .btn { width: 100%; padding-block: 14px; font-size: 1.05rem; }
+  .co-sticky .err { margin: 0; }
+}
+/* Checkout */
+.co-head { padding: 24px 32px 0; display: flex; flex-direction: column; gap: 4px; }
+.co-head h2 { text-transform: uppercase; }
+.co-body { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 28px; padding: 20px 32px 28px; overflow-y: auto; align-items: start; }
+.co-h { font-size: 1.2rem; text-transform: uppercase; letter-spacing: .04em; }
+.co-form { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.co-summary { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+.co-sum-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.co-dealer { font-weight: 700; }
+.co-lines { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.co-lines li { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 2px; }
+.co-line-top { display: flex; justify-content: space-between; gap: 12px; }
+.co-totals { border-top: 2px solid var(--ink); padding-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+.co-totals div { display: flex; justify-content: space-between; gap: 12px; }
+.co-coop { color: var(--good); font-weight: 600; font-size: .92rem; }
+.co-summary .ack { background: var(--surface); }
+.co-submit { width: 100%; padding-block: 12px; font-size: 1rem; }
+.privacy-note { text-align: center; font-size: .8rem; margin: 0; }
+.privacy-note a { color: var(--accent-text); }
+@media (max-width: 900px) { .co-body { grid-template-columns: 1fr; } }
+
+/* Modal */
+.modal { position: fixed; inset: 0; display: grid; place-items: center; z-index: 40; padding: 16px; }
+.modal-card { background: var(--surface); border-radius: 12px; width: min(760px, 100%); max-height: calc(100vh - 32px); display: flex; flex-direction: column; box-shadow: var(--shadow); position: relative; z-index: 1; }
+.modal-card.wide { width: min(1080px, 100%); }
+.stepper { display: flex; gap: 4px; padding: 20px 28px 0; flex-wrap: wrap; }
+.stepper span { font-size: .8rem; font-weight: 600; color: var(--muted); padding: 4px 10px; border-radius: 999px; }
+.stepper span.done { color: var(--good); }
+.stepper span.now { background: var(--accent-soft); color: var(--accent-text); }
+.modal-body { padding: 20px 28px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+.modal-foot { border-top: 1px solid var(--line); padding: 16px 28px; display: flex; gap: 12px; }
+.modal-foot .btn.primary { margin-left: auto; }
+.field { display: flex; flex-direction: column; gap: 4px; }
+.field label { font-weight: 600; font-size: .9rem; }
+.field input, .field textarea, .field-input { font: inherit; border: 1px solid var(--line); border-radius: 8px; padding: 9px 12px; background: var(--bg); color: var(--ink); width: 100%; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.options { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.options button { text-align: left; border: 0; border-bottom: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 10px 14px; display: flex; justify-content: space-between; gap: 12px; }
+.options button:last-child { border-bottom: 0; }
+.options button:hover, .options button[aria-pressed="true"] { background: var(--accent-soft); }
+.options small { color: var(--muted); }
+.checks { display: flex; flex-direction: column; gap: 8px; }
+.checks label { display: flex; gap: 10px; align-items: center; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; }
+.hint { color: var(--muted); font-size: .88rem; }
+.err { color: var(--warn); font-size: .88rem; font-weight: 600; }
+table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+th, td { text-align: left; padding: 8px 6px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+td.r, th.r { text-align: right; }
+.ack { display: flex; gap: 12px; align-items: flex-start; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+.ack ul { margin: 6px 0 0; padding-left: 18px; color: var(--muted); font-size: .92rem; }
+.emails { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+.email { border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font-size: .92rem; min-width: 0; }
+.email-head { background: var(--bg); padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 2px; }
+.email-head div { color: var(--muted); overflow-wrap: anywhere; }
+.email-head b { color: var(--ink); }
+.email-body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+.flags { display: flex; gap: 6px; flex-wrap: wrap; }
+.flag { font-size: .72rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; }
+.flag.dup { background: var(--warn-soft); color: var(--warn); }
+.flag.other { background: var(--neutral-soft); color: var(--ink); }
+.flag.new { background: var(--good-soft); color: var(--good); }
+.flag.pre { background: var(--accent-soft); color: var(--accent-text); }
+.checklist { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.checklist li::before { content: "\2610  "; }
+.lead-block { display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line); padding-top: 10px; }
+.lead-campaigns { margin: 4px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; }
+.email-checklists { display: flex; flex-direction: column; gap: 8px; border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; background: var(--bg); }
+.email-check { border-top: 1px solid var(--line); padding-top: 8px; }
+.success { display: flex; flex-direction: column; gap: 6px; }
+.thanks-card { width: min(520px, 100%); }
+.thanks { align-items: center; text-align: center; gap: 12px; padding-block: 32px 24px; }
+.thanks h2 { font-size: 2rem; text-transform: uppercase; letter-spacing: .02em; }
+.thanks p { max-width: 42ch; }
+.thanks .help-email { color: var(--accent-text); }
+.thanks-check { width: 56px; height: 56px; border-radius: 50%; background: var(--good-soft); color: var(--good); display: grid; place-items: center; }
+.thanks-check svg { width: 28px; height: 28px; }
+.thanks-card .modal-foot .btn.primary { margin: 0 auto; }
+.toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 10px 18px; border-radius: 8px; z-index: 50; font-weight: 600; }
+
+@media (max-width: 900px) {
+  .hero .wrap, .cat, .c-split, .emails { grid-template-columns: 1fr; }
+  .results, .menu { grid-template-columns: 1fr; }
+  .side { position: static; }
+  h1 { font-size: 2.3rem; }
+  .wrap { padding-inline: 16px; }
+  .review .note { margin-left: 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .drawer { animation: slide .18s ease-out; }
+  @keyframes slide { from { transform: translateX(24px); opacity: .6; } to { transform: none; opacity: 1; } }
+}
+</style>
+<div class="review">
+  <div class="wrap">
+    <strong>Layout sketch</strong>
+    <div class="opts" role="group" aria-label="Choose a layout">
+      <button type="button" data-layout="A" aria-pressed="true">A · Storefront</button>
+      <button type="button" data-layout="B" aria-pressed="false">B · Catalog + cart</button>
+      <button type="button" data-layout="C" aria-pressed="false">C · Season calendar</button>
+    </div>
+    <span class="note">Sample campaigns, dealers and results · dates run on today's real date · emails are simulated</span>
+  </div>
+</div>
+
+<header class="site-head">
+  <div class="wrap">
+    <span class="brand"><img class="logo" id="head-logo" alt=""><span class="wordmark">FLINT DIRECT</span></span>
+    <span class="partner"><b>BOBCAT</b> partner</span>
+    <span class="help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg>Questions? <span class="help-email">bobcat@flint-group.com</span></span>
+  </div>
+</header>
+
+<main id="view"></main>
+
+<div class="tray" id="tray" hidden></div>
+<div id="drawer-root"></div>
+<div id="modal-root"></div>
+<div id="toast" class="toast" hidden></div>
+
+<script>
+// ---------- Sample data (placeholders for the Excel workbook) ----------
+// Flint Direct flame logo, embedded so it shows wherever the page is opened (assets/flint-direct-flame.png).
+const LOGO_SRC = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAL4AAAEKCAYAAACsWO9KAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABAVpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDkuMS1jMDAyIDc5LmExY2QxMmY0MSwgMjAyNC8xMS8wOC0xNjowOToyMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgeG1wTU06T3JpZ2luYWxEb2N1bWVudElEPSJ1dWlkOjVEMjA4OTI0OTNCRkRCMTE5MTRBODU5MEQzMTUwOEM4IiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkI4Rjc3ODA0MTM4NTExRjE4NDhGQUVGNzNDOTUyNTIwIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkI4Rjc3ODAzMTM4NTExRjE4NDhGQUVGNzNDOTUyNTIwIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIElsbHVzdHJhdG9yIDI5LjMgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0idXVpZDo4NWQxYWUxNy1hNDgzLWVjNDgtYWFhZS1jZjQ0MmQ4YWEyMmIiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6YTM5YjliODYtNjY2NC00ZGEyLWI0NDUtNmE3MjY5ZjBlMWZjIi8+IDxkYzp0aXRsZT4gPHJkZjpBbHQ+IDxyZGY6bGkgeG1sOmxhbmc9IngtZGVmYXVsdCI+RmxpbnRfRGlyZWN0X2xvZ29fYmx1ZTwvcmRmOmxpPiA8L3JkZjpBbHQ+IDwvZGM6dGl0bGU+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+vBvafgAAFM1JREFUeNrsnQmUFcUVhmsGcFdEAhKRMIAgk7ghqCgCcdyj7KuCyCISVBAkwQXPydEYMUQ5KCC4m8i+qYBIUBEXEE0MicqmILiMa2RVEIhO/jtdMzLMW/q9193V3fX/59Qpj8x73X3v925X3666lVdSUqIoyjZVTfQ/8/LyaBkPVHfpWjHkhWhno1VHW402q7iocCet460yDeB5iT5A8D2Bvha6Z9DOOeCfvkLrDvhfoZUIftygz0f3BtqZSf7kW/lBAP53aS0z4OfTZL6oXQroRUegLcAPpDZNZUYE3x+d7+Jv6qPNA/wH0VwEPy5q4vLvWqFNorkIflzUKIO/7Y+oP4ImC1Z8uPX+wVZSxLtVklRxEv2I1h4Pu8/Rgny4jarqZQh9mR+m40fzK5qPQ52o6oQsP3ck2kLAX5MmJPg2gS8qQJvLTA/Btw18UVu0CTQjwY+aGnrwHQMR9YfRlATfpohfpvsA/6U0J8G3KeKX+WYG4G9KkxL8UAuQSirzMA+/8ijlzOk5htYl+GFWc5+GTnMAfzWal+CHVR18+t7z0MbTvN6JUxa8G+b8HN2HaIf4eJihxUWF/AEkEKcsmNMDPkMvGocf2AU0NYc6YYn2Q9F1Dchfs3G8E2l1DnVMQ38RuucDDiLvo7XEsGcrPcChjgnoJcc+y4Adm+jIX5Ve4FAnaOhlFqXMn69u6BTO188VFMEPDHqZPTlXefeWNlsNxrkMpkcIflCS2ZNtQ3IuDwD+IrqE4Psd7YejGxiiU5JxvrzZbUzvuBezOplBfxm6+SENGOuVk+nZZqNvmNXxD3pZDzs9xDaT3P4snGcVeovgewX9z9AtVM662DBLCtSOpccIvhfQSwZnnnLWw0ZBQ3HOA+g5gp+rHkZrHbFzngj4T6PrCH620X4kuqsjeOoHKyfTczi9SPAzhV4qHo+O8CVIGcM/0pOJxXRmYuhPRrdCOeW8o6wf0M4oLipcFXefMZ2ZO/THKieDc0QMLqdKxO9aHOoEBL2MjZ9G+0WMLutiXFcrepfgp9KjytmoLW4aSddyjJ8s2t8S42GBlCEvwFj/E47xGfH3h74Turtjfme/mp4m+PtD3wzdFLnRxfxSOxJ3DnXKoK+D7i3lbOZgg+phuPMphzoWR3xAL6VAnrEIelFrRdkLPqCXW9oTaGdZduktibzdEf92tJ4WXnczIm8p+Ij2UvjpTkv9XUDkLXy4BfSno3sd7VBL/S3OPgQPuHv5cGtPpD8O3QKLoS+Nacrb+v0c6oQcenG2LBI/ji5XR9MEFoC/XwanOd1N2RTx/4DWna4u126aIObgI9r31OBTP2kXTRDjrA6gPxPdK8r/zRqipB3FRYXV43hhzOo40B+P7llCX0mbaIKYgr9fBqcO3VtJ62mCGIKvMzhPKb6aT6Y3aYJ4Rvw/oXWmW5NqJU0QM/AR7Xuhu5UuTaotjPgxAx/Qy3Tbx+jOlFpYXFT4A80QE/ABvZQCkQUlB9OdKTWVJogJ+IBeij7JxLNj6cqUkjTmizRDDMAH9Pk6ip1CN6bVJAxzfqQZ4hHxpRxIe7owrb5QzmZ1VNTBR7Tvg+5mus+V7kG058S0qIMP6M9VTqk/Kr3+gzaRZog4+IC+QDnb8lSj69JKxvTXItr/j6aIMPiAXjZekwxOLbrNle4A9G/RDIlVNSLQS533aWgn0WWutATtLp98IdsL9VNOVemaaO/K0BM/skhNgIvEfHwY+z50N5FnV9qAdhZA3OKDH07QP6oGB/zTPrTBOKaxt+eZzscPPfh660o+zLrTduXsbr7OBz8cpKN7kxTPFO1x7OeiAH6ox/gwdht0k8iz64fZ7n5Ar9UhBfRlLE3XO8Dz4TYH6OV2ygyOew0D9Et8/P5zXfyNJCAW6p3gCX4W0Mu60EX64YlKr4cA/Xifj9HI5d8VSMDSQyOCnwH0ksGZgdaUPLvSy2hDAjhOowz+tnXYh6hhjPiSwbmEPLuSZHC6Itrv8zkYCScNM/xYf3xuBMF3Z+Br0d1Inl1JMjjt/EhbJnINWjZDlzHw6WUEPzX0RYqzCN3K7wxOLsOcA/maBt8WEvzE0DdGN0cxg+NWfmdwDlTDHD57lHIyPTUJfkXopXqvzMGpQZ5daVIAGRyvIv7+P5y5Ycr05BuGXjI4s9BOJM+u9BLaUAPHbeTBd7QN01DWdMSXyHUheXal99G6GZpm3Mij7xmIYDfMavBhgOvQDSbPrrRNOfNgtho6fiMPv+s++P5S0wY1MkkNF34BusVoVch0WkktnEsAvZEqCfCVPHt5nTLdoZzJdGu9+sLQT1KDIWU8P5vQu9ZQU9BrneHDdxrP9OQHDP0xysngcB8md5IMzoOGz6GTT98rmZ7ZYKJarMHXFyi5+sbk2ZVMZXD295lsltfXx0Ocp5wER6wj/nh9oVR6mczglEEvD3qyAMjvzTUG4VhDYgm+vrBB5NmVTGdwyiS7vweVfRkHRi4K8uJ8z+rggmSm5XPKos2kc5BE+IsB/VLDQxwpuT4l4MPmtGwyVGtu9eSklfopnkovWbA92TD0UnJ9mTJTfTrrhfKhSWfqVNVCQu9aE0IAvemS61LFYU4QmZ58nwwok5Hmqtxm9dmkF9CGGYZe6uXITpGmS64HkunxK+KPU86kJCq9pBBTd5O7legMjozpTwuJTSTTc32kwNd1cDgHx50kcyOrqLYZPg/ZNK9jyGxzv57a4os8fbjFiTZHt0Jlt0zNNtmcwXErCQgt3ZQnNPZwq7flmUHoXWtICKCX+pdh3jRPprbM1xPlQjvUmaSfyqn0CkMGp76KxqZ5Ur1N5vRUDR34OKku6HqTZ1eStbKmMzhyd56PVjsiNjsf7d5QjfF1vn614s6DbrROj1m3G4Regt3TKpr7h8n8pTlhGePfT+hdSd5GXm4Seq0ob5r3uH7JZnaoo2vh9CLTaSWVzroA+o2GhzhXqWhvmidFaScaBV+/VmYBKHe6AdAvMwz9OSoe+wxcjmvpbDLiy5u1QjKdfigI6B82DH19Pa6PS6r5Lv2sEiz4uoz37WQ6rWRB/QjD0MvwIEoZHDcqzHWIne2vZqRi7fp0kgxOT8NzcMo2zTslhvYdHij4ercLVjROrbBkcEbLecTUxs3A4plBRnzZffBwsp1UYcng9EX3+5jbum+2H8zoBZYe23+EVp18J5XsJv6IYehlvyqZBxT36tPFaPVg7xK/X2BdQ+hTamwIoC9Q9myaJxtWnO7rUEenj24g20m1SD/0m4ReMjhSsKuWRXZv5fcYX15zF5DvhFqDdkVIMjgnWWb7ln6DP4B8J9Q3ysng7DB8Hn9W8c3gpNLJvoGPaFJHBVdcKEqSDE5nQL/J8BBHgtIIS33QwM+I30exunEiyRycVw1D30aFfE9Zn3W4LkbsC/g9yHglTQ3BHByJdrZkcFLpKM/Bh3FlN4zTyXkFyYYGvzUMfWmNecWpI6Ij/Yj4HWjXCpI3Jf0R7b81CL0MO6ej/ZLuyGjkktEHfkO7VtBkQL/S8DmMoV8qaLun4Ouycq1p13JJ6vJWw0MceXt+E11RQbu8jvi/VqyTs7/uNbxQXPzxIN1QQXvgk6+8Bp/R/ieJcScYhF6SDFKItxpdUUEf+vFQ0IZ2LddEUw+0elasZHCOoRsqaY2n4OvF5M1p11LJHJxHDUEvGRwpzdiUbkioN72O+CdzfF+uhYj2nxk6tszBuYQuSKrlXoPfjDYt10xD0V72mB1B8yfVN35E/FNo11JJOe9FBqA/Ht0TNH/aO/EPXoPfhHYt1auGUpiSQeJqt9T6W7YfTAX+ibRr9mPIHKN9O8WpIukkm2C/7Cn4uhZ5fdq2VCsDhj5fP9BSqSUV6ko8BV851Y+5IbOjtwM+nkwBZ2nG1PpE5ZheTgZ3Pdq2VDsRVb4M+Jich5Ned8Ive/0AvzZtW6rNAQ9zWqBrQbOnlGwumPO+XcnAr0H7lt9Sg9TVNHlKSZQfmMvYPh34R9PGpQpsbo7eZJmZnNQaDujXePFFjPiptTvAY53GZ6uUmgHoPZuSzcxN+ltrUGpFcyfVKuVxXadk4HPOt6Mg94A9h+ZOKMmqtUe03xUE+AfT3qUKcsoAF45X1h60joD+U6+/ON/0Q13IFeRDfkOau5IG+LWwn2P81GoQxEF0jZwjae4KGg3op/r15cnA30W7l+p4vRLNb3FJYUU9izbKzwMkA38bbV9unyBmqR5GU5frHbTeXrykIvi5qWUAx+AST0dSyaJ9EIv6k4H/DX1QrrNogkAk70w6AfqPgrqVJ1Ix/VCuC2mCQCSb5q0IcgybSJ/QD+WqjwfcU2kGX/UXQP/XoB/eKof7osLvOM6vIE4e809SKCvweqSp8vjr6JNy9dVLAilv9R7alSY2zUvlzPfpl3LJi6wLaAZPJQmUdoB+p4mDpwJ/DX1TQdzj1zuVbZq32dQJpAJ/Ff1TQe0w3GF1OW802PSmeQQ/M91JE+SssYD+MdMnkRR8nNzXKuDF1hHQ5Yj6RTRD1lqMNjIMJ5IuU/EafVVJkwH/ITRDxpIsYU8TGRyC740aK59nDsZQW+RuaXIbpUzBf5k+S6jbEPXb0gyuJBmcLoB+Y5hOKiX4ONkN6DbSdwntNgPw16Ep0mooOFoWRgem0yL6LqEE+pmAn1OKk2sCoJ8c1siVTs/Sf0klm+NNoBkS6gW0YWG+ZaeT3Ka+ph+TaiCi/hCaoYLWo3UPSwYnK/D1yc+jL1NqHODnvH1HMqu3A7gJ9exetzMOp9Gfae04C/DbvouMBMlugH59FBzmRpLP30C+U0pq8MwH/DYX3JUMzotRiVRppVe8P0m206qJjvxVLLz2SV4WdQ1LxBfJ1iv7yHZayVh/rGXXLC86b4za2NSV9JY408m1u1s+ov61llyrDIG7go99sQRf6wEy7VoTAH+bmF+jzL2RVVRbopiNcC1coOwA+Hcy7UpSenAe4G8Q0+v7Ea0HmIjk2uxsFlDfTaZdq6ZyMj1xLAg7AtBHNghmDL5eMraMTLvWSWjTYlal4RFwMC7KF5CtM24mzxnp8hjdKV9RMVh4nxX4+LW/hW4Oec4sWCDq907yb1FZ0bVJOXPr91oJvtYtytmqhXKvRwF/ourLUVjHK/VvJIMTi4LCWYOvV9SMIcsZSfYWWwD4yzd6w393Qnd7yM9bMjhXwOer4+KIvJKSyvX38/LyXH0YTjtUOYWnCsh0xvpQ/xDqRuBcfwfo7wvzCSbi2DfwNfwXKeb246wnAX2/sJ9kpuDnnGKDUZYoZx4PFT8tRxsUxwvzKrc8Au1jchIryc4kneOQwfENfBhnB7orlbMQgYq+ZA8qyeB8FdcL9OxtIowkt8U7yEzkJYPlXvDnu3G+SK9fo8vbycVkJ9K6DdDPj/tF5pzVOVB1l66tge4faI3IUOQ0BdBfFcnbVNBZnQRDnq3oOqJ9R44ipTfQrrHlYn2ZMQj4ZW+jK5Tzxo8Kv2SXS8ng7CH4ucO/QHEWZxS0Szl1cL6w6aJ9nSMOY96L7jGyFWr1hp+s2/0miMUR1ylnDjcVPo0C9E/beOG+g6/f/HVWLEgVNs1AG23rxXuezkymukvXNtWZg6PJnHFJurktgtLuuFyQ8XRmisgvq/G7of2P3BlVsX6Y3W2zEQJdAK3rKrKktjkJ7O3hh89tN0TgK//1DhksTGVG/WD/f9EMBsDXuklxTk/QugPQz6QZDIKvN5vooZxli5T/mqU4c7aCAsvqJFLdpWsL0Empklp0hW+Sso9tEGx2xfkiQ5vVSRL5Nysnx7+XfPoimYbQMe7QR2mMvz/8ryuLZgUGqO+Vk7b8lKYIIfga/qeUxW8RfdJAXfGOCiv4WqMUd1f0SjMB/RSaIQLg6322ZPUP88y5STJmt9AM0Yn4Sj+EtUP7nK7JWot00oCKCvga/s+UU1Z7N92TlVjVLorga/hluNOb7slKH9AEEQVfwz9PP/BSmem/NEGEwdfwS50eZicyExf4Rx18LXm5tZyuoqwCX5e8kGkNm+kuyqaIr3TxUsn07KTLKGvA1/DLNjQ9OIalrAJfw/88uuF0G2UV+Bp+Wbb4EF1HWQW+lmww/BLdR1kFPqK+lCjpiraeLqRsivgC/zblTGjbQjdS1oCv4Zd5KV3Q9tGVlDXga/iXoRtMV1JWga/hl1Lk99KdlFXga8mqo4V0KWUV+LpIlWw/9A7dStkU8QX+0o2J0b6kaylrwNfwf6ycXRe/t9Sn1Ym1heBr+Fei62+pT/OItaXga/inKxZKpWwDX0vAZ2lsyi7wdZGqfsqpyExR1kR8pfd66qCc3bspyg7wNfxSLrs92nd0OWUN+Br+f6O7UnHpImUT+Br++ehupdupfNsuGPCPQfc4XU/wbZRMY36V7if4tkV92XNLilRtJAIE3zb4v1FOkartxIDg2wb/OnTdlLOLCEXwrYL/BXRDiALBtxH+Segm0BIE30YNQ1tMMxB826K+jPN7oq2hNQi+bfBLhkcyPdxOh+BbB/8mdJ0Ui1QRfAvhfx3dAFqC4NsI/1Po7qElCL6Nug3tGZqB4NsW9WXpYi+0VbQGwbcN/l3KKVL1Oa1B8G2Dv1g5Sxd3R+B0v6bHCL6X8P8TXZ+Qn6ZMt95EbxF8r+Gfg25UiE/xNT00owi+5xqNNjWk5zae7iH4fkV9yfTIy60VITu1l9EW0EPulFdSUlL5f+ax7mg61V26trZyKrTVD8HpfIXWAj9Ka4tmJeKYEd+fyC+wyYS2nYZPRTJN7W2GnkOd4OF/TzlTmU0WqeqD83iT3iD4QcO/CN0IQ4cfqTNNFMf4xsb8k9ENCvCQDwP6QbQ8x/imJQvWlwZ0rCVo19PkjPhhifo10Mk2RE18PMxqtFZ6tRjFiB+K8f5W5WR6tvp0CNnN8TJCz4fbMML/gXKWLno9oW2Hhv4jWpnghxX+V9B1QfNq3sw2uZPge9+mdQl+2OF/Ht25aBty/Cp5V3A2vu81WpXgRwV+Wbl1KtrdKvNtiGQcLzNBW+gan5SHYlYnINVdurYmuqv0EOhstCoJ/kxKmixHm402BcDvoOXcKdOsDsE38yM4FN2JaMehHYT2PdpnaOsB+x5ayBD4FBV3/V+AAQBduBErN83n8gAAAABJRU5ErkJggg==';
+document.getElementById('head-logo').src = LOGO_SRC;
+const TODAY = new Date();
+
+const CAMPAIGNS = [
+  { id: 'search', type: 'always', name: 'Paid Search', channel: 'Google Search', price: 1000, min: 3, demo: 'paid-search.html',
+    blurb: 'Show up at the top of Google when buyers search for equipment near your stores.',
+    what: 'Text ads on Google for searches like "mini excavator dealer near me" and your store names. Ads send buyers to your inventory and contact pages, with call tracking on every ad.',
+    included: ['Google Search ads targeting equipment, rental and service searches near each store', 'Keyword research and ad copy written for each location', 'Ongoing bid and keyword optimization', 'Call and form-fill tracking', 'Monthly results report'],
+    need: ['High-res logo', 'Landing page or inventory URL', 'Current offers or promos'],
+    faq: [['Why a 3-month minimum?', 'Google needs about 90 days to learn which keywords and headlines bring in leads. Results before then are not a fair read.'],
+          ['Can I set my own budget?', 'Pricing is a flat rate per location. Your locations share one budget, with targeting set for each store.']],
+    cs: 'cs2' },
+  { id: 'social', type: 'always', name: 'Paid Social', channel: 'Facebook & Instagram', price: 500, min: 0, demo: 'paid-social.html',
+    blurb: 'Turn local contractors, farmers and landowners into leads right from their feeds.',
+    what: 'Image and video ads in Facebook and Instagram feeds, targeted around each store. Lead forms open inside the app, so buyers send their details without leaving the feed.',
+    included: ['Facebook and Instagram ads targeted around each store', 'Website traffic ads plus in-app lead forms', 'Fresh ad creative each quarter', 'Lead and click tracking', 'Monthly results report'],
+    need: ['High-res logo', 'Current offers or promos', 'Admin access to your Facebook page'],
+    faq: [['Can I cancel?', 'Yes, any time. Just let us know and we will stop the campaign at the end of the month.']],
+    cs: 'cs1' },
+  { id: 'pmax', type: 'always', name: 'Performance Max', channel: 'Google: all placements', price: 1000, min: 0, demo: 'pmax.html',
+    blurb: 'Reach buyers everywhere they use Google, from search results to YouTube and Maps.',
+    what: 'Google places your ads wherever buyers are most likely to act, from Maps listings to YouTube. We supply the creative and Google optimizes toward calls and form fills.',
+    included: ['One Google campaign across Search, YouTube, Maps, Gmail and Display', 'Image, video and text creative built for each location', 'Call, store-visit and form-fill tracking', 'Monthly results report'],
+    need: ['High-res logo', 'Product or lifestyle photos', 'Landing page or inventory URL'],
+    faq: [['How is this different from Paid Search?', 'Paid Search shows text ads on search results only. Performance Max covers all of Google, including video and maps.']],
+    cs: 'cs3' },
+  { id: 'email', type: 'always', name: 'Email Marketing', channel: 'Email', price: 250, min: 0, demo: 'email.html',
+    blurb: 'Bring past customers back with monthly offers, new arrivals and service reminders.',
+    what: 'We design and send one branded email per month to your customer list, and report on opens and clicks.',
+    included: ['One branded email per month to your customer list', 'Email design and copy: offers, new arrivals and service reminders', 'List upload and cleanup', 'Open, click and lead tracking', 'Monthly results report'],
+    need: ['High-res logo', 'Customer email list', 'Current offers or promos'],
+    faq: [['Do I need a big list?', 'No. Even a few hundred customers is enough to start.']],
+    cs: null },
+  { id: 'localseo', type: 'always', name: 'Local SEO', channel: 'Google Maps & Search', price: 500, min: 3, demo: 'local-seo.html',
+    blurb: 'Win the "Bobcat dealer near me" search with a complete, active listing for every store.',
+    what: 'We manage each location\'s Google Business Profile (hours, photos, posts, Q&A) and improve local search rankings so buyers find your stores first on Maps and Search.',
+    included: ['Google Business Profile optimization for every location', 'Listings management across major directories and maps', 'Review generation, monitoring and responses', 'Monthly posts and photo updates', 'Local SEO audit at kickoff', 'Monthly ranking, calls and directions report'],
+    need: ['High-res logo', 'Store photos', 'Manager access to your Google Business Profile'],
+    faq: [['Why a 3-month minimum?', 'Listing fixes show up within weeks, but ranking gains usually take 2 to 3 months to build.']],
+    cs: null },
+  { id: 'ctv', type: 'always', name: 'Streaming TV', channel: 'Connected TV', price: 800, min: 3, demo: 'streaming-tv.html',
+    blurb: 'Put your dealership on the big screen in local homes, without broadcast TV costs.',
+    what: 'Video ads on streaming services like Hulu, Roku and Pluto, targeted by zip code around each store. You pay for real viewers in your market, not a whole broadcast region.',
+    included: ['Video ads on major streaming TV apps, targeted by zip code around each store', '15- or 30-second ad production, with dealer footage if you have it', 'Frequency control so local viewers see your ad several times', 'Monthly reach and results report'],
+    need: ['High-res logo', 'Current offers or promos', 'Any existing video footage (optional)'],
+    faq: [['Why a 3-month minimum?', 'Streaming TV builds awareness through repetition. Most viewers need to see your ad several times before they call or visit, so it takes a few months for that to show up in your leads. It also lets the ad you paid to produce run long enough to pay off.'],
+          ['Do I need my own video?', 'No. We produce the ad. If you have footage of your lot or team, we can use it.']],
+    cs: null },
+  { id: 'fall', type: 'seasonal', name: 'Fall Equipment Push', channel: 'Search + Social + Digital Radio', price: 1500,
+    start: '2027-08-01', end: '2027-09-30', demo: 'fall.html',
+    blurb: 'Move compact equipment off your lot before winter with a targeted fall offer.',
+    what: 'A fall offer promoted on Google Search, in social feeds and on streaming audio around each store, reaching contractors and landowners finishing projects before winter.',
+    included: ['Paid Search ads for fall project equipment near each store', 'Paid Social ads with fall offers and in-app lead forms', 'Digital radio ads on streaming music and podcast apps, targeted by zip code', 'Fall creative for every channel, including a 30-second audio spot', 'Call and form-fill tracking with an end-of-campaign report'],
+    need: ['High-res logo', 'Fall offer details'], faq: [], cs: null },
+  { id: 's179', type: 'seasonal', name: 'Section 179 Year-End', channel: 'Performance Max + Awareness Social + Retargeted Social + Email', price: 1500,
+    start: '2027-11-01', end: '2027-12-31', demo: 'section179.html',
+    blurb: 'Reach business buyers before the Dec 31 tax deadline, when equipment purchases peak.',
+    what: 'A year-end push aimed at business owners: social ads build awareness of the tax deadline, retargeting follows up with people who engaged, Performance Max captures buyers across Google, and an email reminds past customers.',
+    included: ['Performance Max across Google Search, YouTube, Maps and Display', 'Awareness Paid Social ads with Section 179 deadline messaging to local business owners and contractors', 'Retargeted Paid Social ads to people who engaged or visited your site, with in-app lead forms', 'One customer email reminding past buyers of the Dec 31 deadline', 'Section 179 creative for every channel, with call and form tracking and an end-of-campaign report'],
+    need: ['High-res logo', 'Year-end offer details', 'Customer email list'],
+    faq: [['Is this tax advice?', 'No. Ads point buyers to talk with their tax advisor.']], cs: null },
+  { id: 'winter', type: 'seasonal', name: 'Winter Promotions', channel: 'Search + Social + Performance Max', price: 2500,
+    start: '2027-01-01', end: '2027-03-31', demo: 'winter.html',
+    blurb: 'Win snow rentals, attachment sales and machine sales the moment winter hits.',
+    what: 'Your winter rental, attachment and machine offers, promoted on Google and social around each store, so the first calls after a snowfall come to you.',
+    included: ['Paid Search ads for snow rentals, snow-removal attachments and machines near each store', 'Paid Social ads with winter offers and in-app lead forms', 'Performance Max across Google Search, YouTube, Maps and Display', 'Winter creative for every channel, with call and form tracking', 'End-of-campaign results report'],
+    need: ['High-res logo', 'Winter offer details'], faq: [], cs: null },
+  { id: 'spring', type: 'seasonal', name: 'Spring Kickoff', channel: 'Search + Social + Performance Max + Email', price: 2000,
+    start: '2027-03-01', end: '2027-04-30', demo: 'spring.html',
+    blurb: 'Get local customers equipped for their busy season with your spring offer in every channel.',
+    what: 'Your spring offer promoted across Google, social and email around each store, with an optional demo day invite, so customers gear up before spring and summer work starts.',
+    included: ['Paid Search ads for equipment searches that pick up in spring', 'Paid Social ads with spring offers and in-app lead forms', 'Performance Max across Google Search, YouTube, Maps and Display', 'One customer email: a spring sales promo or a demo day invite with an RSVP form', 'Spring creative for every channel, with call and form tracking', 'End-of-campaign results report'],
+    need: ['High-res logo', 'Spring offer or demo-day details (dates per location)', 'Customer email list'], faq: [], cs: null },
+  { id: 'summer', type: 'seasonal', name: 'Summer Push', channel: 'Search + Social + Performance Max + Competitor Geofence', price: 2250,
+    start: '2027-05-01', end: '2027-07-31', demo: 'summer.html',
+    blurb: 'Capture peak-season demand for compact track loaders and mini excavators.',
+    what: 'Rental and purchase offers promoted across Google and social at the peak of the season, plus ads to people at nearby competitor locations.',
+    included: ['Paid Search ads for rental and purchase searches near each store', 'Paid Social ads with summer offers and in-app lead forms', 'Performance Max across Google Search, YouTube, Maps and Display', 'Competitor geofence ads to phones at nearby competitor dealerships and rental yards', 'Separate rental and purchase messaging, with call and form tracking', 'End-of-campaign results report'],
+    need: ['High-res logo', 'Summer rental and purchase offers'], faq: [], cs: null }
+];
+
+// Enrollment closes 15 days before a Seasonal campaign starts (gives the team setup time).
+const DEADLINE_DAYS = 15;
+CAMPAIGNS.filter(c => c.type === 'seasonal').forEach(c => {
+  const t = new Date(c.start + 'T12:00:00');
+  t.setDate(t.getDate() - DEADLINE_DAYS);
+  c.deadline = `${t.getFullYear()}-${String(t.getMonth() + 1).padStart(2, '0')}-${String(t.getDate()).padStart(2, '0')}`;
+});
+
+// What each campaign includes, shown as channel tags (one column in the workbook, e.g. "search, social, email").
+const TAGS = { search: ['search'], social: ['social'], pmax: ['search', 'video', 'maps', 'display'], email: ['email'],
+  localseo: ['seo', 'maps'], ctv: ['ctv'],
+  fall: ['search', 'social', 'radio'], s179: ['pmax', 'awareness', 'retarget', 'email'], winter: ['search', 'social', 'pmax'], spring: ['search', 'social', 'pmax', 'email'], summer: ['search', 'social', 'pmax', 'geofence'] };
+const CHANNELS = {
+  search: ['Search', '<circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/>'],
+  social: ['Social', '<path d="M4 5h16v11H9l-5 4z"/>'],
+  email: ['Email', '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>'],
+  video: ['YouTube', '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9l5 3-5 3z"/>'],
+  maps: ['Maps', '<path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z"/><circle cx="12" cy="10" r="2"/>'],
+  display: ['Display', '<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>'],
+  geofence: ['Competitor Geofence', '<circle cx="12" cy="11" r="3"/><circle cx="12" cy="11" r="8" stroke-dasharray="3 3"/>'],
+  awareness: ['Awareness Social', '<path d="M4 5h16v11H9l-5 4z"/><path d="M9 10h6"/>'],
+  retarget: ['Retargeted Social', '<path d="M4 5h16v11H9l-5 4z"/><path d="M14 8l2 2-2 2"/><path d="M16 10H9"/>'],
+  radio: ['Digital Radio', '<path d="M4 10h16v10H4z"/><path d="M7 10l10-6"/><circle cx="9" cy="15" r="2"/><path d="M14 14h3M14 17h3"/>'],
+  pmax: ['Performance Max', '<path d="M4 12a8 8 0 1 0 8-8"/><path d="M12 4v8l5 3"/>'],
+  seo: ['Local SEO', '<path d="M4 18l5-5 4 4 7-8"/><path d="M15 9h5v5"/>'],
+  ctv: ['Streaming TV', '<rect x="3" y="6" width="18" height="12" rx="2"/><path d="M8 3l4 3 4-3"/>']
+};
+// Checklist items added automatically by channel (any campaign with that tag gets them in the thank-you email).
+const CHANNEL_CHECKLIST = { geofence: ['List of local competitors to geofence (business names and addresses)'] };
+function checklistFor(c) {
+  const extra = (TAGS[c.id] || []).flatMap(k => CHANNEL_CHECKLIST[k] || []);
+  return [...new Set([...c.need, ...extra])];
+}
+function tagsHTML(c) {
+  return `<div class="ch-tags" aria-label="Includes">${(TAGS[c.id] || []).map(k => `<span class="ch ch-${k}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CHANNELS[k][1]}</svg>${CHANNELS[k][0]}</span>`).join('')}</div>`;
+}
+
+// Real 2026 results from a heavy-equipment dealer co-op program. No brand or dealer names, by agreement.
+const CASES = {
+  cs1: { channel: 'Lead generation', chips: ['Lead generation'], profile: 'Heavy-equipment dealer', focus: 'Lead-generation campaign · 2026 year to date',
+         big: '445', unit: 'leads on about $11K of ad spend', label: 'qualified leads', context: 'on about $11K of ad spend (≈ $25 each)', stats: [['≈$25', 'per lead']] },
+  cs2: { channel: 'Multi-channel', chips: ['Paid Search', 'Paid Social', 'YouTube', 'Geofence'], profile: 'Heavy-equipment dealer', focus: '3-month equipment campaign across search, social, YouTube and geofencing',
+         big: '345', unit: 'conversions in 3 months', label: 'conversions', context: 'in 3 months across search, social, YouTube and geofencing', stats: [['69K', 'impressions'], ['3,294', 'clicks'], ['14.49%', 'paid search CTR']] },
+  cs3: { channel: 'Google Display', chips: ['Display'], profile: 'Heavy-equipment dealer', focus: 'Google Responsive Display · 2026 year to date',
+         big: '67K', unit: 'clicks on a $3,500 ad budget', label: 'clicks', context: 'on a $3,500 ad budget', stats: [['3.2M', 'impressions'], ['2.1%', 'CTR']] }
+};
+// Featured: a spring opt-in program run the same way as this page (dealers opt in, we run it). Totals only, no names.
+const FEATURED = {
+  eyebrow: 'Featured · Spring opt-in program',
+  big: '2,027', unit: 'leads in one quarter',
+  lead: 'Heavy-equipment dealers opted in to one spring campaign, and we ran it across 85 dealer locations from April through June.',
+  chips: ['Lead Gen Paid Social', 'Awareness Paid Social', 'Keyword Search Display', 'Competitor Geofence', 'Site Retargeting'],
+  stats: [['87.8M', 'impressions'], ['235K', 'clicks'], ['117K', 'website sessions'], ['≈24', 'leads per location']]
+};
+// Program-wide results across the same dealer program, 2026 year to date.
+const PROGRAM = [['2×', 'more leads than last year'], ['25%', 'lower cost per lead'], ['36%', 'more leads than expected'], ['10,268', 'phone calls generated']];
+
+const DEALERS = [
+  { name: 'Smith Equipment', locs: ['Dayton, OH', 'Columbus, OH', 'Springfield, OH'] },
+  { name: 'Prairie Compact Equipment', locs: ['Sioux Falls, SD', 'Fargo, ND'] },
+  { name: 'Ridgeline Equipment', locs: ['Boise, ID'] },
+  { name: 'Tri-County Compact', locs: ['Lancaster, PA', 'York, PA', 'Reading, PA', 'Harrisburg, PA'] },
+  { name: 'Gulf Coast Equipment Co.', locs: ['Mobile, AL', 'Pensacola, FL'] }
+];
+
+// Hidden duplicate-check record (sample): someone at Smith Equipment, Dayton already enrolled in Paid Social.
+const RECORD = [{ dealer: 'Smith Equipment', loc: 'Dayton, OH', campaign: 'social' }];
+
+// ---------- Helpers ----------
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const money = n => '$' + n.toLocaleString('en-US');
+const d = s => new Date(s + 'T12:00:00');
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const short = s => { const x = d(s); return MONTHS[x.getMonth()] + ' ' + x.getDate(); };
+// Deadlines close at 11:59:59 PM in the viewer's own time zone (from the browser's settings, no location prompt).
+const endOf = s => new Date(`${s}T23:59:59`);
+function tzName(s) {
+  try {
+    const part = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' }).formatToParts(endOf(s)).find(p => p.type === 'timeZoneName');
+    return part ? part.value : 'your time';
+  } catch (e) { return 'your time'; }
+}
+const daysTo = s => Math.max(0, Math.ceil((endOf(s) - TODAY) / 864e5));
+function timerHTML(ms) {
+  const t = Math.max(0, Math.floor(ms / 1000));
+  const parts = [[Math.floor(t / 86400), 'Days'], [Math.floor(t % 86400 / 3600), 'Hours'], [Math.floor(t % 3600 / 60), 'Min'], [t % 60, 'Sec']];
+  return parts.map(([v, l]) => `<span class="unit"><b>${String(v).padStart(2, '0')}</b><small>${l}</small></span>`).join('<i aria-hidden="true">:</i>');
+}
+const byId = id => CAMPAIGNS.find(c => c.id === id);
+function status(c) {
+  if (c.type === 'always') return 'always';
+  if (Date.now() > endOf(c.deadline)) return 'closed';
+  if (TODAY < d(c.start)) return 'pre';
+  return 'open';
+}
+const STATUS_LABEL = { pre: 'Coming soon · Pre-enroll', open: 'Live · Enrolling now', closed: 'Enrollment closed' };
+
+// ---------- State ----------
+const state = {
+  layout: 'A', tabA: 'seasonal', filterB: 'all',
+  sel: new Set(), drawer: null,
+  modal: null, // { step, dealer, manual, manualName, locs:Set, manualLocs:[], contact:{}, notes, ack }
+};
+// Presentation mode (default): layout A only, no sketch toolbar or sample hints. Add #sketch to the address to get them back.
+const isSketch = () => location.hash === '#sketch';
+function applyMode() {
+  document.querySelector('.review').hidden = !isSketch();
+  if (!isSketch()) state.layout = 'A';
+  else { try { const saved = localStorage.getItem('hub-layout'); if (saved) state.layout = saved; } catch (e) {} }
+}
+applyMode();
+window.addEventListener('hashchange', () => { applyMode(); render(); });
+
+// ---------- Pieces ----------
+function priceLine(c) {
+  return c.type === 'always'
+    ? `<div class="price"><strong class="num">${money(c.price)}</strong><span>per location / month</span></div>`
+    : `<div class="price"><strong class="num">${money(c.price)}</strong><span>per location, one-time</span></div>`;
+}
+const COOP = 0.75; // every campaign is 75% co-op eligible
+const PRIVACY_URL = 'https://flint-group.com/privacy-policy/';
+const privacyNote = () => `<p class="hint privacy-note">By submitting, you agree to Flint's <a href="${PRIVACY_URL}" target="_blank" rel="noopener">Privacy Policy</a>.</p>`;
+function priceBand(c) {
+  return `<div class="price-band">
+    <div><div class="price-big num">${money(c.price)}</div><div class="price-unit">${c.type === 'always' ? 'per location · monthly' : 'per location · one-time'}</div></div>
+  </div>`;
+}
+// What each Always-On program is for (a "Goal" column in the workbook).
+const GOALS = { search: 'Ready-to-buy leads', social: 'Website traffic + leads', pmax: 'Calls, visits + leads', email: 'Repeat business', localseo: 'Local visibility + review management', ctv: 'Local brand awareness',
+  fall: 'Fall project leads', s179: 'Year-end equipment sales', winter: 'Snow rentals, attachments + sales', spring: 'Gear up for spring + summer', summer: 'Rental + purchase leads' };
+function detailRows(c) {
+  const rows = c.type === 'always'
+    ? [['Goal', GOALS[c.id] || ''], ['Commitment', c.min ? `${c.min}-month minimum` : 'Cancel anytime']]
+    : [['Timeframe', `${short(c.start)} – ${short(c.end)}`], ['Enrollment deadline', short(c.deadline)]];
+  return `<dl class="rows">${rows.map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
+}
+function badges(c) {
+  const st = status(c), out = [];
+  if (st !== 'always') out.push(`<span class="pill ${st}">${STATUS_LABEL[st]}</span>`);
+  if (c.min) out.push(`<span class="pill min">${c.min}-month minimum</span>`);
+  return out.join('');
+}
+function metaLine(c) {
+  if (c.type === 'always') return `<div class="meta">Starts any time · ${c.min ? 'cancel after ' + c.min + ' months' : 'cancel any time'}</div>`;
+  const st = status(c);
+  if (st === 'closed') return `<div class="meta">${Date.now() > endOf(c.end) ? 'Ran' : 'Running'} ${short(c.start)} – ${short(c.end)} · Enrollment closed ${short(c.deadline)}</div>`;
+  const left = daysTo(c.deadline);
+  const pre = st === 'pre' ? ` · Launches ${short(c.start)}, cancel free until then` : '';
+  return `<div class="meta">${short(c.start)} – ${short(c.end)} · <b>Enroll by ${short(c.deadline)}</b> (${left} days left)${pre}</div>`;
+}
+function addBtn(c, extra = '', label = '') {
+  if (status(c) === 'closed') return `<button type="button" class="btn ${extra}" data-act="notify" data-id="${c.id}">Notify me next season</button>`;
+  const on = state.sel.has(c.id);
+  const verb = label || 'Enroll now';
+  return `<button type="button" class="btn ${on ? 'added' : 'primary'} ${extra}" data-act="toggle" data-id="${c.id}" aria-pressed="${on}">${on ? 'Added ✓' : verb}</button>`;
+}
+function card(c, { proof = false } = {}) {
+  const cs = c.cs && CASES[c.cs];
+  // Always-On names already say the channel, so their tiles skip the channel tags.
+  const showTags = c.type !== 'always';
+  return `<article class="card ${state.sel.has(c.id) ? 'is-added' : ''} ${showTags ? '' : 'no-tags'}">
+    <h3>${esc(c.name)}</h3>
+    ${showTags ? tagsHTML(c) : ''}
+    <p class="blurb">${esc(c.blurb)}</p>
+    ${priceBand(c)}
+    ${detailRows(c)}
+    ${proof ? (cs ? `<div class="proof"><b>${cs.big}</b> ${esc(cs.unit)} for a ${esc(cs.profile.split(' · ')[0].toLowerCase())}</div>`
+                  : '') : ''}
+    <div class="card-actions">
+      <button type="button" class="btn" data-act="detail" data-id="${c.id}">Details</button>
+      ${addBtn(c)}
+    </div>
+  </article>`;
+}
+function resultsStrip() {
+  return `<div class="program-band">
+      <div class="program-label">Across our heavy-equipment dealer program · 2026 year to date</div>
+      <div class="program-stats">${PROGRAM.map(([v, l]) => `<div><b class="num">${v}</b><span>${l}</span></div>`).join('')}</div>
+    </div>
+    <article class="featured">
+      <div class="featured-main">
+        <div class="eyebrow" style="color:var(--partner-text)">${esc(FEATURED.eyebrow)}</div>
+        <div><span class="featured-big num">${FEATURED.big}</span> <span class="featured-unit">${esc(FEATURED.unit)}</span></div>
+        <p>${esc(FEATURED.lead)}</p>
+        <div class="result-chips">${FEATURED.chips.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>
+      </div>
+      <div class="featured-stats">${FEATURED.stats.map(([v, l]) => `<div><b class="num">${v}</b><span>${esc(l)}</span></div>`).join('')}</div>
+    </article>
+    <div class="results">${Object.entries(CASES).map(([id, cs]) => `
+    <button type="button" class="result" data-act="case" data-id="${id}">
+      <span class="result-chips">${cs.chips.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</span>
+      <span class="result-head"><span class="big num">${cs.big}</span> <span class="result-label">${esc(cs.label)}</span></span>
+      <span class="unit">${esc(cs.context)}</span>
+      <span class="who">${esc(cs.profile)}</span>
+    </button>`).join('')}</div>`;
+}
+const always = () => CAMPAIGNS.filter(c => c.type === 'always');
+const seasonal = () => CAMPAIGNS.filter(c => c.type === 'seasonal').sort((a, b) => d(a.start) - d(b.start));
+const openSeasonal = () => seasonal().filter(c => status(c) !== 'closed').sort((a, b) => d(a.deadline) - d(b.deadline));
+
+// Seasonal: the next deadline gets a wide featured tile; the rest fill an even grid (3 or fewer across, 4 as 2 × 2).
+function featureCard(c) {
+  return `<article class="card feature-card ${state.sel.has(c.id) ? 'is-added' : ''}">
+    <div class="fc-main">
+      <span class="pill open fc-flag">Next deadline · enroll by ${short(c.deadline)}</span>
+      <h3>${esc(c.name)}</h3>
+      ${tagsHTML(c)}
+      <p class="blurb">${esc(c.blurb)}</p>
+    </div>
+    <div class="fc-side">
+      ${priceBand(c)}
+      ${detailRows(c)}
+      <div class="card-actions">
+        <button type="button" class="btn" data-act="detail" data-id="${c.id}">Details</button>
+        ${addBtn(c)}
+      </div>
+    </div>
+  </article>`;
+}
+function seasonalGrid() {
+  const [first, ...rest] = openSeasonal();
+  if (!first) return `<p class="hint">No Seasonal campaigns are open right now. Check back soon.</p>`;
+  return `${featureCard(first)}${rest.length ? `<div class="grid scroll-row" style="margin-top:16px" tabindex="0" aria-label="More Seasonal campaigns">${rest.map(c => card(c)).join('')}</div>` : ''}`;
+}
+function sums() {
+  let monthly = 0, once = 0;
+  state.sel.forEach(id => { const c = byId(id); if (c.type === 'always') monthly += c.price; else once += c.price; });
+  return { monthly, once };
+}
+
+// ---------- Layouts ----------
+function layoutA() {
+  const next = openSeasonal()[0];
+  return `
+  <div class="hero"><div class="wrap">
+    <div>
+      <div class="hero-kicker">Bobcat dealer marketing programs</div>
+      <h1 style="margin-top:8px">Your marketing, handled. Enroll in minutes.</h1>
+      <p class="lead">Choose year-round programs or limited-time seasonal pushes. We build, launch and report on everything.</p>
+    </div>
+    ${next ? `<div class="deadline-box">
+      <div class="eyebrow">Next enrollment deadline</div>
+      <div class="timer num" id="timer" data-end="${endOf(next.deadline).getTime()}" role="timer" aria-live="off">${timerHTML(endOf(next.deadline) - Date.now())}</div>
+      <div><b>${esc(next.name)}</b> · enroll by ${short(next.deadline)} at 11:59 PM ${tzName(next.deadline)}</div>
+      <div style="display:flex;gap:8px;margin-top:4px">${addBtn(next, '', 'Enroll now')}<button type="button" class="btn" data-act="detail" data-id="${next.id}">Details</button></div>
+    </div>` : `<div class="deadline-box"><div class="eyebrow">Seasonal enrollment</div><b>No open deadlines right now.</b><p class="hint">Always-On campaigns can start any time.</p></div>`}
+  </div></div>
+
+  <div class="how"><div class="wrap">
+    <div class="how-title">How it works</div>
+    <ol class="how-steps">
+      <li><b>Pick your campaigns</b><span>Click Enroll now on any Always-On or Seasonal campaign. Add as many as you like.</span></li>
+      <li><b>Choose your locations</b><span>At checkout, find your dealership and pick which stores run each campaign.</span></li>
+      <li><b>We customize it</b><span>Every campaign is built for your market: your stores, your local keywords, and creative that fits your region and season.</span></li>
+      <li><b>Launch and track</b><span>We launch your campaigns, and you track calls, leads and results anytime on a live dashboard.</span></li>
+    </ol>
+  </div></div>
+
+  <section id="always-on"><div class="wrap">
+    <div class="section-head"><div><div class="eyebrow">Monthly per location</div><h2>Always-On campaigns</h2></div><p>Start any time. <b style="color:var(--ink)">Every campaign is 75% co-op eligible.</b></p></div>
+    <div class="grid ${always().length % 3 === 0 ? 'three' : 'two'}">${always().map(c => card(c)).join('')}</div>
+    <p class="swipe-hint">Swipe to see all ${always().length} campaigns →</p>
+  </div></section>
+
+  <section id="seasonal" style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+    <div class="section-head"><div><div class="eyebrow">One-time per location</div><h2>Seasonal campaigns</h2></div><p>Sorted by deadline. <b style="color:var(--ink)">Every campaign is 75% co-op eligible.</b></p></div>
+    ${seasonalGrid()}
+  </div></section>
+
+  <section><div class="wrap">
+    <div class="section-head"><div><div class="eyebrow">Case studies</div><h2>Results from dealers like you</h2></div></div>
+    ${resultsStrip()}
+  </div></section>
+
+  <section class="closer"><div class="wrap">
+    <div>
+      <div class="hero-kicker">Ready when you are</div>
+      <h2 class="closer-title">Get your campaigns live this season.</h2>
+      <p class="lead">Pick your campaigns, choose your locations, and we'll take it from there.${next ? ` The next enrollment deadline is <b>${short(next.deadline)}</b> for ${esc(next.name)}.` : ''}</p>
+    </div>
+    <div class="closer-actions">
+      <button type="button" class="btn primary" data-act="jump" data-id="always-on">Browse Always-On campaigns</button>
+      <button type="button" class="btn" data-act="jump" data-id="seasonal">See Seasonal deadlines</button>
+      <span class="hint">Questions? <b class="help-email">bobcat@flint-group.com</b></span>
+    </div>
+  </div></section>
+
+  <footer class="site-foot"><div class="wrap">
+    <div class="foot-brand"><img class="logo" src="${LOGO_SRC}" alt=""><span class="wordmark">FLINT DIRECT</span><span class="foot-partner"><b>Bobcat</b> partner</span></div>
+    <div class="foot-links"><span>bobcat@flint-group.com</span><a href="${PRIVACY_URL}" target="_blank" rel="noopener" style="color:inherit">Privacy Policy</a><span>© ${new Date().getFullYear()} Flint Direct</span></div>
+    <p class="foot-note">Prices are per location. Co-op reimbursement depends on your available Bobcat co-op funds and claim approval. Results shown are from heavy-equipment dealer programs and are not a guarantee of future performance.</p>
+  </div></footer>`;
+}
+
+function sidebar() {
+  const { monthly, once } = sums();
+  const items = [...state.sel].map(byId);
+  return `<aside class="side">
+    <div class="panel">
+      <div class="eyebrow">Your selections</div>
+      ${items.length ? `<ul class="sel-list">${items.map(c => `<li><span>${esc(c.name)}</span><span class="num">${money(c.price)}${c.type === 'always' ? '/mo' : ''} <button type="button" data-act="toggle" data-id="${c.id}" aria-label="Remove ${esc(c.name)}">✕</button></span></li>`).join('')}</ul>
+        <div class="totals">
+          <div><span>Monthly</span><b class="num">${money(monthly)} / location</b></div>
+          <div><span>One-time</span><b class="num">${money(once)} / location</b></div>
+        </div>
+        <p class="hint">You'll pick locations next. Totals multiply by the number of locations.</p>
+        <button type="button" class="btn primary" data-act="enroll">Choose locations &amp; enroll</button>`
+      : `<p class="empty">Nothing selected yet. Add campaigns from the list and they'll collect here.</p>`}
+    </div>
+    <div class="panel">
+      <div class="eyebrow">Dealers like you</div>
+      ${Object.entries(CASES).map(([id, cs]) => `<button type="button" class="link" style="text-align:left;text-decoration:none" data-act="case" data-id="${id}"><b class="num" style="font-family:var(--display);font-size:1.4rem;color:var(--accent)">${cs.big}</b> <span style="color:var(--ink)">${esc(cs.unit)}</span><br><span class="hint">${esc(cs.channel)} · ${esc(cs.profile)}</span></button>`).join('')}
+      <p class="sample-tag">Sample figures for layout only.</p>
+    </div>
+  </aside>`;
+}
+
+function layoutB() {
+  const f = state.filterB;
+  const groups = [];
+  if (f !== 'seasonal') groups.push(['Always-On', 'Monthly per location · start any time', always()]);
+  if (f !== 'always') groups.push(['Seasonal', 'One-time per location · strict enroll-by dates', seasonal()]);
+  return `<div class="wrap"><div class="cat">
+    <div>
+      <div class="cat-intro">
+        <div class="eyebrow">Bobcat dealer marketing programs</div>
+        <h1>Campaign catalog</h1>
+        <p>Add the campaigns you want, then choose which locations to enroll. Our team handles setup.</p>
+        <div class="tabs" role="tablist" style="align-self:start;margin-top:8px">
+          ${[['all', 'All'], ['always', 'Always-On'], ['seasonal', 'Seasonal']].map(([k, l]) => `<button type="button" role="tab" data-act="filterB" data-id="${k}" aria-selected="${f === k}">${l}</button>`).join('')}
+        </div>
+      </div>
+      ${groups.map(([name, sub, list]) => `
+        <div class="group-label"><h2>${name}</h2><span class="hint">${sub}</span></div>
+        <div class="grid">${list.map(c => card(c, { proof: true })).join('')}</div>`).join('')}
+    </div>
+    ${sidebar()}
+  </div></div>`;
+}
+
+function layoutC() {
+  const startM = new Date('2026-06-01T00:00:00'), endM = new Date('2027-06-01T00:00:00');
+  const pct = s => ((d(s) - startM) / (endM - startM) * 100).toFixed(2) + '%';
+  const months = [];
+  for (let i = 0; i < 12; i++) { const m = (5 + i) % 12; months.push(MONTHS[m] + (m === 0 || i === 0 ? ' ' + (i < 7 ? '2026' : '2027').slice(2) : '')); }
+  const todayPct = ((TODAY - startM) / (endM - startM) * 100).toFixed(2) + '%';
+  return `
+  <div class="hero"><div class="wrap" style="grid-template-columns:1fr">
+    <div>
+      <div class="eyebrow">Bobcat dealer marketing programs</div>
+      <h1 style="margin-top:8px">Plan your marketing year</h1>
+      <p class="lead">Keep the always-on basics running, then add seasonal pushes before each deadline.</p>
+    </div>
+  </div></div>
+
+  <section><div class="wrap">
+    <div class="section-head"><div><div class="eyebrow">Always-On · monthly per location</div><h2>Year-round programs</h2></div></div>
+    <div class="menu">${always().map(c => card(c, { proof: true })).join('')}</div>
+  </div></section>
+
+  <section style="padding-top:0"><div class="wrap">
+    <div class="section-head"><div><div class="eyebrow">Seasonal · one-time per location</div><h2>Season calendar</h2></div><p>Click a bar for details. Diamonds mark the enroll-by date.</p></div>
+    <div class="c-split">
+      <div class="cal"><div class="cal-inner">
+        <div class="cal-months"><span></span>${months.map(m => `<span>${m}</span>`).join('')}</div>
+        ${seasonal().map(c => {
+          const st = status(c);
+          return `<div class="cal-row">
+            <div class="cal-name"><b>${esc(c.name)}</b><span class="hint num">${money(c.price)} / location</span><span>${st === 'always' ? '' : `<span class="pill ${st}" style="font-size:.7rem">${STATUS_LABEL[st]}</span>`}</span></div>
+            <div class="cal-track">
+              <button type="button" class="cal-bar ${st === 'closed' ? 'closed' : ''} ${state.sel.has(c.id) ? 'added' : ''}" style="left:${pct(c.start)};width:calc(${pct(c.end)} - ${pct(c.start)})" data-act="detail" data-id="${c.id}">${short(c.start)} – ${short(c.end)}${state.sel.has(c.id) ? ' · Added ✓' : ''}</button>
+              <span class="cal-dl" style="left:${pct(c.deadline)}" title="Enroll by ${short(c.deadline)}"></span>
+              <span class="cal-today" style="left:${todayPct}"></span>
+            </div>
+          </div>`;
+        }).join('')}
+        <div class="cal-legend"><span><i class="key-dl"></i> Enroll-by date</span><span><i class="key-today"></i> Today</span></div>
+      </div></div>
+      <div class="stack">
+        <div class="panel">
+          <div class="eyebrow">Upcoming deadlines</div>
+          ${openSeasonal().map(c => `<div style="display:flex;justify-content:space-between;gap:8px;align-items:center">
+            <div><b>${esc(c.name)}</b><br><span class="hint">Enroll by ${short(c.deadline)} · ${daysTo(c.deadline)} days</span></div>${addBtn(c)}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+  </div></section>
+
+  <section style="background:var(--surface);border-block:1px solid var(--line)"><div class="wrap">
+    <div class="section-head"><div><div class="eyebrow">Case studies</div><h2>Results from dealers like you</h2></div></div>
+    ${resultsStrip()}
+  </div></section>`;
+}
+
+// ---------- Tray ----------
+// The bar expands to pick the dealership once, then which locations run each campaign.
+const enr = { q: '', dealer: null, manual: false, manualName: '', manualLocs: [{ city: '', st: '' }], campLocs: {}, err: '' };
+function allLocs() {
+  if (enr.manual) return enr.manualLocs.filter(l => l.city.trim()).map(l => `${l.city.trim()}${l.st.trim() ? ', ' + l.st.trim().toUpperCase() : ''}`);
+  return enr.dealer ? enr.dealer.locs : [];
+}
+function dealerName() { return enr.manual ? enr.manualName.trim() : enr.dealer && enr.dealer.name; }
+const hasDealer = () => !!dealerName() && allLocs().length > 0;
+function ensureLocs(reset = false) {
+  state.sel.forEach(id => { if (reset || !enr.campLocs[id]) enr.campLocs[id] = new Set(allLocs()); });
+}
+const locsFor = id => allLocs().filter(l => enr.campLocs[id] && enr.campLocs[id].has(l));
+function lines() {
+  return [...state.sel].map(byId).map(c => { const locs = locsFor(c.id); return { c, locs, n: locs.length, total: c.price * locs.length }; });
+}
+function totals() {
+  const L = lines();
+  return { mo: L.filter(x => x.c.type === 'always').reduce((s, x) => s + x.total, 0), one: L.filter(x => x.c.type !== 'always').reduce((s, x) => s + x.total, 0) };
+}
+const usedLocs = () => [...new Set(lines().flatMap(x => x.locs))];
+// Privacy: no dealer names show until 3+ characters are typed, and only names that START with what was typed
+// (so a common word like "Equipment" never lists other dealers).
+const MIN_CHARS = 3, MAX_RESULTS = 5;
+function dealerMatches(raw) {
+  const q = raw.trim().toLowerCase();
+  if (q.length < MIN_CHARS) return null;
+  return DEALERS.filter(x => x.name.toLowerCase().startsWith(q)).slice(0, MAX_RESULTS);
+}
+function dealerOpts(hits) {
+  if (!hits) return '';
+  if (!hits.length) return `<div class="opt-empty">No dealership found. Check the spelling, or choose "My dealership isn't listed" below.</div>`;
+  return hits.map(x => `<button type="button" data-act="pickdealer" data-name="${esc(x.name)}"><span>${esc(x.name)}</span><small>${x.locs.length} location${x.locs.length > 1 ? 's' : ''}</small></button>`).join('');
+}
+function dealerBlock() {
+  if (enr.dealer) return `<div class="tray-dealer"><span class="eyebrow">Dealership</span><b style="font-size:1.1rem">${esc(enr.dealer.name)}</b><span class="hint">${enr.dealer.locs.length} location${enr.dealer.locs.length > 1 ? 's' : ''}</span><button type="button" class="link" data-act="changedealer">Change</button></div>`;
+  if (enr.manual) return `<div class="tray-dealer" style="align-items:flex-start">
+      <div class="field"><label for="manual-name">Dealership name</label><input id="manual-name" value="${esc(enr.manualName)}" placeholder="Valley Equipment"></div>
+      <div class="manual-locs"><label style="font-weight:600;font-size:.9rem">Locations (city, state)</label>
+        ${enr.manualLocs.map((l, i) => `<div class="row2"><input aria-label="City ${i + 1}" data-loc="${i}" data-k="city" value="${esc(l.city)}" placeholder="City" class="field-input"><input aria-label="State ${i + 1}" data-loc="${i}" data-k="st" value="${esc(l.st)}" maxlength="2" placeholder="ST" class="field-input"></div>`).join('')}
+        <button type="button" class="link" data-act="addloc" style="align-self:start">+ Add another location</button></div>
+      <button type="button" class="link" data-act="changedealer" style="margin-top:28px">Search the list instead</button></div>`;
+  const hits = dealerMatches(enr.q);
+  return `<div class="tray-dealer" style="flex-direction:column;align-items:stretch">
+      <div class="field"><label for="dealer-q">Find your dealership</label><input id="dealer-q" type="search" placeholder="Type at least 3 letters of your dealership name" value="${esc(enr.q)}" autocomplete="off"></div>
+      <div class="options" id="dealer-opts" ${hits ? '' : 'hidden'}>${dealerOpts(hits)}</div>
+      <button type="button" class="link" data-act="manual" style="align-self:start">My dealership isn't listed</button>
+      ${isSketch() ? `<p class="hint">Sample dealers. Try Smith Equipment with Paid Social at Dayton to see the duplicate flag.</p>` : ''}</div>`;
+}
+function trayRow(c) {
+  const locs = locsFor(c.id), all = allLocs();
+  const chips = hasDealer()
+    ? `<div class="loc-chips">${all.map(l => `<label class="loc-chip"><input type="checkbox" data-cl="${c.id}" data-l="${esc(l)}" ${locs.includes(l) ? 'checked' : ''}>${esc(l)}</label>`).join('')}</div>`
+    : `<span class="hint">Pick your dealership to choose locations</span>`;
+  const total = hasDealer() ? `${money(c.price * locs.length)}${c.type === 'always' ? '/mo' : ''}` : `${money(c.price)}${c.type === 'always' ? '/mo' : ''} / location`;
+  return `<div class="tray-row">
+    <div class="name"><b>${esc(c.name)}</b><span class="hint">${c.type === 'always' ? 'Monthly' : 'One-time'}${c.min ? ` · ${c.min}-month minimum` : ''}</span></div>
+    ${chips}
+    <div class="line-total num">${total}</div>
+    <button type="button" class="remove" data-act="toggle" data-id="${c.id}" aria-label="Remove ${esc(c.name)}">✕</button>
+  </div>`;
+}
+function renderTray() {
+  const tray = $('#tray');
+  if (!state.sel.size || state.modal) { tray.hidden = true; return; }
+  tray.hidden = false;
+  const { monthly, once } = sums(), t = totals(), known = hasDealer();
+  const parts = known
+    ? [t.mo && `<span>Monthly <b class="num">${money(t.mo)}/mo</b></span>`, t.one && `<span>One-time <b class="num">${money(t.one)}</b></span>`]
+    : [monthly && `<span>Monthly <b class="num">${money(monthly)}</b> / location</span>`, once && `<span>One-time <b class="num">${money(once)}</b> / location</span>`];
+  const sumsHTML = parts.filter(Boolean).join('');
+  tray.innerHTML = `${state.trayOpen ? `<div class="tray-panel"><div class="wrap tray-panel-inner">
+      <div class="tray-panel-head"><h3 class="co-h">Choose your locations</h3><button type="button" class="remove" data-act="traytoggle" aria-label="Close locations panel">✕</button></div>
+      ${dealerBlock()}
+      ${[...state.sel].map(byId).map(trayRow).join('')}
+      ${enr.err ? `<p class="err" role="alert">${esc(enr.err)}</p>` : ''}
+    </div></div>` : ''}
+    <div class="wrap tray-bar">
+      <span class="count">${state.sel.size} campaign${state.sel.size > 1 ? 's' : ''} selected</span>
+      <span class="sums">${sumsHTML}</span>
+      <span class="tray-actions">
+        <button type="button" class="btn primary" data-act="continue"><span class="t-long">Choose locations &amp; enroll</span><span class="t-short">Enroll</span></button>
+      </span>
+    </div>`;
+}
+function trayError() {
+  if (!dealerName()) return 'Find your dealership first, or choose "My dealership isn\'t listed".';
+  if (!allLocs().length) return 'Add at least one location for your dealership.';
+  const empty = lines().filter(x => !x.n).map(x => x.c.name);
+  if (empty.length) return `Choose at least one location for ${empty.join(', ')}, or remove it.`;
+  return '';
+}
+
+// ---------- Drawer ----------
+function renderDrawer() {
+  const root = $('#drawer-root');
+  if (!state.drawer) { root.innerHTML = ''; return; }
+  const { kind, id } = state.drawer;
+  if (kind === 'case') {
+    const cs = CASES[id];
+    const linked = CAMPAIGNS.filter(c => c.cs === id);
+    // Same centered window style as the campaign details, sized down for a single result.
+    root.innerHTML = `<div class="dmodal"><div class="scrim" style="z-index:0" data-act="close"></div>
+    <div class="dmodal-card cs-card" role="dialog" aria-label="Case study: ${esc(cs.label)}">
+      <button type="button" class="close" data-act="close" aria-label="Close">✕</button>
+      <div class="dm-head">
+        <div class="eyebrow">Case study · ${esc(cs.profile)}</div>
+        <div class="result-chips">${cs.chips.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>
+      </div>
+      <div class="cs-body">
+        <div class="cs-hero"><span class="featured-big num">${cs.big}</span> <span class="featured-unit">${esc(cs.label)}</span></div>
+        <p class="dm-lead">${esc(cs.context)}</p>
+        <div class="featured-stats">${cs.stats.map(([v, l]) => `<div><b class="num">${v}</b><span>${esc(l)}</span></div>`).join('')}</div>
+        <div class="dsec"><h4>What we ran</h4><p>${esc(cs.focus)}</p></div>
+        ${cs.quote ? `<blockquote class="cs-quote">${esc(cs.quote)}</blockquote>` : ''}
+        ${linked.length ? `<div class="cs-cta"><span class="hint">Run a similar campaign</span>${linked.map(c => `<button type="button" class="btn" data-act="detail" data-id="${c.id}">${esc(c.name)} details</button>${addBtn(c)}`).join('')}</div>` : ''}
+      </div>
+    </div></div>`;
+    return;
+  }
+  const c = byId(id), cs = c.cs && CASES[c.cs];
+  const cancel = c.type === 'always'
+    ? (c.min ? `${c.min}-month minimum, then cancel anytime` : 'Cancel anytime')
+    : `Free until launch on ${short(c.start)}`;
+  // Already open for this campaign (e.g. after "Enroll now"): swap only the button so the animation keeps playing
+  const open = root.querySelector(`.dmodal-card[data-cid="${c.id}"] .dm-cta`);
+  if (open) { open.outerHTML = addBtn(c, 'dm-cta'); return; }
+  root.innerHTML = `<div class="dmodal"><div class="scrim" style="z-index:0" data-act="close"></div>
+  <div class="dmodal-card" role="dialog" aria-label="${esc(c.name)} details" data-cid="${c.id}">
+    <button type="button" class="close" data-act="close" aria-label="Close">✕</button>
+    <div class="dm-head">
+      <div class="eyebrow">${c.type === 'always' ? 'Always-On campaign' : 'Seasonal campaign'}</div>
+      <h2 class="dm-title">${esc(c.name)}</h2>
+      ${tagsHTML(c)}
+      <p class="dm-lead">${esc(c.blurb)}</p>
+    </div>
+    <div class="dm-body">
+      <div class="dm-main">
+        ${c.demo
+          ? `<iframe class="dm-demo" allow="fullscreen" allowfullscreen src="demos/${c.demo}${demoParams(c)}" title="${esc(c.name)}: see it in action" loading="lazy"></iframe>`
+          : `<div class="demo dm-video">Video goes here: how this campaign shows up and brings in leads.<br>Interactive demo planned for version 2.</div>`}
+        <div class="dm-two">
+          <div class="dsec"><h4>What it is</h4><p>${esc(c.what)}</p></div>
+          <div class="dsec"><h4>What's included</h4><ul>${c.included.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div>
+        </div>
+      </div>
+      <aside class="dm-side">
+        ${priceBand(c)}
+        <div class="coop-math"><span>Est. after ${Math.round(COOP * 100)}% co-op</span><span class="num">${money(Math.round(c.price * (1 - COOP)))}${c.type === 'always' ? '/mo' : ''}</span></div>
+        <p class="hint">Per location. Co-op reimbursement depends on your available Bobcat co-op funds and claim approval. We'll help you file.</p>
+        <dl class="rows">
+          ${c.type === 'always'
+            ? `<dt>Goal</dt><dd>${GOALS[c.id] || ''}</dd>`
+            : `<dt>Goal</dt><dd>${GOALS[c.id] || ''}</dd><dt>Timeframe</dt><dd>${short(c.start)} – ${short(c.end)}</dd><dt>Enrollment deadline</dt><dd>${short(c.deadline)}</dd>`}
+          <dt>${c.type === 'always' ? 'Commitment' : 'Cancel'}</dt><dd>${cancel}</dd>
+        </dl>
+        ${addBtn(c, 'dm-cta')}
+        ${c.faq.length ? `<div class="dm-faq">${c.faq.map(([q, a]) => `<details><summary>${esc(q)}</summary><p>${esc(a)}</p></details>`).join('')}</div>` : ''}
+      </aside>
+    </div>
+  </div></div>`;
+  fitDemo();
+}
+
+// Campaign animation fills the column width, shrinking (still 16:9) only as much as needed so the window doesn't scroll
+function fitDemo() {
+  const f = document.querySelector('.dm-demo');
+  if (!f) return;
+  const body = f.closest('.dm-body');
+  f.style.width = '100%';
+  if (matchMedia('(max-width: 640px)').matches) return; // phones scroll the full-screen page, so the demo stays full width
+  // (No longer shrinks the demo to avoid scrolling: a narrower demo left empty space beside it.)
+}
+addEventListener('resize', fitDemo);
+
+// ---------- Enrollment modal ----------
+// One checkout screen: your info on the left, order summary + pricing acknowledgment on the right.
+const STEPS = [['checkout', 'Checkout']];
+function openModal() {
+  state.drawer = null;
+  // Reuse what the dealer already typed if they stepped back to edit selections.
+  const prev = state.draft || { contact: { first: '', last: '', title: '', email: '', phone: '' }, notes: '' };
+  state.modal = { step: 'checkout', contact: prev.contact, notes: prev.notes, ack: false, err: '' };
+  render();
+}
+const locList = locs => locs.map(esc).join('; ');
+function ackItems() {
+  return lines().map(({ c, n, total }) => {
+    if (c.type === 'always') return `${c.name} bills ${money(c.price)} per location each month (${n} location${n > 1 ? 's' : ''} = ${money(total)}/month)${c.min ? `, with a ${c.min}-month minimum` : ', cancel any time'}.`;
+    if (status(c) === 'pre') return `${c.name} is a one-time charge of ${money(total)}. I can cancel free of charge before it launches on ${short(c.start)}.`;
+    return `${c.name} is a one-time charge of ${money(total)}.`;
+  });
+}
+function flagsFor() {
+  const out = [], name = dealerName(), locs = usedLocs();
+  if (enr.manual) out.push(['new', 'New dealer · not on list']);
+  const dup = RECORD.filter(r => r.dealer === name && state.sel.has(r.campaign) && locsFor(r.campaign).includes(r.loc));
+  dup.forEach(r => out.push(['dup', `Possible duplicate · ${r.loc} already in ${byId(r.campaign).name}`]));
+  const other = RECORD.filter(r => r.dealer === name && !locs.includes(r.loc));
+  other.forEach(r => out.push(['other', `Other location enrolled · ${r.loc} in ${byId(r.campaign).name}`]));
+  [...state.sel].map(byId).filter(c => status(c) === 'pre').forEach(c => out.push(['pre', `Pre-enroll · ${c.name} launches ${short(c.start)}`]));
+  return out;
+}
+function infoForm() {
+  const m = state.modal, c = m.contact;
+  const f = (k, label, type = 'text', ph = '') => `<div class="field"><label for="c-${k}">${label}</label><input id="c-${k}" type="${type}" data-c="${k}" value="${esc(c[k])}" placeholder="${ph}" autocomplete="${{ first: 'given-name', last: 'family-name', title: 'organization-title', email: 'email', phone: 'tel' }[k]}"></div>`;
+  return `<div class="co-form">
+    <div class="row2">${f('first', 'First name')}${f('last', 'Last name')}</div>
+    ${f('title', 'Title', 'text', 'GM, Marketing Manager, Owner')}
+    <div class="row2">${f('email', 'Email', 'email', 'name@dealership.com')}${f('phone', 'Phone', 'tel')}</div>
+    <div class="field"><label for="c-notes">Anything we should know? (optional)</label><textarea id="c-notes" rows="3" placeholder="Current offers, timing, questions">${esc(m.notes)}</textarea></div>
+  </div>`;
+}
+function orderSummary() {
+  const m = state.modal, L = lines(), { mo, one } = totals(), known = hasDealer();
+  if (!known) return `<aside class="co-summary">
+    <div class="co-sum-head"><h3 class="co-h">Order summary</h3><button type="button" class="link" data-act="mclose">Add more campaigns</button></div>
+    <ul class="co-lines">${L.map(({ c }) => `<li><div class="co-line-top"><b>${esc(c.name)}</b><span class="num">${money(c.price)}${c.type === 'always' ? '/mo' : ''}</span></div><div class="hint">per location</div></li>`).join('')}</ul>
+    <p class="hint">Find your dealership to see your totals.</p>
+    ${m.err ? `<p class="err" role="alert">${esc(m.err)}</p>` : ''}
+    <button type="button" class="btn primary co-submit" data-act="next">Submit enrollment</button>
+    ${privacyNote()}
+  </aside>`;
+  return `<aside class="co-summary">
+    <div class="co-sum-head"><h3 class="co-h">Order summary</h3><button type="button" class="link" data-act="mclose">Add more campaigns</button></div>
+    <div class="co-dealer">${esc(dealerName())}</div>
+    <ul class="co-lines">${L.map(({ c, locs, total }) => `<li>
+      <div class="co-line-top"><b>${esc(c.name)}</b><span class="num">${money(total)}${c.type === 'always' ? '/mo' : ''}</span></div>
+      <div class="hint">${locs.length ? `${locs.length} location${locs.length > 1 ? 's' : ''}: ${locList(locs)}` : 'No locations selected'}</div>
+      <div class="hint">${c.type === 'always' ? `Monthly · ${c.min ? `${c.min}-month minimum` : 'cancel anytime'}` : `One-time · launches ${short(c.start)}, cancel free until then`}</div>
+    </li>`).join('')}</ul>
+    <div class="co-totals">
+      ${mo ? `<div><span>Monthly total</span><b class="num">${money(mo)}/mo</b></div>` : ''}
+      ${one ? `<div><span>One-time total</span><b class="num">${money(one)}</b></div>` : ''}
+      <div class="co-coop"><span>Est. after 75% co-op</span><span class="num">${[mo && `${money(Math.round(mo * (1 - COOP)))}/mo`, one && money(Math.round(one * (1 - COOP)))].filter(Boolean).join(' + ')}</span></div>
+    </div>
+    <label class="ack"><input id="ack" type="checkbox" ${m.ack ? 'checked' : ''}><span><b>I understand the pricing for my selections</b><ul>${ackItems().map(t => `<li>${esc(t)}</li>`).join('')}</ul></span></label>
+    ${m.err ? `<p class="err" role="alert">${esc(m.err)}</p>` : ''}
+    <button type="button" class="btn primary co-submit" data-act="next">Submit enrollment</button>
+    ${privacyNote()}
+  </aside>`;
+}
+// Phone only: a slim, tappable total under the checkout top bar (the full summary sits at the bottom of the page)
+function miniSummary() {
+  const L = lines(), known = hasDealer(), { mo, one } = totals(), s = sums();
+  const amount = known
+    ? [mo && `${money(mo)}/mo`, one && money(one)].filter(Boolean).join(' + ')
+    : [s.monthly && `${money(s.monthly)}/mo`, s.once && money(s.once)].filter(Boolean).join(' + ') + ' per location';
+  return `<div class="co-mini">
+    <button type="button" class="co-mini-bar" data-act="minisum" aria-expanded="${!!state.miniOpen}">
+      <span><b>${L.length} campaign${L.length > 1 ? 's' : ''}</b> · <span class="num">${amount}</span></span><span aria-hidden="true">${state.miniOpen ? '▲' : '▼'}</span>
+    </button>
+    ${state.miniOpen ? `<ul class="co-mini-list">${L.map(({ c, n, total }) => `<li><span>${esc(c.name)}${known ? ` · ${n} location${n === 1 ? '' : 's'}` : ''}</span><span class="num">${money(known ? total : c.price)}${c.type === 'always' ? '/mo' : ''}</span></li>`).join('')}</ul>` : ''}
+  </div>`;
+}
+function refreshEnroll() { if (state.modal) { state.modal.err = ''; renderModal(); } else renderTray(); }
+function validate() {
+  const m = state.modal, c = m.contact;
+  const locErr = trayError();
+  if (locErr) return locErr;
+  if (!c.first.trim() || !c.last.trim() || !c.title.trim() || !c.email.trim() || !c.phone.trim()) return 'Fill in your name, title, email and phone.';
+  if (!/^\S+@\S+\.\S+$/.test(c.email.trim())) return 'Check the email address. It should look like name@dealership.com.';
+  if (!m.ack) return 'Tick the box to confirm you understand the pricing.';
+  return '';
+}
+function thanksView() {
+  const m = state.modal, c = m.contact, names = lines().map(x => x.c.name);
+  return `<div class="modal-body thanks">
+    <div class="thanks-check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+    <h2>Thanks${c.first.trim() ? ', ' + esc(c.first.trim()) : ''}! You're enrolled.</h2>
+    <p>${esc(dealerName())} is signed up for ${esc(names.join(', ').replace(/, ([^,]*)$/, ' and $1'))}.</p>
+    <p>We've sent a confirmation and a short checklist to <b>${esc(c.email)}</b>. Our team will reach out shortly to kick things off.</p>
+    <p class="hint">Questions? Email <b class="help-email">bobcat@flint-group.com</b></p>
+  </div>`;
+}
+function renderModal() {
+  const root = $('#modal-root'), m = state.modal;
+  if (!m) { root.innerHTML = ''; return; }
+  if (m.step === 'done') {
+    root.innerHTML = `<div class="modal"><div class="scrim" style="z-index:0"></div><div class="modal-card thanks-card" role="dialog" aria-label="Enrollment submitted">
+      ${thanksView()}
+      <div class="modal-foot"><button type="button" class="btn primary" data-act="finish">Back to campaigns</button></div></div></div>`;
+    return;
+  }
+  // Full checkout page: keep the dealer's scroll position across re-renders (ticking a location, picking a dealer).
+  const prevScroll = root.querySelector('.checkout-page')?.scrollTop || 0;
+  root.innerHTML = `<div class="checkout-page" role="dialog" aria-label="Checkout">
+    <div class="co-topbar"><div class="wrap">
+      <button type="button" class="link" data-act="mclose">← Back to campaigns</button>
+      <span class="brand"><img class="logo" src="${LOGO_SRC}" alt=""><span class="wordmark">FLINT DIRECT</span></span>
+    </div></div>
+    ${miniSummary()}
+    <div class="wrap co-page">
+      <div class="co-main">
+        <div><div class="eyebrow">Almost done</div><h2 class="co-title">Finish your enrollment</h2></div>
+        <section class="co-step"><h3 class="co-h"><span class="co-num">1</span>Your dealership</h3>${dealerBlock()}</section>
+        <section class="co-step"><h3 class="co-h"><span class="co-num">2</span>Locations for each campaign</h3>
+          <p class="hint">All locations start selected. Untick any store that shouldn't run a campaign.</p>
+          ${[...state.sel].map(byId).map(trayRow).join('')}
+        </section>
+        <section class="co-step"><h3 class="co-h"><span class="co-num">3</span>Your info</h3>${infoForm()}</section>
+      </div>
+      ${orderSummary()}
+    </div>
+    <div class="co-sticky">
+      ${m.err ? `<p class="err" role="alert">${esc(m.err)}</p>` : ''}
+      <button type="button" class="btn primary" data-act="next">Submit enrollment</button>
+      ${privacyNote()}
+    </div>
+  </div>`;
+  root.querySelector('.checkout-page').scrollTop = prevScroll;
+  if (m.sending) root.querySelectorAll('[data-act="next"]').forEach(b => { b.disabled = true; b.textContent = 'Sending…'; });
+}
+
+// ---------- Zapier ----------
+// Each enrollment posts to a Zapier Catch Hook as flat form fields, plus ready-to-send email text.
+const ZAPIER_HOOK = 'https://hooks.zapier.com/hooks/catch/18144812/45bbnbv/';
+function enrollmentPayload() {
+  const m = state.modal, c = m.contact, L = lines(), { mo, one } = totals();
+  const keep = a => a.filter(v => v !== null).join('\n');
+  const coop = [mo ? `${money(Math.round(mo * (1 - COOP)))}/mo` : null, one ? money(Math.round(one * (1 - COOP))) : null].filter(Boolean).join(' + ');
+  const campaigns = L.map(({ c: k, locs, total }) => `${k.name}: ${money(total)}${k.type === 'always' ? '/mo' : ' one-time'}${k.min ? ` (${k.min}-month minimum)` : ''}${k.type !== 'always' ? `, launches ${short(k.start)}` : ''}\n  Locations: ${locs.join('; ')}`).join('\n');
+  const totalsText = keep([mo ? `Monthly total: ${money(mo)}/mo` : null, one ? `One-time total: ${money(one)}` : null, `Est. after ${Math.round(COOP * 100)}% co-op: ${coop}`]);
+  const flags = flagsFor().map(f => f[1]).join('\n');
+  // One combined list across all campaigns, each item once (e.g. High-res logo)
+  const checklist = [...new Set(L.flatMap(({ c: k }) => checklistFor(k)))].map(x => `- ${x}`).join('\n');
+  const locsText = usedLocs().join('; ');
+  const notes = m.notes.trim();
+  const leadBody = keep([flags ? `FLAGS\n${flags}\n` : null, `Dealer: ${dealerName()}`, `Locations: ${locsText}`, '', `Contact: ${c.first} ${c.last}`, `Title: ${c.title}`, `Email: ${c.email}`, `Phone: ${c.phone}`, '', 'Campaigns', campaigns, '', totalsText, notes ? `\nNotes: ${notes}` : null]);
+  const confirmBody = keep([`Hi ${c.first},`, '', `Thanks for enrolling ${dealerName()} (${locsText}). Here's what you signed up for:`, '', campaigns, '', totalsText, '', 'Your checklist', 'Send us these so we can get each campaign live:', '', checklist, '', "We'll reach out to you shortly to kick things off. Questions? Just reply to this email.", '', 'The Flint Group team']);
+  return {
+    submitted_at: new Date().toISOString(),
+    dealer: dealerName(), dealer_on_list: enr.manual ? 'No' : 'Yes', locations: locsText,
+    first_name: c.first, last_name: c.last, title: c.title, email: c.email, phone: c.phone, notes,
+    campaigns: L.map(x => x.c.name).join(', '), campaign_details: campaigns,
+    monthly_total: mo ? money(mo) : '', one_time_total: one ? money(one) : '', coop_estimate: coop,
+    flags, checklist,
+    lead_email_subject: `NEW ENROLLMENT: ${dealerName()}`, lead_email_body: leadBody,
+    confirmation_email_subject: `You're enrolled: ${L.map(x => x.c.name).join(', ')}`, confirmation_email_body: confirmBody,
+    page: location.href
+  };
+}
+// Form-encoded and no-cors so the browser sends it without a preflight check.
+function sendEnrollment() {
+  return fetch(ZAPIER_HOOK, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(enrollmentPayload()) });
+}
+
+// ---------- Render ----------
+function render() {
+  document.querySelectorAll('[data-layout]').forEach(b => b.setAttribute('aria-pressed', b.dataset.layout === state.layout));
+  $('#view').innerHTML = state.layout === 'A' ? layoutA() : state.layout === 'B' ? layoutB() : layoutC();
+  renderTray(); renderDrawer(); renderModal();
+}
+// Seasonal trailers get price and dates in the URL so their end card matches the campaign.
+const demoParams = c => c.type !== 'seasonal' ? '' : '?' + new URLSearchParams({
+  price: c.price, coop: Math.round(c.price * (1 - COOP)), start: short(c.start), end: short(c.end), deadline: short(c.deadline) });
+function toast(t, ms = 2200) { const el = $('#toast'); el.textContent = t; el.hidden = false; clearTimeout(toast.t); toast.t = setTimeout(() => el.hidden = true, ms); }
+
+document.addEventListener('click', e => {
+  const lay = e.target.closest('[data-layout]');
+  if (lay) { state.layout = lay.dataset.layout; try { localStorage.setItem('hub-layout', state.layout); } catch (er) {} render(); return; }
+  const el = e.target.closest('[data-act]');
+  if (!el) return;
+  const { act, id } = el.dataset, m = state.modal;
+  if (act === 'toggle') {
+    const adding = !state.sel.has(id);
+    if (adding) state.sel.add(id); else { state.sel.delete(id); delete enr.campLocs[id]; }
+    if (!state.sel.size) { state.trayOpen = false; if (state.modal && state.modal.step !== 'done') state.modal = null; }
+    ensureLocs(); enr.err = ''; if (state.modal) state.modal.err = '';
+    render();
+    if (adding && !state.hinted) { state.hinted = true; toast('Added to your selections. Choose locations to finish enrolling.', 4000); }
+  }
+  else if (act === 'detail') { state.drawer = { kind: 'campaign', id }; render(); }
+  else if (act === 'case') { state.drawer = { kind: 'case', id }; render(); }
+  else if (act === 'close') { state.drawer = null; render(); }
+  else if (act === 'notify') toast('Sketch: this would collect an email for next season.');
+  else if (act === 'tabA') { state.tabA = id; render(); }
+  else if (act === 'filterB') { state.filterB = id; render(); }
+  else if (act === 'enroll') { if (state.sel.size) openModal(); }
+  else if (act === 'jump') { const t = document.getElementById(id); if (t) t.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }
+  else if (act === 'traytoggle') { state.trayOpen = !state.trayOpen; renderTray(); }
+  else if (act === 'continue') {
+    if (state.sel.size) openModal();
+  }
+  else if (act === 'minisum') { state.miniOpen = !state.miniOpen; renderModal(); }
+  else if (act === 'mclose') { if (m && m.step !== 'done') state.draft = { contact: m.contact, notes: m.notes }; state.modal = null; render(); }
+  else if (act === 'pickdealer') { enr.dealer = DEALERS.find(x => x.name === el.dataset.name); enr.manual = false; ensureLocs(true); refreshEnroll(); }
+  else if (act === 'manual') { enr.manual = true; enr.dealer = null; ensureLocs(true); refreshEnroll(); const f = $('#manual-name'); if (f) f.focus(); }
+  else if (act === 'changedealer') { enr.dealer = null; enr.manual = false; enr.q = ''; enr.campLocs = {}; refreshEnroll(); }
+  else if (act === 'addloc') { enr.manualLocs.push({ city: '', st: '' }); refreshEnroll(); }
+  else if (act === 'back') { m.err = ''; m.step = STEPS[STEPS.findIndex(s => s[0] === m.step) - 1][0]; renderModal(); }
+  else if (act === 'next') {
+    if (m.sending) return;
+    m.err = validate();
+    if (m.err) { renderModal(); return; }
+    m.sending = true; renderModal();
+    sendEnrollment()
+      .then(() => { m.sending = false; m.step = 'done'; renderModal(); })
+      .catch(() => { m.sending = false; m.err = "We couldn't send your enrollment. Check your connection and try again, or email bobcat@flint-group.com."; renderModal(); });
+  }
+  else if (act === 'finish') { state.modal = null; state.draft = null; state.sel.clear(); state.trayOpen = false; Object.assign(enr, { q: '', dealer: null, manual: false, manualName: '', manualLocs: [{ city: '', st: '' }], campLocs: {}, err: '' }); render(); toast('Enrollment sent.'); }
+});
+document.addEventListener('input', e => {
+  const t = e.target, m = state.modal;
+  if (t.id === 'dealer-q') { enr.q = t.value; const hits = dealerMatches(enr.q), box = $('#dealer-opts'); box.innerHTML = dealerOpts(hits); box.hidden = !hits; }
+  else if (t.id === 'manual-name') enr.manualName = t.value;
+  else if (t.dataset.loc !== undefined) enr.manualLocs[+t.dataset.loc][t.dataset.k] = t.value;
+  else if (m && t.dataset.c) m.contact[t.dataset.c] = t.value;
+  else if (m && t.id === 'c-notes') m.notes = t.value;
+});
+document.addEventListener('change', e => {
+  const t = e.target;
+  if (t.dataset.cl) { const s = enr.campLocs[t.dataset.cl] || (enr.campLocs[t.dataset.cl] = new Set()); t.checked ? s.add(t.dataset.l) : s.delete(t.dataset.l); refreshEnroll(); }
+  else if (t.dataset.loc !== undefined || t.id === 'manual-name') { ensureLocs(true); refreshEnroll(); }
+  else if (t.id === 'ack' && state.modal) state.modal.ack = t.checked;
+});
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (state.modal && state.modal.step !== 'done') state.modal = null; else state.drawer = null;
+  render();
+});
+render();
+// Tick the hero countdown without re-rendering the page; re-render once when it hits zero so the campaign closes.
+setInterval(() => {
+  const el = document.getElementById('timer');
+  if (!el) return;
+  const left = +el.dataset.end - Date.now();
+  el.innerHTML = timerHTML(left);
+  el.classList.toggle('urgent', left < 3 * 864e5);
+  if (left <= 0) render();
+}, 1000);
+</script>
+
+</body></html>
