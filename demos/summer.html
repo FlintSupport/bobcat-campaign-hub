@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Summer Push Trailer</title>
+<!--
+  "See it in action" trailer for the Summer Push seasonal campaign (~90s with reading holds, plays once, then Replay).
+  Told as one customer's summer instead of three streams, so it doesn't repeat the Winter/Spring format:
+  Hook → meet Bob → MAY rental (Search, on a laptop) → JUNE competitor geofence (street map + phone)
+  → JULY purchase (Social / YouTube / Gmail, then the drive in) → Bob's summer recap → live dashboard → end card.
+  Price, co-op, dates and deadline come from the URL so the end card matches the campaign:
+    summer.html?price=2250&coop=563&start=May%201&end=Jul%2031&deadline=Apr%2016
+  Controls: seek bar with chapters, Space to play/pause, ←/→ to skip 5s. Review a single frame: summer.html?t=20 (real time)
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--page:#eef0f3;--ink:#16181d;--muted:#65676b;--line:#e4e6ea;--orange:#ff3600;--link:#1f6fd1;--green:#1e7b45;--sunny:#ffd166;
+  --cond:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--shadow:0 18px 40px rgba(20,50,30,.14)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#121417}}
+:root[data-theme="dark"]{--page:#121417}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page)}
+body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);display:grid;place-items:center;min-height:100vh;padding:16px}
+body.embed{padding:0;overflow:hidden}
+body.embed .wrap{width:min(100%,calc(100vh * 16 / 9))}
+.wrap{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#e3f3fb;container-type:inline-size}
+.stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(800px 480px at 95% -10%,rgba(255,209,102,.5),transparent 60%),radial-gradient(900px 520px at 10% 115%,rgba(255,54,0,.08),transparent 60%),linear-gradient(160deg,#dcf0fb,#fff8e8 72%)}
+.layer{position:absolute;inset:0;opacity:0}
+.k{font:800 18px var(--cond);letter-spacing:4px;color:var(--orange)}
+.mid{font:800 58px/.98 var(--cond);letter-spacing:.5px;color:var(--ink);text-transform:uppercase}
+.sub{font-size:24px;font-weight:600;color:#3c4350;line-height:1.35}
+em{font-style:normal;color:var(--orange)}
+.fav{width:24px;height:24px;border-radius:50%;background:#111;color:var(--orange);font-weight:800;font-size:9.5px;display:grid;place-items:center;flex:none}
+.fav.g{background:#d0d4da}
+.pav{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex:none}
+.ring{position:absolute;inset:-3px;border:3px solid var(--orange);border-radius:10px;opacity:0;pointer-events:none}
+.caret{display:inline-block;width:2px;height:20px;background:var(--ink);vertical-align:middle;margin-left:1px}
+.grass{position:absolute;left:0;right:0;bottom:0;height:20px;background:linear-gradient(#5da544,#3f7f31)}
+.cash{display:inline-block;background:var(--sunny);color:#111;font:800 17px var(--cond);letter-spacing:1px;border-radius:5px;padding:3px 8px}
+.fld{border:1.5px solid #d5d9df;border-radius:10px;padding:7px 12px;margin-bottom:9px;opacity:0}
+.fld small{display:block;font-size:11px;color:var(--muted)}
+.fld span{font-size:15px;font-weight:600}
+.subm{margin-top:10px;height:44px;border-radius:10px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center}
+.ok{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:10px;opacity:0}
+.ok .chk{width:64px;height:64px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.ok b{font-size:21px}
+.ok span{font-size:14px;color:var(--muted);line-height:1.45}
+.url{height:32px;margin:8px 12px;border-radius:16px;background:#eef0f3;display:flex;align-items:center;padding:0 14px;font-size:12.5px;color:#3c4350}
+.wsh{height:44px;display:flex;align-items:center;gap:8px;padding:0 16px;background:#111;border-bottom:3px solid var(--orange);color:#fff;font:800 16px var(--cond);letter-spacing:1.5px}
+
+/* 0. hook (placeholder) */
+#L0{background:linear-gradient(180deg,#7cc8f2 0%,#d3eefb 55%,#fff3d6 88%)}
+#sun{position:absolute;right:140px;top:60px;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,#fff3b0 0 34%,rgba(255,209,102,.55) 50%,transparent 72%)}
+#lot{position:absolute;left:0;right:0;bottom:0;height:300px}
+.hook{position:absolute;left:0;right:0;text-align:center;opacity:0;font:800 80px/.95 var(--cond);letter-spacing:.5px;color:var(--ink);text-transform:uppercase}
+#hookA{top:112px}#hookB{top:206px;color:var(--orange)}
+
+/* 1. meet the customer */
+#iTitle{position:absolute;left:0;right:0;top:132px;text-align:center}
+#bob{position:absolute;left:170px;top:268px;opacity:0}
+#bobName{position:absolute;left:170px;top:232px;width:300px;text-align:center;font:800 34px var(--cond);letter-spacing:3px;color:var(--orange);opacity:0}
+#facts{position:absolute;left:540px;top:262px;display:flex;flex-direction:column;gap:18px}
+.fact{width:640px;display:flex;align-items:center;gap:20px;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 26px;opacity:0}
+.fact span{width:50px;height:50px;border-radius:50%;background:var(--orange);color:#fff;font:800 28px var(--cond);display:grid;place-items:center;flex:none}
+.fact b{font-size:30px;font-weight:700;line-height:1.2}
+#trans{position:absolute;left:540px;width:660px;top:600px;font-size:34px;line-height:1.2;font-weight:700;opacity:0}
+
+/* month spine */
+#spine{position:absolute;left:80px;right:80px;top:30px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;opacity:0;z-index:8}
+.mo{position:relative;overflow:hidden;background:rgba(255,255,255,.75);border:2px solid #d4e0d8;border-radius:12px;padding:9px 16px}
+.mo b{font:800 24px var(--cond);letter-spacing:2px;color:#8a958f}
+.mo small{font:800 15px var(--cond);letter-spacing:1.5px;color:#8a958f;margin-left:10px}
+.mo i{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--orange)}
+.mo.on{background:#fff;border-color:var(--orange)}
+.mo.on b{color:var(--ink)}
+.mo.on small{color:#c72a00}
+.mo.past b,.mo.past small{color:#3c4350}
+
+/* month captions */
+.cap{position:absolute;left:830px;top:160px;width:390px;opacity:0}
+.cap .mon{font:800 100px/.88 var(--cond);letter-spacing:1px}
+.cap .pill{display:inline-block;margin-top:12px;background:var(--orange);color:#fff;font:800 18px var(--cond);letter-spacing:2px;border-radius:6px;padding:5px 12px}
+.cap p{margin-top:20px;font-size:33px;font-weight:700;line-height:1.2;letter-spacing:-.3px}
+
+/* 2. MAY: laptop search → dealer rental page */
+#laptop{position:absolute;left:70px;top:132px;width:700px}
+.lscr{position:relative;height:440px;background:#fff;border:12px solid #15171a;border-bottom-width:16px;border-radius:16px 16px 6px 6px;overflow:hidden;box-shadow:var(--shadow)}
+.lbase{height:16px;margin:0 -40px;background:linear-gradient(#d5d9de,#a9aeb5);border-radius:0 0 18px 18px}
+.btab{height:34px;background:#eef0f3;display:flex;align-items:flex-end;gap:6px;padding:0 12px}
+.btab i{width:10px;height:10px;border-radius:50%;background:#d0d3d8;margin-bottom:12px}
+.btab span{margin-left:12px;background:#fff;border-radius:8px 8px 0 0;padding:7px 16px;font-size:12px}
+.lp{position:absolute;left:0;right:0;top:34px;bottom:0;opacity:0;padding:16px 24px}
+.qbox{height:48px;border:1px solid #d6dae0;border-radius:24px;display:flex;align-items:center;gap:10px;padding:0 18px;font-size:19px;box-shadow:0 2px 6px rgba(0,0,0,.06);margin-bottom:14px}
+.r{opacity:0}
+#lAd{position:relative;padding:10px 12px;border-radius:10px;margin-bottom:6px}
+.spons{font-size:12.5px;font-weight:700;margin-bottom:5px}
+.site{display:flex;gap:8px;align-items:center}
+.site b{display:block;font-size:13px}
+.site span{display:block;font-size:11px;color:var(--muted)}
+.ttl{font-size:21px;line-height:1.25;color:var(--link);margin:6px 0 4px}
+.desc{font-size:14.5px;color:#4a505b;line-height:1.45}
+.chips{display:flex;gap:8px;margin-top:9px}
+.chips span{border:1px solid #d6dae0;border-radius:15px;padding:6px 12px;font-size:13px;color:var(--link)}
+.chips #lRes{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700}
+.org{padding:8px 12px}
+.org .ttl{font-size:17px}
+#lpR{padding:0}
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:14px 22px}
+.mcard{position:relative;height:248px;border-radius:12px;overflow:hidden;background:linear-gradient(#cfeaf8,#f1f8e8);padding:14px}
+.mcard small{font:800 13px var(--cond);letter-spacing:2px;color:#c72a00}
+.mcard b{display:block;font:800 28px/1 var(--cond)}
+.mcard svg{position:absolute;right:-6px;bottom:18px}
+.rform h4{font-size:18px;margin-bottom:10px}
+#lpR .ok{top:0}
+
+/* 3. JUNE: county map → street map with competitor geofences → phone */
+#mapBox{position:absolute;left:80px;top:120px;width:700px;height:500px;border-radius:20px;overflow:hidden;background:#eef4e4;box-shadow:var(--shadow)}
+#cMapS,#streets{position:absolute;left:0;top:0}
+#cMapS{transform-origin:300px 190px}
+#bubble{position:absolute;left:150px;top:30px;background:#fff;border-radius:22px;box-shadow:var(--shadow);padding:10px 18px;font-size:19px;font-weight:700;display:flex;align-items:center;gap:8px;opacity:0;z-index:3}
+#bubble i{width:12px;height:12px;border-radius:50%;background:var(--orange)}
+#gPhone{position:absolute;left:540px;top:150px;width:250px;height:500px;border-radius:38px;background:#0b0c0e;box-shadow:0 30px 60px rgba(20,50,30,.3),inset 0 0 0 2px #2a2d33;z-index:6;opacity:0}
+.gs{position:absolute;inset:8px;border-radius:30px;overflow:hidden;background:#fff;padding-top:30px}
+.gs .notch{position:absolute;left:50%;top:7px;width:72px;height:20px;margin-left:-36px;border-radius:10px;background:#0b0c0e}
+.nh{height:38px;display:flex;align-items:center;padding:0 14px;background:#2f7fc1;color:#fff;font-weight:800;font-size:15px}
+.art{padding:10px 14px}
+.art b{display:block;font-size:14px;line-height:1.3;margin-bottom:7px}
+.art i{display:block;height:7px;border-radius:4px;background:#e6e8ec;margin-bottom:6px}
+#gAd{position:relative;margin:4px 12px 0;height:196px;border-radius:8px;overflow:hidden;color:#fff;padding:12px;background:linear-gradient(118deg,#0d0e10 0 62%,var(--orange) 62% 64.5%,#1d1f23 64.5%)}
+#gAd small{font:800 12px var(--cond);letter-spacing:2px;color:var(--sunny)}
+#gAd b{display:block;font:800 27px/.95 var(--cond);margin:2px 0 8px}
+#gAd .cash{font-size:14px}
+#gAd .loc{position:absolute;left:12px;bottom:10px;font-size:10px;color:#c9ced6;font-weight:700}
+#gAd .adl{position:absolute;right:8px;top:6px;font-size:9.5px;font-weight:700;color:#c9ced6}
+#gAd svg{position:absolute;right:-8px;bottom:22px}
+#gAd .ring{inset:0;border-radius:8px}
+#gCta{margin:10px 12px;height:40px;border-radius:20px;background:var(--orange);color:#fff;font-weight:800;font-size:14px;display:grid;place-items:center}
+#gOk{top:30px}
+
+/* 4. JULY: the offer follows them → the drive in → recap */
+.tiles3{position:absolute;left:80px;top:130px;display:flex;gap:18px}
+.t3{position:relative;width:221px;height:400px;background:#fff;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;opacity:0;padding-top:46px}
+.t3 .lab{position:absolute;left:12px;top:12px;background:var(--ink);color:#fff;font:800 15px var(--cond);letter-spacing:2px;border-radius:5px;padding:3px 10px}
+.t3 .ring{inset:0;border-radius:16px}
+.oc{position:relative;height:178px;overflow:hidden;color:#fff;padding:12px;background:linear-gradient(118deg,#111 0 62%,var(--orange) 62% 64.5%,#1f2125 64.5%)}
+.oc small{font:800 11px var(--cond);letter-spacing:2px;color:var(--sunny)}
+.oc b{display:block;font:800 28px/.95 var(--cond);margin:2px 0 7px}
+.oc .cash{font-size:13px}
+.oc svg{position:absolute;right:-8px;bottom:20px}
+.t3 .ph{display:flex;align-items:center;gap:8px;padding:0 12px 8px}
+.t3 .ph b{font-size:12.5px;display:block}
+.t3 .ph span{font-size:11px;color:var(--muted)}
+.t3 .tx{font-size:14px;padding:0 12px 8px;line-height:1.35}
+.t3 .ft{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#f0f2f5;font-size:12px;font-weight:700}
+.t3 .ft span{background:#e2e5e9;border-radius:6px;padding:6px 10px}
+.t3 .vt{padding:10px 12px 2px;font-size:15px;font-weight:700;line-height:1.3}
+.t3 .vm{padding:0 12px;font-size:11px;color:var(--muted)}
+.t3 .adb{position:absolute;left:10px;bottom:24px;background:#f7c948;color:#111;font-size:10px;font-weight:800;padding:2px 5px;border-radius:3px}
+.mrow{position:relative;display:flex;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.mrow .pav{width:30px;height:30px;font-size:10.5px}
+.mrow b{display:block;font-size:12.5px}
+.mrow .sj{display:block;font-size:13.5px;font-weight:600;margin-top:2px;line-height:1.3}
+.mrow .pv{display:block;font-size:11px;color:var(--muted);margin-top:2px;line-height:1.3}
+.adt{display:inline-block;font-style:normal;font-size:9.5px;font-weight:800;color:#1e7b45;border:1px solid #1e7b45;border-radius:3px;padding:0 4px;margin-right:4px;vertical-align:1px}
+.mrow.ad{background:#fff8ec}
+#car{position:absolute;left:80px;top:130px;width:700px;height:470px;opacity:0}
+.cdisp{position:absolute;left:0;top:0;width:700px;height:380px;background:#1b1f24;border:9px solid #0e1013;border-radius:28px;overflow:hidden;box-shadow:0 24px 48px rgba(20,30,40,.3)}
+.cdisp svg{position:absolute;left:0;top:0}
+.cpanel{position:absolute;right:0;top:0;bottom:0;width:250px;background:#242a31;color:#fff;padding:26px 22px;opacity:0}
+.cpanel small{font:800 13px var(--cond);letter-spacing:2px;color:#9fb0c0}
+.cpanel b{display:block;font-size:19px;margin-top:6px}
+.cpanel .eta{font:800 54px/1 var(--cond);color:#5ee08f;margin-top:22px}
+.cpanel .mi{font-size:14px;color:#c9d3dc;margin-top:6px}
+.cpanel .sv{margin-top:26px;border:1.5px solid #3b4550;border-radius:10px;padding:10px 12px;font-size:15px;color:#e6ebef;line-height:1.35}
+.cpanel .sv strong{color:var(--sunny)}
+#wheel{position:absolute;left:150px;top:372px}
+#sum{position:absolute;left:80px;top:150px;width:700px;background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:26px 30px 14px;opacity:0}
+#sum .hd{display:flex;justify-content:space-between;align-items:baseline}
+#sum .hd b{font:800 34px var(--cond);letter-spacing:1px}
+#sum .hd span{font-size:13px;color:var(--muted);font-weight:700;letter-spacing:1px}
+.srow{display:flex;align-items:center;gap:16px;padding:18px 0;border-top:1px solid var(--line);opacity:0}
+.srow .sm{width:74px;font:800 28px var(--cond);color:var(--orange)}
+.srow .st{flex:1;font-size:22px;font-weight:700}
+.srow .sp{font:800 14px var(--cond);letter-spacing:1.5px;border:2px solid #d4e0d8;border-radius:14px;padding:3px 10px;color:#3c4350}
+#sold{position:absolute;right:26px;top:-24px;background:var(--orange);color:#fff;font:800 30px var(--cond);letter-spacing:2px;padding:8px 18px;border-radius:8px;opacity:0;box-shadow:0 10px 24px rgba(255,54,0,.35)}
+
+/* 5. live dashboard */
+#dash{position:absolute;left:110px;top:190px;width:560px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.dh{background:#111;border-bottom:4px solid var(--orange);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:flex-end}
+.dh b{font:800 24px var(--cond);letter-spacing:1px;display:block}
+.dh span{font-size:12px;color:#b9bec7}
+.dh em{font-size:11px;letter-spacing:1px;color:#b9bec7;font-weight:700}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 20px 20px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.tile small{font:800 15px var(--cond);letter-spacing:2px;color:var(--muted)}
+.tile b{display:block;font:800 54px/1 var(--cond);margin-top:2px}
+#dCap{position:absolute;left:740px;top:230px;width:480px}
+
+/* end card */
+.endc{position:absolute;inset:0;background:linear-gradient(160deg,rgba(232,245,252,.97),rgba(255,248,232,.97));display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink);opacity:0;text-align:center;z-index:15}
+.endc .k{letter-spacing:5px}
+.endc h2{font:800 92px/.95 var(--cond);letter-spacing:1px;margin:6px 0 4px}
+.endc .goal{font:800 26px var(--cond);letter-spacing:3px;color:#3c4350}
+.pills{display:flex;gap:12px;margin:22px 0 24px}
+.pills span{border:2px solid #d4e0d8;background:#fff;border-radius:30px;padding:8px 20px;font:800 22px var(--cond);letter-spacing:1.5px}
+.price{display:flex;gap:28px;align-items:baseline;justify-content:center}
+.price b{font:800 56px/1 var(--cond)}
+.price span{font-size:18px;color:#3c4350}
+.price .co{color:var(--green);font-weight:700}
+.when{margin-top:12px;font-size:19px;color:#3c4350}
+.when b{color:#c72a00}
+#replay{margin-top:28px;opacity:0;border:2px solid #9fb0a8;border-radius:30px;background:#fff;color:var(--ink);font:800 22px var(--cond);letter-spacing:1.5px;text-transform:uppercase;padding:14px 30px;cursor:pointer;display:flex;align-items:center;gap:10px}
+
+/* pointers: mouse cursor on the laptop, touch dot on the phone */
+#cur{position:absolute;left:0;top:0;width:26px;height:34px;z-index:21;opacity:0;pointer-events:none}
+#touch{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.9);box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:0;z-index:20}
+#rip{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid var(--orange);opacity:0;z-index:19}
+
+#ofoot{position:absolute;right:60px;bottom:26px;width:430px;text-align:right;font-size:16px;font-weight:600;line-height:1.35;color:var(--muted);opacity:0;z-index:7}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+<div class="stage" id="stage">
+
+  <!-- 0. hook (placeholder until the headline is chosen) -->
+  <div class="layer" id="L0">
+    <div id="sun"></div>
+    <div id="lot"><svg id="lotSvg" width="1280" height="300" viewBox="0 0 1280 300"></svg></div>
+    <div class="hook" id="hookA">Summer jobs are lining up.</div>
+    <div class="hook" id="hookB">Make sure they start with you.</div>
+  </div>
+
+  <!-- 1. meet the customer -->
+  <div class="layer" id="L1">
+    <div id="iTitle"><div class="k">SUMMER PUSH</div><div class="mid" style="margin-top:8px">One customer. <em>One summer.</em></div></div>
+    <svg id="bob" width="300" height="440" viewBox="0 0 300 440">
+      <ellipse cx="150" cy="428" rx="96" ry="10" fill="rgba(20,50,30,.15)"/>
+      <!-- jeans + boots -->
+      <path d="M96 262 H204 L198 412 H158 L150 300 L142 412 H102 Z" fill="#3b64a3"/>
+      <path d="M150 300 V412" stroke="#2c4d82" stroke-width="3"/><path d="M110 270 V400 M190 270 V400" stroke="#4d78bb" stroke-width="2" opacity=".6"/>
+      <rect x="96" y="256" width="108" height="12" rx="3" fill="#3a2a1a"/><rect x="143" y="256" width="14" height="12" rx="2" fill="#c9a24a"/>
+      <path d="M98 408 h46 v14 h-52 a6 6 0 0 1 6-14z M156 408 h46 a6 6 0 0 1 6 14 h-52z" fill="#6b4423"/>
+      <!-- arms -->
+      <path d="M78 150 L58 250" stroke="#e0ac80" stroke-width="22" stroke-linecap="round"/><path d="M222 150 L242 250" stroke="#e0ac80" stroke-width="22" stroke-linecap="round"/>
+      <circle cx="57" cy="256" r="13" fill="#e0ac80"/><circle cx="243" cy="256" r="13" fill="#e0ac80"/>
+      <!-- red t-shirt -->
+      <path d="M100 128 Q150 116 200 128 L232 152 L218 190 L200 180 L204 262 H96 L100 180 L82 190 L68 152 Z" fill="#d7322b"/>
+      <path d="M132 124 Q150 142 168 124" fill="none" stroke="#b82720" stroke-width="5"/>
+      <!-- head + cap -->
+      <rect x="138" y="104" width="24" height="22" fill="#d59b6d"/>
+      <circle cx="150" cy="80" r="38" fill="#e0ac80"/>
+      <circle cx="112" cy="84" r="7" fill="#d59b6d"/><circle cx="188" cy="84" r="7" fill="#d59b6d"/>
+      <circle cx="137" cy="82" r="3.6" fill="#2b2b2b"/><circle cx="163" cy="82" r="3.6" fill="#2b2b2b"/>
+      <path d="M136 98 Q150 108 164 98" fill="none" stroke="#7a4a2a" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M112 68 Q114 34 150 32 Q186 34 188 68 Z" fill="#1f3b63"/>
+      <path d="M150 66 Q196 62 214 74 Q196 78 150 72 Z" fill="#16304f"/>
+      <rect x="138" y="44" width="24" height="14" rx="3" fill="#ff3600"/>
+    </svg>
+    <div id="bobName">MEET BOB</div>
+    <div id="facts">
+      <div class="fact"><span>1</span><b>Runs a small excavation crew</b></div>
+      <div class="fact"><span>2</span><b>Has booked 12 jobs this summer</b></div>
+      <div class="fact"><span>3</span><b>Doesn't have enough machines to cover them</b></div>
+    </div>
+    <div id="trans">Here's how your campaign wins Bob over, <em>month by month.</em></div>
+  </div>
+
+  <!-- 2. MAY: rental on Search -->
+  <div class="layer" id="L2">
+    <div id="laptop"><div class="lscr">
+      <div class="btab"><i></i><i></i><i></i><span>Search</span></div>
+      <section class="lp" id="lpS">
+        <div class="qbox" id="qBox"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" stroke="#8a919c" stroke-width="2.5" fill="none"/><path d="M15.5 15.5l5 5" stroke="#8a919c" stroke-width="2.5" stroke-linecap="round"/></svg><span><span id="lq"></span><span class="caret" id="lCaret"></span></span></div>
+        <div id="lAd" class="r"><span class="ring" id="lRing"></span>
+          <div class="spons">Sponsored</div>
+          <div class="site"><span class="fav">YD</span><div><b>Your Bobcat Dealer</b><span>yourdealership.com › rentals</span></div></div>
+          <div class="ttl">Rent a Bobcat E35 Mini Excavator | Daily, Weekly &amp; Monthly</div>
+          <div class="desc">Summer rentals ready for pickup. Reserve online or call. Attachments available.</div>
+          <div class="chips"><span id="lRes">Reserve online</span><span>📞 Call</span><span>Rental rates</span></div>
+        </div>
+        <div class="org r"><div class="site"><span class="fav g"></span><div><b>Equipment Rental Hub</b><span>rentalhub.com</span></div></div><div class="ttl">Mini Excavator Rentals Near You</div></div>
+        <div class="org r"><div class="site"><span class="fav g"></span><div><b>Contractor Weekly</b><span>contractorweekly.com</span></div></div><div class="ttl">Rent or Buy? How to Decide on a Mini Excavator</div></div>
+      </section>
+      <section class="lp" id="lpR">
+        <div class="url">🔒 yourdealership.com/rentals/e35</div>
+        <div class="wsh"><span class="fav">YD</span>YOUR BOBCAT DEALER</div>
+        <div class="rgrid">
+          <div class="mcard"><small>SUMMER RENTALS</small><b>BOBCAT E35<br>MINI EXCAVATOR</b><svg data-m="ex" width="230" height="138"></svg><span class="grass"></span></div>
+          <div class="rform"><h4>Reserve your rental</h4>
+            <div class="fld"><small>Rental length</small><span>2 weeks</span></div>
+            <div class="fld"><small>Pickup date</small><span>Wed, May 12</span></div>
+            <div class="fld"><small>Name</small><span>Bob Brooks</span></div>
+            <div class="subm" id="lBtn">Reserve</div></div>
+        </div>
+        <div class="ok" id="lOk"><span class="chk"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Reserved!</b><span>Your Bobcat E35 is ready for pickup Wednesday, May 12.</span></div>
+      </section>
+    </div><div class="lbase"></div></div>
+  </div>
+
+  <!-- 3. JUNE: competitor geofence -->
+  <div class="layer" id="L3">
+    <div id="mapBox">
+      <svg id="cMapS" width="700" height="500" viewBox="0 0 700 500"></svg>
+      <svg id="streets" width="700" height="500" viewBox="0 0 700 500"></svg>
+      <div id="bubble"><i></i>Bob's phone enters the fence</div>
+    </div>
+    <div id="gPhone"><div class="gs"><span class="notch"></span>
+      <div class="nh">Local News</div>
+      <div class="art"><b>City pool opens for the summer season</b><i></i><i style="width:80%"></i></div>
+      <div id="gAd"><span class="ring" id="gRing"></span><span class="adl">Ad</span>
+        <small>SHOPPING AROUND?</small><b>SEE OUR SUMMER<br>OFFER FIRST</b><span class="cash">0% FOR 60 MONTHS</span><br><span class="cash" style="margin-top:5px">+ $3,000 CASH BACK</span>
+        <span class="loc">Bobcat T76 · Your Bobcat Dealer · 3.1 mi</span></div>
+      <div id="gCta">Text me this offer</div>
+      <div class="art"><i></i><i style="width:70%"></i></div>
+      <div class="ok" id="gOk"><span class="chk"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Offer sent!</b><span>Check your texts for the T76 summer offer from Your Bobcat Dealer.</span></div>
+    </div></div>
+  </div>
+
+  <!-- 4. JULY: purchase on Social + Performance Max -->
+  <div class="layer" id="L4">
+    <div class="tiles3" id="tiles3">
+      <div class="t3"><span class="lab">SOCIAL</span><span class="ring"></span>
+        <div class="ph"><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div></div>
+        <div class="tx">Busy summer? Make the T76 yours.</div>
+        <div class="oc"><small>SUMMER OFFER · BOBCAT T76</small><b>0% FOR<br>60 MONTHS</b><span class="cash">+ $3,000 CASH BACK</span><svg data-m="track" width="120" height="72"></svg><span class="grass"></span></div>
+        <div class="ft">Claim your offer<span>Get Offer</span></div></div>
+      <div class="t3"><span class="lab">YOUTUBE</span><span class="ring"></span>
+        <div class="oc"><small>AD · YOUR BOBCAT DEALER</small><b>BOBCAT T76.<br>0% FOR 60 MO.</b><span class="cash">+ $3,000 CASH BACK</span><svg data-m="track" width="120" height="72"></svg><span class="adb">Ad · 0:06</span><span class="grass"></span></div>
+        <div class="vt">Excavation Job Site Tour: Summer Edition</div>
+        <div class="vm">Dirt Work Daily · 88K views</div>
+        <div class="vt" style="color:var(--muted);font-weight:600;font-size:12px">Up next: Trenching tips for beginners</div></div>
+      <div class="t3"><span class="lab">GMAIL</span><span class="ring"></span>
+        <div class="mrow ad"><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b><i class="adt">Ad</i>Your Bobcat Dealer</b><span class="sj">0% for 60 months + $3,000 cash back on the T76</span><span class="pv">Your summer offer is waiting. Ends Jul 31.</span></div></div>
+        <div class="mrow"><span class="pav" style="background:#3f6fb0">CS</span><div><b>City Permits</b><span class="sj">Permit approved</span><span class="pv">Your trenching permit for 42 Elm…</span></div></div>
+        <div class="mrow"><span class="pav" style="background:#3c8d5a">SL</span><div><b>Stone &amp; Landscape</b><span class="sj">Gravel delivery Thursday</span><span class="pv">Your order is scheduled…</span></div></div>
+        <div class="mrow"><span class="pav" style="background:#b8578f">JC</span><div><b>Jordan C.</b><span class="sj">Can you start Monday?</span><span class="pv">The homeowner wants the pad…</span></div></div></div>
+    </div>
+    <div id="car">
+      <div class="cdisp"><svg id="carMap" width="440" height="362" viewBox="0 0 440 362"></svg>
+        <div class="cpanel" id="cPanel"><small>NAVIGATING TO</small><b>Your Bobcat Dealer</b><div class="eta">12 MIN</div><div class="mi">3.2 mi · Arrive 2:40 PM</div><div class="sv">Saved offer: <strong>0% for 60 months + $3,000 cash back</strong> on the T76</div></div></div>
+      <svg id="wheel" width="400" height="120" viewBox="0 0 400 120"><path d="M20 120 A180 180 0 0 1 380 120" stroke="#2a2f36" stroke-width="26" fill="none" stroke-linecap="round"/><path d="M150 120 Q200 70 250 120" fill="#2a2f36"/></svg>
+    </div>
+    <div id="sum"><span id="sold">1 RENTAL + 1 SALE</span>
+      <div class="hd"><b>BOB'S SUMMER</b><span>EXAMPLE STORY</span></div>
+      <div class="srow"><span class="sm">MAY</span><span class="st">Rented a Bobcat E35</span><span class="sp">SEARCH</span></div>
+      <div class="srow"><span class="sm">JUNE</span><span class="st">Saved your T76 offer</span><span class="sp">GEOFENCE</span></div>
+      <div class="srow"><span class="sm">JULY</span><span class="st">Bought a Bobcat T76</span><span class="sp">SOCIAL + PMAX</span></div>
+    </div>
+  </div>
+
+  <!-- month spine + captions -->
+  <div id="spine">
+    <div class="mo"><b>MAY</b><small>RENTAL</small><i></i></div>
+    <div class="mo"><b>JUNE</b><small>COMPETITOR GEOFENCE</small><i></i></div>
+    <div class="mo"><b>JULY</b><small>PURCHASE</small><i></i></div>
+  </div>
+  <div class="cap" id="cp1"><div class="mon">MAY</div><span class="pill">SEARCH</span><p>Bob needs a mini excavator for a two-week job. <em>Your rental ad is the first one he sees.</em></p></div>
+  <div class="cap" id="cp2"><div class="mon">JUNE</div><span class="pill">COMPETITOR GEOFENCE</span><p>Bob stops at a competitor to price a machine. <em>Your offer lands on his phone.</em></p></div>
+  <div class="cap" id="cp3"><div class="mon">JULY</div><span class="pill">SOCIAL + PERFORMANCE MAX</span><p>Your T76 offer follows Bob all month. <em>Then he drives in.</em></p></div>
+  <div class="cap" id="cp4"><div class="k">THE RESULT</div><p style="margin-top:12px;font-size:40px">One customer. <em>Every channel working together.</em></p></div>
+
+  <!-- 5. live dashboard -->
+  <div class="layer" id="L5">
+    <div id="dash">
+      <div class="dh"><div><b>LIVE DASHBOARD</b><span>Summer Push · Your Bobcat Dealer</span></div><em>EXAMPLE</em></div>
+      <div class="tiles">
+        <div class="tile"><small>CLICKS</small><b class="cnt" data-n="1420">0</b></div>
+        <div class="tile"><small>CALLS</small><b class="cnt" data-n="66">0</b></div>
+        <div class="tile"><small>DIRECTIONS</small><b class="cnt" data-n="94">0</b></div>
+        <div class="tile"><small>FORM FILLS</small><b class="cnt" data-n="41">0</b></div>
+      </div>
+    </div>
+    <div id="dCap"><div class="k">ALL SEASON LONG</div><div class="mid" style="margin-top:10px">Track your results, <em>any time.</em></div><div class="sub" style="margin-top:14px">Clicks, calls, directions and form fills for every location, in one live dashboard.</div></div>
+  </div>
+
+  <!-- end card -->
+  <div class="endc" id="end">
+    <div class="k">SEASONAL CAMPAIGN</div>
+    <h2>SUMMER PUSH</h2>
+    <div class="goal">RENTAL + PURCHASE LEADS</div>
+    <div class="pills"><span>RENTALS</span><span>COMPETITOR GEOFENCE</span><span>SALES</span></div>
+    <div class="price"><div><b id="ePrice">$2,250</b> <span>per location · one-time</span></div><div class="co" id="eCoop">≈ $563 after 75% co-op</div></div>
+    <div class="when" id="eWhen">Runs May 1 – Jul 31 · <b>Enroll by Apr 16</b></div>
+    <button id="replay"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M4 3v5h5" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Replay</button>
+  </div>
+
+  <svg id="cur" viewBox="0 0 26 34"><path d="M2 2 L2 27 L8.5 21 L13 31 L18 29 L13.5 19 L22 19 Z" fill="#111" stroke="#fff" stroke-width="2" stroke-linejoin="round"/></svg>
+  <div id="ofoot">Offer shown is an example. Your real offer comes from your dealership and current Bobcat programs. Financing on approved credit.</div>
+  <div id="rip"></div>
+  <div id="touch"></div>
+</div>
+</div>
+
+<script src="player.js"></script>
+<script>
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+// The animation is scripted on a 56s timeline; HOLDS pause it at fully shown moments so there's time to read.
+// [script time, extra seconds]. Real playback time = script time + every hold before it.
+const D0 = 56;
+const HOLDS = [[3.0, 1.5], [6.6, 1.0], [7.5, 1.0], [8.4, 1.5], [9.2, 2.0], [16.2, 2.5], [18.8, 2.0], [20.6, 2.0], [24.8, 2.0], [30.2, 3.0], [31.7, 2.0],
+  [36.2, 2.0], [37.7, 2.0], [39.4, 2.5], [42.9, 2.5], [47.3, 3.0], [51.6, 3.0]];
+const D = D0 + HOLDS.reduce((a, [, x]) => a + x, 0);
+function script(r) {
+  let off = 0;
+  for (const [h, x] of HOLDS) { if (r <= h + off) return r - off; if (r <= h + off + x) return h; off += x; }
+  return Math.min(r - off, D0);
+}
+const toReal = s => s + HOLDS.filter(([h]) => h < s).reduce((a, [, x]) => a + x, 0);
+const wrap = $('#wrap'), stage = $('#stage');
+if (window.self !== window.top) document.body.classList.add('embed');
+
+// campaign details from the URL (the hub passes them so the end card always matches)
+const qs = new URLSearchParams(location.search);
+const money = n => '$' + Number(n).toLocaleString('en-US');
+const P = { price: +qs.get('price') || 2250, coop: +qs.get('coop') || 563, start: qs.get('start') || 'May 1', end: qs.get('end') || 'Jul 31', deadline: qs.get('deadline') || 'Apr 16' };
+$('#ePrice').textContent = money(P.price);
+$('#eCoop').textContent = `≈ ${money(P.coop)} after 75% co-op`;
+$('#eWhen').innerHTML = `Runs ${P.start} – ${P.end} · <b>Enroll by ${P.deadline}</b>`;
+
+// chapters for the seek bar: [start in real playback time, label]
+const CHAPTERS = [[0, 'Meet Bob'], [11, 'May · Rental'], [22.2, 'June · Geofence'], [35, 'July · Purchase'], [48.8, 'Results'], [53.8, 'Recap']].map(([s, l]) => [toReal(s), l]);
+// month spine: [start, end] of each month's scene
+const MONTHS = [[11, 22.2], [22.2, 35], [35, 48.6]];
+
+const I = {
+  hat: '<svg width="66" height="66" viewBox="0 0 24 24"><path d="M3 17h18v2H3zM5 17a7 7 0 0 1 14 0" fill="#ff3600"/><path d="M11 6h2v5h-2z" fill="#ff3600"/></svg>',
+};
+$$('[data-i]').forEach(el => el.innerHTML = I[el.dataset.i]);
+
+// machines: T76 track loader, E35 mini excavator
+const MACH = {
+  track: '<path d="M142 34 L176 66" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/><path d="M162 60 h26 l6 34 h-34 z" fill="#3a3d42"/>' +
+    '<rect x="40" y="54" width="112" height="36" rx="7" fill="#ff3600"/><rect x="68" y="18" width="58" height="46" rx="6" fill="#0d0e10" stroke="#3a3d42" stroke-width="2"/><rect x="75" y="25" width="44" height="33" rx="3" fill="#a9c6d6"/>' +
+    '<rect x="36" y="84" width="120" height="26" rx="13" fill="#2a2c30" stroke="#3a3d42" stroke-width="2"/><circle cx="52" cy="97" r="7" fill="#777"/><circle cx="96" cy="97" r="5" fill="#777"/><circle cx="140" cy="97" r="7" fill="#777"/>',
+  ex: '<path d="M112 66 L150 26 L180 70" stroke="#ff3600" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M172 64 l20 8 l-8 18 l-16 -8z" fill="#3a3d42"/>' +
+    '<rect x="34" y="60" width="90" height="28" rx="6" fill="#ff3600"/><rect x="40" y="22" width="48" height="44" rx="6" fill="#0d0e10" stroke="#3a3d42" stroke-width="2"/><rect x="46" y="28" width="36" height="30" rx="3" fill="#a9c6d6"/>' +
+    '<rect x="28" y="88" width="104" height="22" rx="11" fill="#2a2c30" stroke="#3a3d42" stroke-width="2"/><circle cx="42" cy="99" r="6" fill="#777"/><circle cx="118" cy="99" r="6" fill="#777"/><path d="M12 96 h18 v12 h-22z" fill="#3a3d42"/>',
+};
+$$('svg[data-m]').forEach(svg => { svg.setAttribute('viewBox', '0 0 200 120'); svg.innerHTML = MACH[svg.dataset.m]; });
+
+// the dealer lot on a summer day: green ground, full trees, building, machines out front
+const tree = (x, s) => `<g transform="translate(${x} 0) scale(${s})"><rect x="-5" y="110" width="10" height="70" fill="#5b4330"/><g fill="#4f9a3c"><circle cx="0" cy="96" r="34"/><circle cx="-26" cy="112" r="22"/><circle cx="26" cy="112" r="22"/></g><g fill="#6fb552"><circle cx="-10" cy="86" r="10"/><circle cx="16" cy="102" r="8"/></g></g>`;
+$('#lotSvg').innerHTML =
+  '<path d="M0 170 Q640 120 1280 170 V300 H0Z" fill="#6fb552"/><path d="M0 210 Q640 170 1280 210 V300 H0Z" fill="#5da544"/>' +
+  '<rect x="430" y="40" width="420" height="140" fill="#1a2a2f"/><rect x="430" y="40" width="420" height="30" fill="#0c1416"/><rect x="430" y="68" width="420" height="5" fill="#ff3600"/>' +
+  '<text x="640" y="62" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="22" letter-spacing="2" fill="#fff">YOUR BOBCAT DEALER</text>' +
+  '<g fill="#a9c6d6"><rect x="460" y="90" width="110" height="90"/><rect x="590" y="90" width="110" height="90"/><rect x="720" y="90" width="110" height="90"/></g>' +
+  tree(150, 1) + tree(1150, .9) + tree(300, .7) +
+  '<g transform="translate(240 126) scale(.55)">' + MACH.track + '</g>' +
+  '<g transform="translate(880 120) scale(.6)">' + MACH.ex + '</g>';
+
+// JUNE map, part 1: counties around the store (same look as Winter/Spring), which zooms in to street level
+{
+  const CW = 5, CR = 4, MW = 700, MH = 500, PIN = [300, 190], V = [];
+  for (let r = 0; r <= CR; r++) for (let c = 0; c <= CW; c++)
+    V.push([c * MW / CW + (c === 0 || c === CW ? 0 : ((r * 7 + c * 13) % 9 - 4) * 7), r * MH / CR + (r === 0 || r === CR ? 0 : ((r * 11 + c * 5) % 9 - 4) * 7)]);
+  let svg = '';
+  for (let r = 0; r < CR; r++) for (let c = 0; c < CW; c++) {
+    const pts = [V[r * (CW + 1) + c], V[r * (CW + 1) + c + 1], V[(r + 1) * (CW + 1) + c + 1], V[(r + 1) * (CW + 1) + c]];
+    const cx = pts.reduce((a, p) => a + p[0], 0) / 4, cy = pts.reduce((a, p) => a + p[1], 0) / 4, on = Math.hypot(cx - PIN[0], cy - PIN[1]) < 190;
+    svg += `<polygon points="${pts.map(p => p.join(',')).join(' ')}" fill="${on ? 'rgba(255,54,0,.2)' : '#d9e8d0'}" stroke="${on ? '#ff3600' : '#fff'}" stroke-width="3"/>`;
+  }
+  $('#cMapS').innerHTML = '<rect width="700" height="500" fill="#eef4e4"/>' + svg +
+    `<path d="M${PIN[0]} ${PIN[1]}c0 0-13-16-13-25a13 13 0 0 1 26 0c0 9-13 25-13 25z" fill="#ff3600" stroke="#fff" stroke-width="2" transform="translate(0 -2)"/>`;
+}
+// JUNE map, part 2: streets with two fenced competitor locations and Bob's route into one of them
+const lotIcon = (x, y) => `<rect x="${x - 16}" y="${y - 12}" width="32" height="24" rx="3" fill="#8a919c"/><rect x="${x - 16}" y="${y - 12}" width="32" height="6" fill="#5b616b"/>`;
+const fenceLbl = (x, y, txt, w) => `<g class="flbl" opacity="0"><rect x="${x - w / 2}" y="${y}" width="${w}" height="30" rx="15" fill="#fff" stroke="#ff3600" stroke-width="2"/><text x="${x}" y="${y + 21}" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="18" letter-spacing="1" fill="#16181d">${txt}</text></g>`;
+$('#streets').innerHTML =
+  '<rect width="700" height="500" fill="#eef4e4"/>' +
+  '<g fill="#dfeacf"><rect x="20" y="20" width="80" height="210"/><rect x="140" y="20" width="140" height="120"/><rect x="330" y="290" width="170" height="110"/><rect x="560" y="40" width="120" height="200"/><rect x="20" y="290" width="80" height="110"/><rect x="560" y="300" width="120" height="100"/></g>' +
+  '<path d="M520 20 h20 v220 h-20z" fill="#cfe7f2"/>' +
+  '<g stroke="#fff" stroke-linecap="round" fill="none"><path d="M-10 260 H710" stroke-width="18"/><path d="M-10 430 H710" stroke-width="18"/><path d="M120 -10 V510" stroke-width="16"/><path d="M300 -10 V510" stroke-width="16"/><path d="M540 250 V510" stroke-width="16"/></g>' +
+  '<circle class="fence" cx="300" cy="160" r="0" fill="rgba(255,54,0,.12)" stroke="#ff3600" stroke-width="3" stroke-dasharray="9 7"/>' +
+  '<circle class="fence" cx="170" cy="360" r="0" fill="rgba(255,54,0,.12)" stroke="#ff3600" stroke-width="3" stroke-dasharray="9 7"/>' +
+  lotIcon(300, 160) + lotIcon(170, 360) +
+  fenceLbl(300, 232, 'COMPETITOR DEALERSHIP', 226) + fenceLbl(170, 410, 'RENTAL YARD', 134) +
+  '<path id="carPath" d="M690 430 H300 V178" fill="none"/>' +
+  '<circle class="ping" r="12" fill="none" stroke="#1a73e8" stroke-width="3" opacity="0"/><circle class="ping" r="12" fill="none" stroke="#1a73e8" stroke-width="3" opacity="0"/>' +
+  '<circle id="carDot" r="11" fill="#1a73e8" stroke="#fff" stroke-width="4" opacity="0"/>';
+
+// JULY: car display map with the route to the dealer
+$('#carMap').innerHTML =
+  '<rect width="440" height="362" fill="#20262d"/>' +
+  '<g fill="#262d35"><rect x="20" y="20" width="110" height="120"/><rect x="170" y="20" width="160" height="90"/><rect x="20" y="200" width="110" height="140"/><rect x="250" y="170" width="170" height="80"/></g>' +
+  '<g stroke="#3a434e" stroke-width="14" fill="none" stroke-linecap="round"><path d="M-10 160 H450"/><path d="M150 -10 V372"/><path d="M-10 290 H450"/><path d="M350 -10 V372"/></g>' +
+  '<path id="cRoute" d="M150 362 V290 H350 V160 H420" stroke="#4d9bff" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>' +
+  '<path d="M150 352 l-12 18 h24z" fill="#fff"/>' +
+  '<path d="M420 160 c0 0-12-14-12-22a12 12 0 0 1 24 0c0 8-12 22-12 22z" fill="#ff3600" stroke="#fff" stroke-width="2"/>';
+
+let scale = 1;
+// fit the 1280×720 stage inside the frame, letterboxed if needed (full screen can be any shape)
+function fit() {
+  scale = Math.min(wrap.clientWidth / 1280, wrap.clientHeight / 720);
+  stage.style.transform = `translate(${(wrap.clientWidth - 1280 * scale) / 2}px,${(wrap.clientHeight - 720 * scale) / 2}px) scale(${scale})`;
+}
+new ResizeObserver(fit).observe(wrap); fit();
+
+const clamp = v => Math.max(0, Math.min(1, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+const out3 = x => 1 - Math.pow(1 - x, 3);
+const win = (t, a, b, f = .3) => seg(t, a, a + f) * (1 - seg(t, b - f, b));
+const fade = (el, o, dy = 0) => { el.style.opacity = o; if (dy) el.style.transform = `translateY(${(1 - o) * dy}px)`; };
+function center(sel) {
+  const r = $(sel).getBoundingClientRect(), s = stage.getBoundingClientRect();
+  return { x: (r.left - s.left + r.width / 2) / scale, y: (r.top - s.top + r.height / 2) / scale };
+}
+const press = (sel, k, t) => { $(sel).style.transform = t >= k && t < k + .15 ? 'scale(.95)' : ''; };
+
+// laptop clicks (mouse cursor) and phone taps (touch dot): [time, target]
+const CLICKS = [[12.2, '#qBox'], [17.0, '#lRes'], [19.6, '#lBtn']];
+const TAPS = [[30.9, '#gCta']];
+const LQ = 'mini excavator rental near me';
+const carPath = $('#carPath'), carLen = carPath.getTotalLength();
+
+function render(t) {
+  // 0 ─ hook
+  fade($('#L0'), seg(t, 0, .4) * (1 - seg(t, 4.6, 5.0)));
+  fade($('#hookA'), seg(t, .5, .9), 16);
+  fade($('#hookB'), seg(t, 1.7, 2.1), 16);
+  $('#sun').style.transform = `translateY(${-30 * ease(seg(t, 0, 4))}px)`;
+
+  // 1 ─ meet Dana
+  fade($('#L1'), seg(t, 5.0, 5.4) * (1 - seg(t, 10.6, 11.0)));
+  fade($('#bob'), seg(t, 5.4, 5.9), 30);
+  fade($('#bobName'), seg(t, 5.7, 6.1));
+  $$('.fact').forEach((f, i) => { const a = seg(t, 6.2 + i * .9, 6.6 + i * .9); f.style.opacity = a; f.style.transform = `translateX(${(1 - out3(a)) * 40}px)`; });
+  fade($('#trans'), seg(t, 8.6, 9.0), 14);
+
+  // month spine across the story
+  $('#spine').style.opacity = seg(t, 9.8, 10.3) * (1 - seg(t, 48.4, 48.8));
+  MONTHS.forEach(([a, b], i) => {
+    const mo = $('#spine').children[i];
+    mo.className = 'mo' + (t >= a && t < b ? ' on' : t >= b ? ' past' : '');
+    mo.querySelector('i').style.width = seg(t, a, b) * 100 + '%';
+  });
+
+  // 2 ─ MAY: search on a laptop → rental ad → reserve on the dealer site
+  fade($('#L2'), seg(t, 11.2, 11.7) * (1 - seg(t, 21.8, 22.2)), 20);
+  fade($('#lpS'), 1 - seg(t, 17.2, 17.5));
+  fade($('#lpR'), seg(t, 17.2, 17.5));
+  const n = Math.round(seg(t, 12.5, 14.3) * LQ.length);
+  $('#lq').textContent = LQ.slice(0, n);
+  $('#lCaret').style.opacity = t > 12.2 && t < 14.6 && (n < LQ.length || Math.floor(t * 2.5) % 2 === 0) ? 1 : 0;
+  $$('#lpS .r').forEach((el, i) => { const a = seg(t, 14.6 + i * .12, 15.0 + i * .12); el.style.opacity = a * (el.classList.contains('org') ? .55 : 1); el.style.transform = `translateY(${(1 - ease(a)) * 12}px)`; });
+  $('#lRing').style.opacity = win(t, 15.0, 16.9, .3);
+  press('#lRes', 17.0, t);
+  $$('#lpR .fld').forEach((el, i) => fade(el, seg(t, 17.7 + i * .3, 18.0 + i * .3), 8));
+  press('#lBtn', 19.6, t);
+  $('#lOk').style.opacity = seg(t, 19.8, 20.1);
+
+  // 3 ─ JUNE: county map zooms to street level → fences around competitors → Bob's phone enters → ad on his phone
+  fade($('#L3'), seg(t, 22.2, 22.6) * (1 - seg(t, 34.6, 35.0)));
+  const z = ease(seg(t, 22.8, 23.8));
+  $('#cMapS').style.transform = `scale(${1 + 1.8 * z})`;
+  $('#cMapS').style.opacity = 1 - seg(t, 23.2, 23.8);
+  $('#streets').style.opacity = seg(t, 23.2, 23.8);
+  $$('#streets .fence').forEach((f, i) => f.setAttribute('r', (70 * out3(seg(t, 23.9 + i * .3, 24.4 + i * .3))).toFixed(1)));
+  $$('#streets .flbl').forEach((l, i) => l.setAttribute('opacity', seg(t, 24.2 + i * .3, 24.5 + i * .3).toFixed(2)));
+  const pt = carPath.getPointAtLength(carLen * ease(seg(t, 24.8, 27.4))), car = $('#carDot');
+  car.setAttribute('cx', pt.x); car.setAttribute('cy', pt.y); car.setAttribute('opacity', seg(t, 24.6, 24.8));
+  $$('#streets .ping').forEach((c, k) => {
+    const q = seg(t, 27.4 + k * .4, 28.3 + k * .4);
+    c.setAttribute('cx', pt.x); c.setAttribute('cy', pt.y);
+    c.setAttribute('r', (12 + 46 * q).toFixed(1)); c.setAttribute('opacity', (t >= 27.4 + k * .4 ? 1 - q : 0).toFixed(2));
+  });
+  fade($('#bubble'), seg(t, 27.6, 28.0), 10);
+  const gp = ease(seg(t, 28.4, 28.9));
+  $('#gPhone').style.opacity = seg(t, 28.4, 28.6);
+  $('#gPhone').style.transform = `translateY(${(1 - gp) * 120}px)`;
+  $('#gRing').style.opacity = win(t, 29.4, 30.8, .3);
+  press('#gCta', 30.9, t);
+  $('#gOk').style.opacity = seg(t, 31.1, 31.4);
+
+  // 4 ─ JULY: the offer follows Bob (social, YouTube, Gmail) → the drive in → recap
+  fade($('#L4'), seg(t, 35.0, 35.4) * (1 - seg(t, 48.2, 48.6)));
+  $('#tiles3').style.opacity = 1 - seg(t, 40.6, 41.0);
+  $$('.t3').forEach((el, i) => {
+    const a = 35.4 + i * 1.5;
+    fade(el, seg(t, a, a + .45), 30);
+    el.querySelector('.ring').style.opacity = win(t, a + .4, a + 1.5, .25);
+  });
+  fade($('#car'), seg(t, 40.9, 41.3) * (1 - seg(t, 44.4, 44.8)), 20);
+  const cr = $('#cRoute'), cl = cr.getTotalLength();
+  cr.style.strokeDasharray = cl; cr.style.strokeDashoffset = cl * (1 - ease(seg(t, 41.4, 42.7)));
+  fade($('#cPanel'), seg(t, 41.9, 42.3));
+  fade($('#sum'), seg(t, 44.8, 45.2), 20);
+  $$('.srow').forEach((r, i) => fade(r, seg(t, 45.3 + i * .5, 45.7 + i * .5), 10));
+  const so = seg(t, 46.9, 47.05);
+  $('#sold').style.opacity = so; $('#sold').style.transform = `rotate(-4deg) scale(${1.6 - .6 * out3(so)})`;
+
+  // captions beside each month
+  fade($('#cp1'), win(t, 11.4, 22.1, .35), 14);
+  fade($('#cp2'), win(t, 22.4, 34.9, .35), 14);
+  fade($('#cp3'), win(t, 35.2, 44.6, .35), 14);
+  fade($('#cp4'), win(t, 45.0, 48.5, .35), 14);
+
+  // 5 ─ dashboard
+  fade($('#L5'), seg(t, 48.8, 49.2) * (1 - seg(t, 53.4, 53.8)));
+  $$('.cnt').forEach(b => b.textContent = Math.round(+b.dataset.n * out3(seg(t, 49.4, 51.3))).toLocaleString('en-US'));
+  fade($('#dCap'), seg(t, 49.3, 49.7), 14);
+
+  // example-offer note while the 0% + cash back offer is on screen
+  $('#ofoot').style.opacity = seg(t, 28.6, 29.0) * (1 - seg(t, 44.4, 44.8));
+
+  // end card
+  $('#end').style.opacity = seg(t, 53.8, 54.4);
+  const ro = seg(t, 54.7, 55.1), rb = $('#replay');
+  rb.style.opacity = ro; rb.style.pointerEvents = ro > .5 ? 'auto' : 'none';
+
+  // mouse cursor on the laptop: glides to each click target, then clicks
+  const cur = $('#cur'), rip = $('#rip');
+  const stops = [[11.7, { x: 420, y: 470 }], ...CLICKS.map(([k, s]) => [k, center(s)])];
+  let pos = stops[0][1];
+  for (let i = 1; i < stops.length; i++) {
+    const [k, p] = stops[i], q = ease(seg(t, k - .7, k)), a = pos;
+    pos = { x: a.x + (p.x - a.x) * q, y: a.y + (p.y - a.y) * q };
+  }
+  cur.style.opacity = win(t, 11.8, 21.6, .3);
+  cur.style.transform = `translate(${pos.x - 2}px,${pos.y - 2}px)`;
+  const click = CLICKS.find(([k]) => t >= k && t < k + .35), tap = TAPS.find(([k]) => t >= k - .4 && t < k + .35);
+  const dot = $('#touch');
+  if (click) { const p = (t - click[0]) / .35; rip.style.opacity = 1 - p; rip.style.transform = `translate(${pos.x}px,${pos.y}px) scale(${.4 + p})`; }
+  else if (tap) {
+    const [k, sel] = tap, c = center(sel);
+    dot.style.opacity = win(t, k - .4, k + .35, .15);
+    dot.style.transform = `translate(${c.x}px,${c.y}px) scale(${t >= k && t < k + .14 ? .8 : 1})`;
+    if (t >= k) { const p = (t - k) / .35; rip.style.opacity = 1 - p; rip.style.transform = `translate(${c.x}px,${c.y}px) scale(${.5 + p})`; } else rip.style.opacity = 0;
+  } else rip.style.opacity = 0;
+  if (!tap) dot.style.opacity = 0;
+}
+
+// player: shared seek bar + controls (player.js); plays once and stops on the end card
+startPlayer({ D: D0, holds: HOLDS, render, chapters: CHAPTERS, replay: '#replay' });
+</script>
+</body>
+</html>

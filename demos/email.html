@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Email Marketing Demo</title>
+<!--
+  "See it in action" animation for the Email Marketing campaign (about 24s, plays once, then Replay).
+  A demo-day invite goes to the dealer's customer list; one customer opens it, RSVPs, gets a reminder;
+  ends on the live dashboard.
+  Embed: <iframe src="demos/email.html" style="width:100%;aspect-ratio:16/9;border:0"></iframe>
+  Review a single frame: email.html?t=5  (freezes at 5 seconds)
+  Space or the button toggles pause.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--page:#eef0f3;--ink:#16181d;--muted:#65676b;--line:#e4e6ea;--orange:#ff3600;--link:#1f6fd1;--green:#1e7b45;
+  --cond:"Barlow Condensed","Arial Narrow",Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#121417}}
+:root[data-theme="dark"]{--page:#121417}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page)}
+body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);display:grid;place-items:center;min-height:100vh;padding:16px}
+body.embed{padding:0;overflow:hidden}
+body.embed .wrap{width:min(100%,calc(100vh * 16 / 9))}
+.wrap{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#e3f3fb}
+.stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(800px 480px at 95% -10%,rgba(255,209,102,.40),transparent 60%),radial-gradient(900px 520px at 10% 115%,rgba(255,54,0,.10),transparent 60%),linear-gradient(160deg,#dcf0fb,#fff8e8 72%)}
+
+/* intro: invite goes out to the customer list */
+#intro{position:absolute;inset:0;opacity:0}
+#introLines{position:absolute;left:0;top:0}
+.dlr{position:absolute;left:150px;top:280px;width:160px;height:160px;border-radius:50%;background:#111;border:5px solid var(--orange);display:grid;place-items:center;text-align:center;color:#fff;font:800 30px/1 var(--cond);letter-spacing:1px;box-shadow:0 0 0 14px rgba(255,54,0,.12)}
+.dlr small{display:block;font-size:13px;letter-spacing:2px;color:var(--orange);margin-top:6px}
+.cust{position:absolute;left:470px;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:800;font-size:17px;border:3px solid #fff;opacity:0}
+.cust i{position:absolute;right:-6px;bottom:-4px;width:22px;height:22px;border-radius:50%;background:var(--green);display:grid;place-items:center;opacity:0;border:2px solid #fff}
+.env{position:absolute;left:0;top:0;width:34px;height:24px;margin:-12px 0 0 -17px;opacity:0}
+
+/* phone */
+.phone{position:absolute;left:170px;top:20px;width:340px;height:680px;border-radius:50px;background:#0b0c0e;box-shadow:0 30px 60px rgba(20,50,30,.22),inset 0 0 0 2px #2a2d33;opacity:0}
+.screen{position:absolute;left:10px;top:10px;width:320px;height:660px;border-radius:40px;overflow:hidden;background:#fff}
+.notch{position:absolute;left:50%;top:9px;width:96px;height:26px;margin-left:-48px;border-radius:14px;background:#0b0c0e;z-index:9}
+.status{position:absolute;left:0;right:0;top:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:6px 26px 0 30px;font-size:14px;font-weight:600;z-index:8}
+.status i{display:inline-block;width:22px;height:11px;border:1.5px solid currentColor;border-radius:3px;position:relative}
+.status i::after{content:"";position:absolute;inset:1.5px 4px 1.5px 1.5px;background:currentColor;border-radius:1px}
+.sc{position:absolute;inset:0;opacity:0;padding-top:44px;overflow:hidden;background:#fff}
+.sc::before{content:"";position:absolute;left:0;right:0;top:0;height:44px;background:rgba(255,255,255,.94);z-index:4}
+
+/* inbox */
+.mh{padding:6px 16px 10px}
+.mh small{color:var(--link);font-size:14px}
+.mh h3{font-size:30px;font-weight:800;margin-top:4px}
+.msearch{margin:0 16px 8px;height:34px;border-radius:10px;background:#eef0f3;display:flex;align-items:center;gap:7px;padding:0 10px;font-size:14px;color:#8a919c}
+.row{display:flex;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);position:relative;background:#fff}
+.row .av{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px}
+.row .tx{flex:1;min-width:0}
+.row .t1{display:flex;justify-content:space-between;font-size:14px}
+.row .t1 b{font-weight:600}
+.row .t1 span{font-size:12px;color:var(--muted)}
+.row .t2{font-size:13px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .t3{font-size:12.5px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#newWrap{overflow:hidden;height:0}
+#newRow .t1 b,#newRow .t2{font-weight:800}
+#newRow::before{content:"";position:absolute;left:5px;top:24px;width:8px;height:8px;border-radius:50%;background:var(--link)}
+#notif{position:absolute;left:8px;right:8px;top:46px;background:rgba(245,246,248,.97);border-radius:18px;padding:11px 13px;display:flex;gap:10px;box-shadow:0 10px 26px rgba(0,0,0,.22);z-index:6;transform:translateY(-140%)}
+#notif .ic{width:36px;height:36px;border-radius:9px;background:var(--link);display:grid;place-items:center;flex:none}
+#notif b{font-size:13.5px;display:flex;justify-content:space-between}
+#notif b span{font-weight:400;color:var(--muted);font-size:12px}
+#notif p{font-size:13px;line-height:1.3;margin-top:1px}
+.av.yd{background:#111;color:var(--orange)}
+
+/* the email */
+#em{background:#fff}
+.mtb{height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;color:var(--link);font-size:14px;border-bottom:1px solid var(--line);position:relative;z-index:3;background:#fff}
+.mview{position:absolute;left:0;right:0;top:84px;bottom:0;overflow:hidden}
+#emIn{position:relative}
+.from{display:flex;gap:10px;align-items:center;padding:12px 14px 6px}
+.from b{display:block;font-size:14px}
+.from span{display:block;font-size:11.5px;color:var(--muted)}
+.subj{padding:2px 14px 10px;font-size:17px;font-weight:800;border-bottom:1px solid var(--line)}
+.ebrand{margin:12px 12px 0;background:#000;border-bottom:4px solid var(--orange);color:#fff;padding:10px 14px;display:flex;align-items:center;gap:8px;font:800 16px var(--cond);letter-spacing:.5px;border-radius:6px 6px 0 0}
+.ebrand i{width:18px;height:18px;background:var(--orange);clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%)}
+.ehero{margin:0 12px;position:relative;height:190px;overflow:hidden;color:#fff;padding:16px 14px;
+  background:linear-gradient(110deg,#111 0 58%,var(--orange) 58% 60.5%,#1f2125 60.5%)}
+.ehero small{font:800 13px var(--cond);letter-spacing:2px;color:var(--orange)}
+.ehero h2{font:800 52px/.95 var(--cond);margin:3px 0 6px}
+.ehero p{font:700 16px var(--cond);letter-spacing:1px;color:#e6e8ec;line-height:1.25}
+.ehero svg{position:absolute;right:-8px;bottom:6px}
+.ebody{margin:0 12px;border:1px solid var(--line);border-top:0;padding:14px 14px 18px;border-radius:0 0 6px 6px}
+.ebody .hi{font-size:15px;font-weight:700}
+.ebody p{font-size:13.5px;line-height:1.45;color:#3c4350;margin-top:5px}
+.ebody ul{list-style:none;margin:12px 0 4px}
+.ebody li{display:flex;gap:9px;align-items:center;font-size:13.5px;font-weight:600;padding:6px 0}
+.ebody li i{width:24px;height:24px;border-radius:50%;background:#fff1e9;color:var(--orange);display:grid;place-items:center;font-style:normal;font-size:13px;flex:none}
+#rsvpBtn{margin-top:14px;height:48px;border-radius:6px;background:var(--orange);color:#fff;font:800 22px var(--cond);letter-spacing:1.5px;display:grid;place-items:center}
+.efoot{text-align:center;font-size:11px;color:var(--muted);padding:14px 20px 30px;line-height:1.5}
+
+/* RSVP page */
+#rs{background:#f5f6f8}
+.rh{background:#000;border-bottom:4px solid var(--orange);color:#fff;padding:12px 16px}
+.rh b{font:800 24px var(--cond);letter-spacing:.8px;display:block}
+.rh span{font-size:12px;color:#c9ced6}
+.rb{padding:14px 16px}
+.lbl{font-size:10.5px;font-weight:700;color:var(--muted);margin-bottom:4px;letter-spacing:.4px}
+.f{height:38px;border:1.5px solid #d5d9df;border-radius:6px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;padding:0 11px;font-size:14px;background:#fff}
+.f em{font-style:normal;font-size:10.5px;color:var(--green);font-weight:700}
+.q{font-size:13px;font-weight:700;margin:6px 0 7px}
+.step{display:flex;align-items:center;gap:0;margin-bottom:12px;background:#fff;border:1.5px solid #d5d9df;border-radius:8px;width:150px;height:40px;overflow:hidden}
+.step span{flex:1;text-align:center;font-size:20px;font-weight:700;color:#3c4350}
+.step #cnt{font-size:17px;border-left:1.5px solid #d5d9df;border-right:1.5px solid #d5d9df;line-height:38px}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.chip{height:40px;border:1.5px solid #d5d9df;border-radius:8px;display:grid;place-items:center;text-align:center;font-size:12px;font-weight:700;color:#3c4350;background:#fff;line-height:1.15;padding:0 6px}
+.chip.on{border-color:var(--orange);background:#fff1e9;color:#b5420e}
+#rSubmit{margin-top:16px;height:46px;border-radius:6px;background:var(--orange);color:#fff;font:800 20px var(--cond);letter-spacing:1.5px;display:grid;place-items:center}
+.rok{position:absolute;left:0;right:0;top:44px;bottom:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:10px;opacity:0;z-index:3}
+.rok .chk{width:66px;height:66px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.rok b{font:800 28px var(--cond);letter-spacing:.5px}
+.rok span{font-size:14px;color:var(--muted);line-height:1.45}
+.rok .cal{margin-top:6px;border:1.5px solid #c9ced6;border-radius:8px;padding:10px 20px;font-weight:700;font-size:14px;color:var(--link)}
+
+/* reminder lock screen */
+#rm{background:linear-gradient(180deg,#2d3a52,#121722);color:#fff;padding-top:0}
+#rm::before{display:none}
+.lk{text-align:center;padding-top:96px}
+.lk small{font-size:15px;opacity:.85}
+.lk b{display:block;font-size:76px;font-weight:300;line-height:1;margin-top:4px}
+#remind{position:absolute;left:10px;right:10px;top:270px;background:rgba(255,255,255,.92);color:var(--ink);border-radius:18px;padding:12px 14px;display:flex;gap:10px;box-shadow:0 10px 26px rgba(0,0,0,.3);opacity:0}
+#remind .ic{width:36px;height:36px;border-radius:9px;background:var(--link);display:grid;place-items:center;flex:none}
+#remind b{font-size:13.5px;display:flex;justify-content:space-between}
+#remind b span{font-weight:400;color:var(--muted);font-size:12px}
+#remind p{font-size:13px;line-height:1.35;margin-top:2px}
+
+/* live dashboard (same card as the seasonal trailers) */
+#res{position:absolute;left:44px;top:170px;width:500px;opacity:0}
+#res .k{font:800 18px var(--cond);letter-spacing:4px;color:var(--orange);margin-bottom:12px}
+.db{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 18px 40px rgba(20,50,30,.13)}
+.db-h{background:#111;border-bottom:4px solid var(--orange);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:flex-end}
+.db-h b{font:800 24px var(--cond);letter-spacing:1px;display:block}
+.db-h span{font-size:12px;color:#b9bec7}
+.db-h em{font-style:normal;font-size:11px;letter-spacing:1px;color:#b9bec7;font-weight:700}
+.db-tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 20px 20px}
+.db-tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;opacity:0}
+.db-tile small{font:800 15px var(--cond);letter-spacing:2px;color:#65676b}
+.db-tile b{display:block;font:800 54px/1 var(--cond);margin-top:2px}
+
+/* touch indicator */
+#dot{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.9);box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:0;z-index:20}
+#rip{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid var(--orange);opacity:0;z-index:19}
+
+/* captions + step tracker */
+.cap-k{position:absolute;left:580px;top:228px;font:800 64px/.9 var(--cond);letter-spacing:1px;color:var(--orange)}
+.cap{position:absolute;left:580px;top:316px;width:640px;display:flex;gap:22px;opacity:0;color:var(--ink)}
+.cap .n{flex:none;width:60px;height:60px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-weight:800;font-size:28px;margin-top:4px}
+.cap p{font-size:50px;font-weight:700;line-height:1.14;letter-spacing:-.5px}
+.cap p em{font-style:normal;color:var(--orange)}
+.cap p small{display:block;font-size:20px;font-weight:600;line-height:1.35;letter-spacing:0;color:#3c4350;margin-top:12px}
+#chan{position:absolute;left:580px;top:540px;display:flex;gap:12px;opacity:0}
+#chan span{display:flex;align-items:center;gap:10px;border:2px solid #c9d6cf;background:rgba(255,255,255,.6);border-radius:32px;padding:9px 20px 9px 10px;font:800 26px var(--cond);letter-spacing:1px;color:#8a958f;transform-origin:50% 50%}
+#chan span i{width:38px;height:38px;border-radius:50%;background:#e3e8e5;display:grid;place-items:center}
+#chan span.past{color:#3c4350;border-color:#9fb0a8}
+#chan span.past i{background:#d6e2db}
+#chan span.on{color:#fff;border-color:var(--orange);background:var(--orange);transform:scale(1.08);box-shadow:0 10px 24px rgba(255,54,0,.35)}
+#chan span.on i{background:#fff}
+
+.endc{position:absolute;inset:0;background:linear-gradient(160deg,#e8f5fc,#fff8e8);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink);opacity:0;text-align:center;z-index:15}
+.endc .k{font-size:16px;letter-spacing:5px;color:var(--orange);font-weight:800}
+.endc h2{font-size:64px;font-weight:800;letter-spacing:1px;margin:8px 0 34px}
+.steps{display:flex;gap:14px;align-items:center;font-size:19px;font-weight:600;color:#3c4350}
+.steps span{border:1.5px solid #c9d6cf;background:#fff;border-radius:30px;padding:10px 20px}
+.steps i{color:var(--orange);font-style:normal;font-weight:800}
+.replay{margin-top:40px;display:flex;align-items:center;gap:10px;border:0;border-radius:30px;background:var(--orange);color:#fff;font:800 20px var(--cond);letter-spacing:1.5px;text-transform:uppercase;padding:12px 26px;cursor:pointer;opacity:0;pointer-events:none}
+.replay:hover{background:#ff7a3d}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+<div class="stage" id="stage">
+
+  <!-- intro: dealer sends the invite to their customer list -->
+  <div id="intro">
+    <svg id="introLines" width="1280" height="720"></svg>
+    <div class="dlr"><div>BOBCAT<br>DEALER<small>YOUR CUSTOMERS</small></div></div>
+  </div>
+
+  <div class="phone" id="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="status" id="status"><span id="clock">9:41</span><i></i></div>
+
+    <section class="sc" id="ib">
+      <div class="mh"><small>‹ Mailboxes</small><h3>Inbox</h3></div>
+      <div class="msearch"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" stroke="#8a919c" stroke-width="2.6" fill="none"/><path d="M15.5 15.5l5 5" stroke="#8a919c" stroke-width="2.6" stroke-linecap="round"/></svg>Search</div>
+      <div id="newWrap"><div class="row" id="newRow"><span class="av yd">YD</span><div class="tx"><div class="t1"><b>Your Bobcat Dealer</b><span>9:41 AM</span></div><div class="t2">You're invited: Spring Demo Day 🚜</div><div class="t3">Hi Jordan, join us Sat, April 18 for a hands-on…</div></div></div></div>
+      <div class="row"><span class="av" style="background:#6b8f3a">HD</span><div class="tx"><div class="t1"><b>Hardware Depot</b><span>8:12 AM</span></div><div class="t2">Weekend sale on outdoor tools</div><div class="t3">Save on mowers, trimmers and more this…</div></div></div>
+      <div class="row"><span class="av" style="background:#b8578f">M</span><div class="tx"><div class="t1"><b>Mom</b><span>Yesterday</span></div><div class="t2">Sunday dinner?</div><div class="t3">Are you and the kids coming over this…</div></div></div>
+      <div class="row"><span class="av" style="background:#3f6fb0">CU</span><div class="tx"><div class="t1"><b>City Utilities</b><span>Yesterday</span></div><div class="t2">Your bill is ready</div><div class="t3">Your March statement is now available…</div></div></div>
+      <div class="row"><span class="av" style="background:#c07a2c">CR</span><div class="tx"><div class="t1"><b>Coach Ryan</b><span>Mon</span></div><div class="t2">Practice moved to 5:30</div><div class="t3">Heads up, field 2 is closed so we're…</div></div></div>
+      <div class="row"><span class="av" style="background:#5b5f97">AJ</span><div class="tx"><div class="t1"><b>Alex Jordan</b><span>Mon</span></div><div class="t2">Photos from the lake</div><div class="t3">Here are the ones from Saturday, the…</div></div></div>
+      <div id="notif"><span class="ic"><svg width="20" height="16" viewBox="0 0 24 18"><rect x="1" y="1" width="22" height="16" rx="2" fill="#fff"/><path d="M2 2l10 8 10-8" stroke="#1f6fd1" stroke-width="2" fill="none"/></svg></span>
+        <div><b>Your Bobcat Dealer<span>now</span></b><p>You're invited: Spring Demo Day 🚜</p></div></div>
+    </section>
+
+    <section class="sc" id="em">
+      <div class="mtb"><span>‹ Inbox</span><span>⋯</span></div>
+      <div class="mview"><div id="emIn">
+        <div class="from"><span class="av yd" style="width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:12px">YD</span><div><b>Your Bobcat Dealer</b><span>To: Jordan Miller · 9:41 AM</span></div></div>
+        <div class="subj">You're invited: Spring Demo Day 🚜</div>
+        <div class="ebrand"><i></i>YOUR BOBCAT DEALER</div>
+        <div class="ehero"><small>YOU'RE INVITED</small><h2>DEMO DAY</h2><p>SAT, APRIL 18<br>9 AM – 2 PM</p>
+          <svg data-m="track" width="170" height="102"></svg></div>
+        <div class="ebody">
+          <div class="hi">Hi Jordan,</div>
+          <p>Join us for a hands-on day with the newest Bobcat equipment, right on our lot.</p>
+          <ul>
+            <li><i>✓</i>Test-drive the newest machines</li>
+            <li><i>✓</i>Live attachment demos</li>
+            <li><i>✓</i>Lunch on us</li>
+            <li><i>✓</i>Event-day offers</li>
+          </ul>
+          <div id="rsvpBtn">RSVP NOW</div>
+        </div>
+        <div class="efoot">Your Bobcat Dealer · 123 Main St<br>You're receiving this as a valued customer. Unsubscribe</div>
+      </div></div>
+    </section>
+
+    <section class="sc" id="rs">
+      <div class="rh"><b>DEMO DAY RSVP</b><span>Sat, April 18 · 9 AM – 2 PM · Your Bobcat Dealer</span></div>
+      <div class="rb">
+        <div class="lbl">NAME</div><div class="f">Jordan Miller<em>✓ From your invite</em></div>
+        <div class="lbl">EMAIL</div><div class="f">jordan.m@email.com<em>✓</em></div>
+        <div class="q">How many are coming?</div>
+        <div class="step"><span>−</span><span id="cnt">1</span><span id="plus">+</span></div>
+        <div class="q">What would you like to try?</div>
+        <div class="chips"><span class="chip" id="c1">T76 Track Loader</span><span class="chip" id="c2">E35 Excavator</span><span class="chip">S66 Skid-Steer</span><span class="chip">Attachments</span></div>
+        <div id="rSubmit">SAVE MY SPOT</div>
+      </div>
+      <div class="rok" id="rok"><span class="chk"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>YOU'RE ON THE LIST!</b><span>Sat, April 18 · 9 AM – 2 PM<br>2 guests · T76, E35 ready for you</span><span class="cal">📅 Add to calendar</span></div>
+    </section>
+
+    <section class="sc" id="rm">
+      <div class="lk"><small>Friday, April 17</small><b>8:00</b></div>
+      <div id="remind"><span class="ic"><svg width="20" height="16" viewBox="0 0 24 18"><rect x="1" y="1" width="22" height="16" rx="2" fill="#fff"/><path d="M2 2l10 8 10-8" stroke="#1f6fd1" stroke-width="2" fill="none"/></svg></span>
+        <div><b>Your Bobcat Dealer<span>now</span></b><p><strong>Tomorrow: Demo Day 🚜</strong><br>9 AM – 2 PM. Your T76 and E35 test drives are set. See you there, Jordan!</p></div></div>
+    </section>
+  </div></div>
+
+  <!-- live dashboard -->
+  <div id="res">
+    <div class="k">EVERY MONTH</div>
+    <div class="db">
+      <div class="db-h"><div><b>LIVE DASHBOARD</b><span>Email · Your Bobcat Dealer</span></div><em>EXAMPLE</em></div>
+      <div class="db-tiles">
+        <div class="db-tile"><small>OPENS</small><b data-n="1940">0</b></div>
+        <div class="db-tile"><small>CLICKS</small><b data-n="312">0</b></div>
+        <div class="db-tile"><small>CALLS</small><b data-n="24">0</b></div>
+        <div class="db-tile"><small>FORM FILLS</small><b data-n="86">0</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- captions -->
+  <div class="cap-k">EMAIL MARKETING</div>
+  <div class="cap" id="cap1"><span class="n">1</span><p>Invite <em>your customers</em> to your next event</p></div>
+  <div class="cap" id="cap2"><span class="n">2</span><p>Your invite lands right in their inbox</p></div>
+  <div class="cap" id="cap3"><span class="n">3</span><p>A personal invite with everything they need</p></div>
+  <div class="cap" id="cap4"><span class="n">4</span><p>One tap to RSVP and pick what to try</p></div>
+  <div class="cap" id="cap5"><span class="n">5</span><p>Automatic reminders get them there</p></div>
+  <div class="cap" id="cap6"><span class="n">6</span><p>Track your results, <em>any time</em><small>Opens, clicks, calls and form fills for every location, in one live dashboard.</small></p></div>
+  <div id="chan"></div>
+
+  <div class="endc" id="end">
+    <div class="k">EMAIL MARKETING</div>
+    <h2>REPEAT BUSINESS</h2>
+    <div class="steps"><span>They're invited</span><i>→</i><span>They RSVP</span><i>→</i><span>They show up ready to try</span></div>
+    <button class="replay" id="replay"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M4 3v5h5" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Replay</button>
+  </div>
+
+  <div id="rip"></div>
+  <div id="dot"></div>
+</div>
+</div>
+
+<script src="player.js"></script>
+<script>
+const D = 24.2, $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const wrap = $('#wrap'), stage = $('#stage');
+if (window.self !== window.top) document.body.classList.add('embed');
+
+// step glyphs
+const G = {
+  invite: '<svg width="20" height="20" viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2" fill="none" stroke="#16181d" stroke-width="2.2"/><path d="M3 6l9 7 9-7" stroke="#16181d" stroke-width="2.2" fill="none"/></svg>',
+  open: '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M2.5 10l9.5-7 9.5 7v10h-19z" fill="none" stroke="#16181d" stroke-width="2.2" stroke-linejoin="round"/><path d="M3 10.5l9 6 9-6" stroke="#16181d" stroke-width="2.2" fill="none"/></svg>',
+  rsvp: '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#16181d" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  remind: '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z" fill="#16181d"/><circle cx="12" cy="20.5" r="2" fill="#16181d"/></svg>',
+};
+const CH = [['invite', 'INVITE', 3.5, 7.0], ['open', 'OPEN', 7.0, 11.2], ['rsvp', 'RSVP', 11.2, 15.6], ['remind', 'REMINDER', 15.6, 19.0]];
+$('#chan').innerHTML = CH.map(([k, l]) => `<span><i>${G[k]}</i>${l}</span>`).join('');
+
+// intro: customers fanned out to the right of the dealer, an envelope flies to each
+const DC = { x: 230, y: 360 };
+const CUST = [['JM', '#c07a2c'], ['SP', '#3f6fb0'], ['RG', '#6b8f3a'], ['MO', '#b8578f'], ['DB', '#5b5f97'], ['LC', '#2f8f8a']];
+const CY = i => 170 + i * 76;
+$('#introLines').innerHTML = CUST.map((_, i) => `<line class="il" x1="${DC.x}" y1="${DC.y}" x2="470" y2="${CY(i)}" stroke="#ff3600" stroke-width="2.5" stroke-dasharray="6 7" opacity="0"/>`).join('');
+CUST.forEach(([n, c], i) => {
+  const el = document.createElement('div');
+  el.className = 'cust'; el.style.top = CY(i) + 'px'; el.style.background = c;
+  el.innerHTML = `${n}<i><svg width="11" height="11" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/></svg></i>`;
+  $('#intro').appendChild(el);
+  const env = document.createElement('div');
+  env.className = 'env';
+  env.innerHTML = '<svg width="34" height="24" viewBox="0 0 34 24"><rect x="1" y="1" width="32" height="22" rx="3" fill="#fff"/><path d="M2 2l15 11 15-11" stroke="#ff3600" stroke-width="2.4" fill="none"/></svg>';
+  $('#intro').appendChild(env);
+});
+
+// T76 compact track loader illustration
+$$('svg[data-m]').forEach(svg => {
+  svg.setAttribute('viewBox', '0 0 200 120');
+  svg.innerHTML =
+    '<path d="M142 34 L176 66" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/>' +
+    '<path d="M162 60 h26 l6 34 h-34 z" fill="#3a3d42"/>' +
+    '<rect x="40" y="54" width="112" height="36" rx="7" fill="#ff3600"/>' +
+    '<rect x="68" y="18" width="58" height="46" rx="6" fill="#0d0e10" stroke="#3a3d42" stroke-width="2"/>' +
+    '<rect x="75" y="25" width="44" height="33" rx="3" fill="#a9c6d6"/>' +
+    '<rect x="36" y="84" width="120" height="26" rx="13" fill="#2a2c30" stroke="#3a3d42" stroke-width="2"/><circle cx="52" cy="97" r="7" fill="#777"/><circle cx="96" cy="97" r="5" fill="#777"/><circle cx="140" cy="97" r="7" fill="#777"/>';
+});
+
+let scale = 1;
+// fit the 1280×720 stage inside the frame, letterboxed if needed (full screen can be any shape)
+function fit() {
+  scale = Math.min(wrap.clientWidth / 1280, wrap.clientHeight / 720);
+  stage.style.transform = `translate(${(wrap.clientWidth - 1280 * scale) / 2}px,${(wrap.clientHeight - 720 * scale) / 2}px) scale(${scale})`;
+}
+new ResizeObserver(fit).observe(wrap); fit();
+
+const clamp = v => Math.max(0, Math.min(1, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+const out3 = x => 1 - Math.pow(1 - x, 3);
+const win = (t, a, b, f = .3) => seg(t, a, a + f) * (1 - seg(t, b - f, b));
+function center(sel) {
+  const r = $(sel).getBoundingClientRect(), s = stage.getBoundingClientRect();
+  return { x: (r.left - s.left + r.width / 2) / scale, y: (r.top - s.top + r.height / 2) / scale };
+}
+const fade = (sel, o, dy = 0) => { const el = $(sel); el.style.opacity = o; if (dy) el.style.transform = `translateY(${(1 - o) * dy}px)`; };
+
+const TAPS = [[6.6, '#newRow'], [11.0, '#rsvpBtn'], [12.3, '#plus'], [12.95, '#c1'], [13.5, '#c2'], [14.2, '#rSubmit']];
+
+// live dashboard: card fades in at `a`, tiles drop in and count up (data-f="%" adds a percent sign)
+function dashboard(t, a) {
+  $('#res').style.opacity = seg(t, a, a + .4);
+  $$('.db-tile').forEach((el, i) => {
+    const p = seg(t, a + .3 + i * .15, a + .7 + i * .15); el.style.opacity = p; el.style.transform = `translateY(${(1 - out3(p)) * 12}px)`;
+    const b = el.querySelector('b');
+    b.textContent = Math.round(+b.dataset.n * out3(seg(t, a + .5 + i * .15, a + 2.1 + i * .15))).toLocaleString('en-US') + (b.dataset.f || '');
+  });
+}
+
+function render(t, replays) {
+  // 1. intro: envelopes fly from the dealer to each customer
+  $('#intro').style.opacity = seg(t, 0, .4) * (1 - seg(t, 3.0, 3.5));
+  $$('.il').forEach((l, i) => l.style.opacity = .7 * seg(t, .4 + i * .08, .7 + i * .08));
+  $$('.cust').forEach((el, i) => {
+    const a = seg(t, .4 + i * .08, .8 + i * .08); el.style.opacity = a; el.style.transform = `scale(${.6 + .4 * out3(a)})`;
+    el.querySelector('i').style.opacity = seg(t, 1.7 + i * .15, 1.9 + i * .15);
+  });
+  $$('.env').forEach((el, i) => {
+    const p = ease(seg(t, 1.0 + i * .15, 1.75 + i * .15));
+    el.style.opacity = p > 0 && p < 1 ? 1 : 0;
+    // leave from the edge of the dealer circle, not over its label
+    const a = Math.atan2(CY(i) - DC.y, 470 - DC.x), sx = DC.x + 95 * Math.cos(a), sy = DC.y + 95 * Math.sin(a);
+    el.style.transform = `translate(${sx + (440 - sx) * p}px,${sy + (CY(i) - sy) * p}px)`;
+  });
+
+  // phone and its scenes
+  $('#phone').style.opacity = seg(t, 3.0, 3.5) * (1 - seg(t, 18.6, 19.1));
+  fade('#ib', 1 - seg(t, 6.85, 7.2));
+  $('#em').style.opacity = seg(t, 6.85, 7.2) * (1 - seg(t, 11.15, 11.5));
+  $('#em').style.transform = `translateX(${(1 - ease(seg(t, 6.85, 7.25))) * 60}px)`;
+  fade('#rs', seg(t, 11.15, 11.5) * (1 - seg(t, 15.4, 15.75)));
+  fade('#rm', seg(t, 15.4, 15.75));
+  $('#status').style.color = t > 15.5 ? '#fff' : '#111';
+  $('#clock').textContent = t > 15.5 ? '8:00' : '9:41';
+
+  // 2. inbox: notification, then the invite lands at the top
+  const nb = win(t, 4.0, 5.7, .4);
+  $('#notif').style.transform = `translateY(${(1 - out3(nb)) * -140}%)`;
+  $('#newWrap').style.height = $('#newRow').offsetHeight * ease(seg(t, 4.7, 5.2)) + 'px';
+  $('#newRow').style.background = t > 6.5 && t < 7.0 ? '#eef0f3' : '#fff';
+
+  // 3. the email, scrolled to the RSVP button
+  const btn = $('#rsvpBtn');
+  $('#emIn').style.transform = `translateY(${-(btn.offsetTop + btn.offsetParent.offsetTop - 380) * ease(seg(t, 8.8, 10.0))}px)`;
+  btn.style.transform = t >= 11.0 && t < 11.14 ? 'scale(.97)' : '';
+  btn.style.boxShadow = `0 0 0 ${5 * win(t, 10.1, 11.1, .25)}px rgba(255,54,0,.35)`;
+
+  // 4. RSVP: one more guest, pick machines, save
+  $('#cnt').textContent = t >= 12.3 ? 2 : 1;
+  $('#c1').classList.toggle('on', t >= 12.95);
+  $('#c2').classList.toggle('on', t >= 13.5);
+  $('#rSubmit').style.transform = t >= 14.2 && t < 14.34 ? 'scale(.97)' : '';
+  $('#rok').style.opacity = seg(t, 14.4, 14.7);
+
+  // 5. reminder the day before
+  const rm = seg(t, 16.2, 16.6);
+  $('#remind').style.opacity = rm;
+  $('#remind').style.transform = `translateY(${(1 - out3(rm)) * -30}px)`;
+
+  // 6. live dashboard
+  dashboard(t, 19.0);
+
+  // captions + step tracker
+  [[1, .4, 3.2], [2, 3.6, 7.0], [3, 7.3, 11.3], [4, 11.5, 15.6], [5, 15.8, 18.9], [6, 19.2, 22.8]].forEach(([i, a, b]) => fade('#cap' + i, win(t, a, b, .35), 12));
+  $('.cap-k').style.opacity = seg(t, .2, .6);
+  $('#chan').style.opacity = seg(t, 3.3, 3.7);
+  $$('#chan span').forEach((el, i) => { const [, , a, b] = CH[i]; el.className = t >= a && t < b ? 'on' : t >= b ? 'past' : ''; });
+
+  // touch indicator
+  const dot = $('#dot'), rip = $('#rip'), tap = TAPS.find(([k]) => t >= k - .4 && t < k + .35);
+  if (tap) {
+    const [k, sel] = tap, c = center(sel), press = t >= k && t < k + .14;
+    dot.style.opacity = win(t, k - .4, k + .35, .15);
+    dot.style.transform = `translate(${c.x}px,${c.y}px) scale(${press ? .8 : 1})`;
+    if (t >= k) { const p = (t - k) / .35; rip.style.opacity = 1 - p; rip.style.transform = `translate(${c.x}px,${c.y}px) scale(${.5 + p})`; }
+    else rip.style.opacity = 0;
+  } else { dot.style.opacity = 0; rip.style.opacity = 0; }
+
+  // end card + replay
+  $('#end').style.opacity = Math.max(seg(t, 23.2, 23.7), replays > 0 ? 1 - seg(t, 0, .4) : 0);
+  const rp = seg(t, 23.6, 24.0), rb = $('#replay');
+  rb.style.opacity = rp; rb.style.pointerEvents = rp > .5 ? 'auto' : 'none';
+}
+
+// player: shared seek bar + controls (player.js); plays once and stops on the end card
+startPlayer({ D, render: t => render(t, 0), replay: '#replay' });
+</script>
+</body>
+</html>

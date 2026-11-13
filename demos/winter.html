@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Winter Promotions Trailer</title>
+<!--
+  "See it in action" trailer for the Winter Promotions seasonal campaign (61s, plays once, then Replay).
+  Act 1 the opportunity (first snow, three kinds of winter business, built for your market)
+  Act 2 three revenue streams: Snow rentals (Search) → Attachments (Social) → Sales (Performance Max across Google)
+  Act 3 why opt in (runs all winter, live dashboard, you opt in / we handle the rest) → end card with price + dates.
+  Price, co-op, dates and deadline come from the URL so the end card matches the campaign:
+    winter.html?price=2500&coop=625&start=Jan%201&end=Mar%2031&deadline=Dec%2017
+  Controls: seek bar with chapters, Space to play/pause, ←/→ to skip 5s. Review a single frame: winter.html?t=20
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--page:#eef0f3;--ink:#16181d;--muted:#65676b;--line:#e4e6ea;--orange:#ff3600;--link:#1f6fd1;--green:#1e7b45;
+  --cond:"Barlow Condensed","Arial Narrow",Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#121417}}
+:root[data-theme="dark"]{--page:#121417}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page)}
+body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);display:grid;place-items:center;min-height:100vh;padding:16px}
+body.embed{padding:0;overflow:hidden}
+body.embed .wrap{width:min(100%,calc(100vh * 16 / 9))}
+.wrap{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#0d1424}
+.stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(900px 520px at 18% 112%,rgba(255,54,0,.26),transparent 60%),linear-gradient(160deg,#16233d,#0b111d 70%)}
+.layer{position:absolute;inset:0;opacity:0}
+.k{font:800 18px var(--cond);letter-spacing:4px;color:var(--orange)}
+.big{font:800 96px/.92 var(--cond);letter-spacing:1px;color:#fff;text-transform:uppercase}
+.mid{font:800 58px/.98 var(--cond);letter-spacing:.5px;color:#fff;text-transform:uppercase}
+.sub{font-size:24px;font-weight:600;color:#c9d3e3;line-height:1.35}
+em{font-style:normal;color:var(--orange)}
+
+/* snow */
+#snow{position:absolute;inset:0;pointer-events:none;z-index:12}
+#snow i{position:absolute;left:0;top:0;border-radius:50%;background:#fff}
+
+/* 1. hook: the lot at night */
+#lot{position:absolute;left:0;right:0;bottom:0;height:300px}
+#lotSvg{position:absolute;left:0;bottom:0}
+.hook{position:absolute;left:0;right:0;text-align:center;opacity:0;font:800 80px/.95 var(--cond);letter-spacing:.5px;color:#fff;text-transform:uppercase}
+#hookA{top:112px}#hookB{top:206px;color:var(--orange)}
+
+/* 2. three kinds of winter business */
+#bTitle{position:absolute;left:0;right:0;top:92px;text-align:center}
+.buyers{position:absolute;left:110px;top:230px;display:flex;gap:30px}
+.buyer{width:330px;height:300px;border-radius:18px;background:#fff;padding:24px;display:flex;flex-direction:column;gap:12px;opacity:0;box-shadow:0 24px 48px rgba(0,0,0,.4)}
+.buyer .ic{width:74px;height:74px;border-radius:50%;background:#fff0ea;display:grid;place-items:center}
+.buyer b{font:800 34px/1 var(--cond);letter-spacing:.5px}
+.buyer p{font-size:19px;color:#3c4350;line-height:1.35}
+.buyer .tag{margin-top:auto;align-self:flex-start;font:800 20px var(--cond);letter-spacing:2px;color:#fff;background:var(--orange);border-radius:6px;padding:6px 12px}
+
+/* 3. built for your market */
+#mTitle{position:absolute;left:0;right:0;top:70px;text-align:center}
+#mSub{position:absolute;left:0;right:0;top:136px;text-align:center}
+#cMap{position:absolute;left:80px;top:214px;overflow:visible}
+#cMap .lbl{font:800 14px var(--cond);letter-spacing:1px;fill:#fff;text-anchor:middle}
+#cPin{position:absolute;width:46px;height:60px}
+.rows{position:absolute;left:660px;top:256px;display:flex;flex-direction:column;gap:16px}
+.row{width:460px;height:78px;display:flex;align-items:center;gap:18px;padding:0 22px;border-radius:16px;background:#fff;box-shadow:0 18px 36px rgba(0,0,0,.35);opacity:0}
+.row span{width:52px;height:52px;border-radius:50%;background:var(--orange);display:grid;place-items:center;flex:none}
+.row b{font:800 36px/1 var(--cond);letter-spacing:1px;color:var(--ink)}
+
+/* 4-6. phone */
+.phone{position:absolute;left:170px;top:20px;width:340px;height:680px;border-radius:50px;background:#0b0c0e;box-shadow:0 30px 60px rgba(0,0,0,.5),inset 0 0 0 2px #2a2d33;opacity:0;z-index:5;transform-origin:170px 96px}
+.screen{position:absolute;left:10px;top:10px;width:320px;height:660px;border-radius:40px;overflow:hidden;background:#fff}
+.notch{position:absolute;left:50%;top:9px;width:96px;height:26px;margin-left:-48px;border-radius:14px;background:#0b0c0e;z-index:9}
+.status{position:absolute;left:0;right:0;top:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:6px 26px 0 30px;font-size:14px;font-weight:600;z-index:8}
+.status i{display:inline-block;width:22px;height:11px;border:1.5px solid currentColor;border-radius:3px;position:relative}
+.status i::after{content:"";position:absolute;inset:1.5px 4px 1.5px 1.5px;background:currentColor;border-radius:1px}
+.sc{position:absolute;inset:0;padding-top:44px;opacity:0;overflow:hidden;background:#fff}
+.caret{display:inline-block;width:2px;height:18px;background:var(--ink);vertical-align:middle;margin-left:1px}
+.ring{position:absolute;inset:-3px;border:3px solid var(--orange);border-radius:10px;opacity:0;pointer-events:none}
+.sbox{height:42px;border:1px solid #d6dae0;border-radius:21px;display:flex;align-items:center;gap:9px;padding:0 14px;font-size:13.5px;margin:8px 12px 10px}
+/* search */
+.r{opacity:0}
+#sAd{position:relative;margin:0 12px 8px;padding:10px;border-radius:10px}
+.spons{font-size:12px;font-weight:700;margin-bottom:5px}
+.site{display:flex;gap:8px;align-items:center}
+.fav{width:24px;height:24px;border-radius:50%;background:#111;color:var(--orange);font-weight:800;font-size:9.5px;display:grid;place-items:center;flex:none}
+.fav.g{background:#d0d4da}
+.site b{display:block;font-size:12.5px}
+.site span{display:block;font-size:10.5px;color:var(--muted)}
+.ttl{font-size:17px;line-height:1.25;color:var(--link);margin:6px 0 4px}
+.desc{font-size:12.5px;color:#4a505b;line-height:1.45}
+.chips{display:flex;gap:6px;margin-top:8px}
+.chips span{border:1px solid #d6dae0;border-radius:14px;padding:5px 10px;font-size:12px;color:var(--link)}
+.chips #sCall{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700}
+.org{padding:8px 16px}
+.org .ttl{font-size:15px}
+.callui{position:absolute;inset:0;background:linear-gradient(180deg,#2b2f36,#121316);color:#fff;display:flex;flex-direction:column;align-items:center;padding-top:130px;opacity:0;z-index:6}
+.callui .av{width:90px;height:90px;border-radius:50%;background:#111;color:var(--orange);display:grid;place-items:center;font-weight:800;font-size:28px}
+.callui b{font-size:23px;margin-top:18px}
+.callui span{font-size:15px;color:#c9ced6;margin-top:6px}
+.callui .endb{width:66px;height:66px;border-radius:50%;background:#e5484d;display:grid;place-items:center;margin-top:auto;margin-bottom:70px}
+/* feed */
+.appbar{height:46px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);font-size:26px;font-weight:800;letter-spacing:-1px;color:#4c5bd4;background:#fff;position:relative;z-index:2}
+.feedv{position:absolute;left:0;right:0;top:90px;bottom:0;overflow:hidden;background:#e9ebef}
+.post{background:#fff;margin-bottom:8px}
+.ph{display:flex;align-items:center;gap:9px;padding:10px 12px 8px}
+.pav{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex:none}
+.ph b{font-size:14px;display:block}
+.ph span{font-size:12px;color:var(--muted)}
+.ptxt{font-size:13.5px;padding:0 12px 9px;line-height:1.35}
+.pimg{display:block;width:320px;height:170px}
+#fAd{position:relative}
+.adimg{position:relative;height:240px;overflow:hidden;color:#fff;padding:16px;background:linear-gradient(118deg,#111 0 60%,var(--orange) 60% 62.5%,#1f2125 62.5%)}
+.adimg small{font:800 13px var(--cond);letter-spacing:2px;color:var(--orange)}
+.adimg b{display:block;font:800 40px/.98 var(--cond);margin-top:4px}
+.adimg p{font:700 15px var(--cond);letter-spacing:1px;color:#d4d7dc;margin-top:6px}
+.adimg svg{position:absolute;right:-6px;bottom:8px}
+.adfoot{display:flex;align-items:center;gap:10px;background:#f0f2f5;padding:10px 12px}
+.adfoot small{display:block;font-size:10.5px;color:var(--muted)}
+.adfoot b{font-size:14px;display:block}
+#fCta{margin-left:auto;background:#e2e5e9;border-radius:6px;padding:9px 13px;font-size:13px;font-weight:700}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;z-index:6}
+.sheet{position:absolute;left:0;right:0;top:120px;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:7;transform:translateY(110%);padding:10px 16px}
+.grab{width:40px;height:5px;border-radius:3px;background:#d0d3d8;margin:0 auto 12px}
+.sheet h4{font-size:17px;margin-bottom:4px}
+.sheet .q{font-size:14px;color:var(--muted);margin-bottom:12px}
+.opt{height:46px;border:1.5px solid #d5d9df;border-radius:10px;margin-bottom:9px;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:15px;font-weight:600;color:#3c4350;opacity:0}
+.opt i{width:18px;height:18px;border-radius:50%;border:2px solid #c9ced6;flex:none}
+.opt.on{border-color:var(--orange);background:#fff0ea;color:#a92600}
+.opt.on i{border-color:var(--orange);background:radial-gradient(var(--orange) 45%,#fff 50%)}
+#fSubmit{margin-top:12px;height:46px;border-radius:10px;background:#4c5bd4;color:#fff;font-weight:700;font-size:15px;display:grid;place-items:center}
+.ok{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:10px;opacity:0;border-radius:16px 16px 0 0}
+.ok .chk{width:64px;height:64px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.ok b{font-size:20px}
+.ok span{font-size:14px;color:var(--muted);line-height:1.45}
+/* performance max: video, mail, display, maps */
+.yh{height:40px;display:flex;align-items:center;gap:7px;padding:0 14px;font:800 20px var(--cond)}
+.yh i{width:26px;height:18px;border-radius:5px;background:#111;display:grid;place-items:center}
+.player{position:relative;height:190px;overflow:hidden;color:#fff;padding:18px 16px;background:linear-gradient(118deg,#0d0e10 0 60%,var(--orange) 60% 62.5%,#1d1f23 62.5%)}
+.player b{display:block;font:800 34px/.98 var(--cond)}
+.player p{font:800 17px var(--cond);letter-spacing:1.5px;color:var(--orange);margin-top:4px}
+.player svg{position:absolute;right:-4px;bottom:10px}
+.adb{position:absolute;left:10px;bottom:10px;background:#f7c948;color:#111;font-size:10.5px;font-weight:800;padding:3px 6px;border-radius:3px}
+.vprog{position:absolute;left:0;bottom:0;height:3px;background:#f7c948}
+.vcard{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.vcard .cta{margin-left:auto;background:var(--orange);color:#fff;font-weight:700;font-size:12.5px;padding:8px 12px;border-radius:18px}
+.vt{padding:10px 12px 0;font-size:15px;font-weight:700;line-height:1.3}
+.vm{padding:4px 12px 10px;font-size:11.5px;color:var(--muted)}
+.gbar{height:48px;display:flex;align-items:center;gap:10px;padding:0 16px;font-size:19px;font-weight:700;border-bottom:1px solid var(--line)}
+.gbar i{width:28px;height:20px;border-radius:4px;background:#d93025;display:grid;place-items:center}
+.mrow{position:relative;display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.mrow .pav{width:36px;height:36px}
+.mrow b{display:block;font-size:14px}
+.mrow .sj{display:block;font-size:13.5px;font-weight:600;margin-top:2px}
+.mrow .pv{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+.adt{display:inline-block;font-style:normal;font-size:10.5px;font-weight:800;color:#1e7b45;border:1px solid #1e7b45;border-radius:3px;padding:0 4px;margin-right:4px;vertical-align:1px}
+#gAd{background:#fff8f5}
+#gAd .ring{inset:2px;border-radius:8px}
+.wbar{height:48px;display:flex;align-items:center;padding:0 16px;background:#1c4b82;color:#fff;font-size:18px;font-weight:800}
+.wnow{display:flex;align-items:center;gap:14px;padding:14px 16px}
+.wnow b{font-size:54px;font-weight:300;line-height:1}
+.wnow strong{display:block;font-size:17px}
+.wnow span{display:block;font-size:12.5px;color:#b3261e;font-weight:700;margin-top:2px}
+#dAd{position:relative;margin:4px 14px 12px;height:210px;border-radius:6px;overflow:hidden;color:#fff;padding:16px;background:linear-gradient(118deg,#0d0e10 0 60%,var(--orange) 60% 62.5%,#1d1f23 62.5%)}
+#dAd b{display:block;font:800 32px/.98 var(--cond)}
+#dAd p{font:800 16px var(--cond);letter-spacing:1.5px;color:var(--orange);margin-top:4px}
+#dAd svg{position:absolute;right:-6px;bottom:6px}
+#dAd .adl{position:absolute;right:8px;top:6px;font-size:10px;font-weight:700;color:#c9ced6}
+#dAd .ring{inset:0;border-radius:6px}
+.wart{padding:0 16px}
+.wart b{display:block;font-size:16px;margin-bottom:8px}
+.wart i{display:block;height:9px;border-radius:5px;background:#e6e8ec;margin-bottom:8px}
+#mpBg{position:absolute;left:0;top:0}
+.mbox{position:absolute;left:12px;right:12px;top:52px;height:44px;background:#fff;border-radius:22px;box-shadow:0 3px 12px rgba(0,0,0,.18);display:flex;align-items:center;gap:9px;padding:0 14px;font-size:14px;z-index:2}
+.pin{position:absolute;width:30px;height:40px;margin:-40px 0 0 -15px;opacity:0}
+#pinMe{width:40px;height:52px;margin:-52px 0 0 -20px}
+#mCard{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -6px 20px rgba(0,0,0,.15);padding:10px 16px 26px;transform:translateY(110%);z-index:3}
+#mCard h4{font-size:19px}
+#mCard .m1{font-size:12.5px;color:var(--muted);margin-top:3px}
+#mCard .m1 b{color:var(--ink);background:#f1f3f5;border-radius:3px;padding:1px 5px;margin-right:4px;font-size:11px}
+#mCard .m2{font-size:12.5px;margin-top:4px}
+#mCard .m2 b{color:var(--green)}
+.mbtns{display:flex;gap:8px;margin-top:14px}
+.mbtns span{flex:1;height:40px;border-radius:20px;border:1.5px solid #c9ced6;display:grid;place-items:center;font-size:13px;font-weight:700;color:#1f4e8c}
+.mbtns #mDir{background:var(--orange);border-color:var(--orange);color:#fff}
+#route{position:absolute;left:0;top:0;z-index:1}
+#mRoute{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -6px 20px rgba(0,0,0,.15);padding:14px 16px 28px;transform:translateY(110%);z-index:3}
+#mRoute .rt{display:flex;align-items:baseline;gap:6px}
+#mRoute .rt b{font-size:24px;color:var(--green)}
+#mRoute .rt span{font-size:15px;color:var(--muted)}
+#mRoute .rs{font-size:12.5px;color:var(--muted);margin-top:3px}
+#mRoute .go{margin-top:14px;height:42px;border-radius:21px;background:#1a73e8;color:#fff;font-size:14px;font-weight:700;display:grid;place-items:center}
+
+/* stream captions + tracker */
+.sk{position:absolute;left:580px;top:150px;display:flex;align-items:center;gap:16px;opacity:0}
+.sk span{width:62px;height:62px;border-radius:50%;background:var(--orange);display:grid;place-items:center}
+.sk b{font:800 72px/1 var(--cond);letter-spacing:1px;color:#fff}
+.sl{position:absolute;left:584px;top:236px;font:800 20px var(--cond);letter-spacing:3px;color:#9fb0c9;opacity:0}
+.scap{position:absolute;left:580px;top:290px;width:640px;font-size:46px;font-weight:700;line-height:1.16;letter-spacing:-.5px;color:#fff;opacity:0}
+#gch{position:absolute;left:580px;top:430px;width:640px;opacity:0}
+#gch small{display:block;font:800 16px var(--cond);letter-spacing:3px;color:#9fb0c9;margin-bottom:10px}
+#gch div{display:flex;flex-wrap:wrap;gap:8px}
+#gch span{border:2px solid #34405a;border-radius:22px;padding:7px 13px;font:800 19px var(--cond);letter-spacing:1px;color:#6f7d95}
+#gch span.lit{color:#fff;border-color:#8a9bb8}
+#gch span.on{color:#fff;background:var(--orange);border-color:var(--orange)}
+#trk{position:absolute;left:580px;top:560px;display:flex;gap:12px;opacity:0}
+#trk div{display:flex;flex-direction:column;align-items:flex-start;gap:2px;border:2px solid #34405a;border-radius:16px;padding:10px 18px;min-width:180px;color:#6f7d95}
+#trk div b{font:800 26px var(--cond);letter-spacing:1px}
+#trk div small{font:700 14px var(--cond);letter-spacing:2px}
+#trk div.past{color:#dfe6f1;border-color:#4b5a77}
+#trk div.on{color:#fff;background:var(--orange);border-color:var(--orange);transform:scale(1.06);box-shadow:0 10px 24px rgba(255,54,0,.35)}
+
+/* 7. season timeline */
+#tl{position:absolute;left:120px;top:170px;width:1040px;background:#fff;border-radius:18px;padding:26px 32px 22px;box-shadow:0 24px 48px rgba(0,0,0,.4)}
+#tl .hd{display:flex;justify-content:space-between;align-items:baseline}
+#tl .hd b{font:800 28px var(--cond);letter-spacing:1px}
+#tl .hd span{font-size:14px;color:var(--muted)}
+.bars{position:relative;height:250px;margin-top:18px;display:flex;align-items:flex-end;gap:12px;padding-left:150px}
+.wk{flex:1;display:flex;flex-direction:column-reverse;gap:2px}
+.wk i{display:block;border-radius:3px}
+.axis{position:relative;height:66px;border-top:3px solid #1d2230;margin-top:8px}
+.mk{position:absolute;top:-10px;transform:translateX(-50%);text-align:center}
+.mk i{display:block;width:16px;height:16px;margin:0 auto;transform:rotate(45deg);background:#1d2230}
+.mk b{display:block;font:800 18px var(--cond);letter-spacing:1px;margin-top:8px}
+.mk small{display:block;font-size:12px;color:var(--muted)}
+.mk.dl i{background:var(--orange)}
+.mk.dl b{color:var(--orange)}
+.leg{display:flex;gap:18px;font-size:14px;color:#3c4350;font-weight:600}
+.leg span::before{content:"";display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;background:var(--c)}
+#tlCap{position:absolute;left:0;right:0;top:66px;text-align:center}
+
+/* 8. live dashboard */
+#dash{position:absolute;left:110px;top:190px;width:560px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 24px 48px rgba(0,0,0,.4)}
+.dh{background:#111;border-bottom:4px solid var(--orange);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:flex-end}
+.dh b{font:800 24px var(--cond);letter-spacing:1px;display:block}
+.dh span{font-size:12px;color:#b9bec7}
+.dh em{font-size:11px;letter-spacing:1px;color:#b9bec7;font-weight:700}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 20px 20px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.tile small{font:800 15px var(--cond);letter-spacing:2px;color:var(--muted)}
+.tile b{display:block;font:800 54px/1 var(--cond);margin-top:2px}
+#dCap{position:absolute;left:740px;top:230px;width:480px}
+
+/* 9. you opt in, we handle the rest */
+#vsCap{position:absolute;left:0;right:0;top:84px;text-align:center}
+.vs{position:absolute;left:150px;top:220px;display:grid;grid-template-columns:400px 560px;gap:30px}
+.vcol{background:#fff;border-radius:18px;padding:24px 26px;box-shadow:0 24px 48px rgba(0,0,0,.4);opacity:0}
+.vcol .who{font:800 22px var(--cond);letter-spacing:4px;color:var(--muted)}
+.vcol .one{font:800 84px/1 var(--cond);margin:10px 0 6px}
+.vbtn{margin-top:16px;height:56px;border-radius:10px;background:var(--orange);color:#fff;font:800 26px var(--cond);letter-spacing:1.5px;display:grid;place-items:center}
+.ul{list-style:none;margin-top:12px}
+.ul li{display:flex;align-items:center;gap:14px;font-size:22px;font-weight:600;padding:9px 0;border-top:1px solid var(--line);opacity:.2}
+.ul li i{width:34px;height:34px;border-radius:50%;background:#e3f3ea;display:grid;place-items:center;flex:none}
+
+/* end card */
+.endc{position:absolute;inset:0;background:rgba(10,14,24,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;opacity:0;text-align:center;z-index:15}
+.endc .k{letter-spacing:5px}
+.endc h2{font:800 92px/.95 var(--cond);letter-spacing:1px;margin:6px 0 4px}
+.endc .goal{font:800 26px var(--cond);letter-spacing:3px;color:#c9d3e3}
+.pills{display:flex;gap:12px;margin:22px 0 24px}
+.pills span{border:2px solid #34405a;border-radius:30px;padding:8px 20px;font:800 22px var(--cond);letter-spacing:1.5px}
+.price{display:flex;gap:28px;align-items:baseline;justify-content:center}
+.price b{font:800 56px/1 var(--cond)}
+.price span{font-size:18px;color:#c9d3e3}
+.price .co{color:#7fe0a6;font-weight:700}
+.when{margin-top:12px;font-size:19px;color:#c9d3e3}
+.when b{color:var(--orange)}
+#replay{margin-top:28px;opacity:0;border:2px solid #4b5a77;border-radius:30px;background:transparent;color:#fff;font:800 22px var(--cond);letter-spacing:1.5px;text-transform:uppercase;padding:14px 30px;cursor:pointer;display:flex;align-items:center;gap:10px}
+#touch{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.9);box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:0;z-index:20}
+#rip{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid var(--orange);opacity:0;z-index:19}
+
+#ofoot{position:absolute;right:60px;bottom:26px;width:430px;text-align:right;font-size:16px;font-weight:600;line-height:1.35;color:#9fb0c9;opacity:0;z-index:7}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+<div class="stage" id="stage">
+
+  <!-- 1. hook -->
+  <div class="layer" id="L1">
+    <div id="lot"><svg id="lotSvg" width="1280" height="300" viewBox="0 0 1280 300"></svg></div>
+    <div class="hook" id="hookA">Your customers are ready for snow.</div>
+    <div class="hook" id="hookB">Make sure they call you first.</div>
+  </div>
+
+  <!-- 2. three kinds of winter business -->
+  <div class="layer" id="L2">
+    <div id="bTitle"><div class="k">WINTER PROMOTIONS</div><div class="mid" style="margin-top:8px">Three kinds of winter business. <em>One campaign.</em></div></div>
+    <div class="buyers">
+      <div class="buyer"><span class="ic" data-i="hat"></span><b>CONTRACTOR</b><p>Just landed a snow contract and needs a machine tonight.</p><span class="tag">SNOW RENTAL</span></div>
+      <div class="buyer"><span class="ic" data-i="house"></span><b>PROPERTY OWNER</b><p>Already owns a skid steer. Needs a pusher before the next storm.</p><span class="tag">ATTACHMENT</span></div>
+      <div class="buyer"><span class="ic" data-i="truck"></span><b>SNOW-REMOVAL BUSINESS</b><p>Busier every winter and ready to add a machine to the fleet.</p><span class="tag">SALE</span></div>
+    </div>
+  </div>
+
+  <!-- 3. built for your market -->
+  <div class="layer" id="L3">
+    <div class="mid" id="mTitle">Built for <em>your</em> market.</div>
+    <div class="sub" id="mSub">The counties around your store, your local keywords, your winter offers.</div>
+    <svg id="cMap" width="460" height="370" viewBox="0 0 460 370"></svg>
+    <svg id="cPin" viewBox="0 0 30 40"><path d="M15 39C15 39 2 23 2 14a13 13 0 0 1 26 0c0 9-13 25-13 25z" fill="#ff3600" stroke="#fff" stroke-width="1.5"/><circle cx="15" cy="14" r="5" fill="#111"/></svg>
+    <div class="rows">
+      <div class="row"><span data-i="search"></span><b>SEARCH</b></div>
+      <div class="row"><span data-i="social"></span><b>SOCIAL</b></div>
+      <div class="row"><span data-i="pmax"></span><b>PERFORMANCE MAX</b></div>
+    </div>
+  </div>
+
+  <!-- 4-6. phone: rentals (search) → attachments (social) → sales (Performance Max: video, mail, display, maps) -->
+  <div class="phone" id="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="status" id="status"><span>9:41</span><i></i></div>
+
+    <section class="sc" id="pS">
+      <div class="sbox" id="sBox"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" stroke="#8a919c" stroke-width="2.5" fill="none"/><path d="M15.5 15.5l5 5" stroke="#8a919c" stroke-width="2.5" stroke-linecap="round"/></svg><span><span id="sq"></span><span class="caret" id="sCaret"></span></span></div>
+      <div id="sAd" class="r"><span class="ring" id="sRing"></span>
+        <div class="spons">Sponsored</div>
+        <div class="site"><span class="fav">YD</span><div><b>Your Bobcat Dealer</b><span>yourdealership.com › snow-rentals</span></div></div>
+        <div class="ttl">Rent a Skid Steer + Snow Pusher Today | Same-Day Pickup</div>
+        <div class="desc">Daily, weekly and monthly snow rentals. Machines and attachments ready for the next storm.</div>
+        <div class="chips"><span id="sCall">📞 Call</span><span>Reserve online</span></div>
+      </div>
+      <div class="org r"><div class="site"><span class="fav g"></span><div><b>Equipment Rental Hub</b><span>rentalhub.com</span></div></div><div class="ttl">Equipment Rentals Near You</div></div>
+      <div class="org r"><div class="site"><span class="fav g"></span><div><b>Snow Removal Guide</b><span>snowguide.com</span></div></div><div class="ttl">What Equipment Do You Need for Snow?</div></div>
+      <div class="callui" id="sCallUi"><span class="av">YD</span><b>Your Bobcat Dealer</b><span>Rentals · Calling…</span><span class="endb"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M3 15.5c5-4.5 13-4.5 18 0l-2.4 2.6-3.4-1.5v-2.8a13 13 0 0 0-6.4 0v2.8l-3.4 1.5z" fill="#fff"/></svg></span></div>
+    </section>
+
+    <section class="sc" id="pF">
+      <div class="appbar">feed</div>
+      <div class="feedv"><div id="feedIn">
+        <div class="post"><div class="ph"><span class="pav" style="background:#3f6fb0">MK</span><div><b>Mia Kowalski</b><span>1h</span></div></div><div class="ptxt">Snow day! ❄️ The kids are already outside.</div>
+          <svg class="pimg" viewBox="0 0 320 170"><rect width="320" height="170" fill="#cfe2f5"/><rect y="110" width="320" height="60" fill="#fff"/><circle cx="120" cy="96" r="22" fill="#fff"/><circle cx="120" cy="62" r="15" fill="#fff"/><circle cx="116" cy="60" r="2" fill="#111"/><circle cx="125" cy="60" r="2" fill="#111"/><path d="M120 64l8 2-8 2z" fill="#ff8a3d"/></svg></div>
+        <div class="post"><div class="ph"><span class="pav" style="background:#3c8d5a">TB</span><div><b>Tyler Brooks</b><span>3h</span></div></div><div class="ptxt">Hot chocolate season ☕</div>
+          <svg class="pimg" viewBox="0 0 320 170"><rect width="320" height="170" fill="#f1e3d3"/><rect x="120" y="60" width="80" height="80" rx="10" fill="#8b4d2e"/><ellipse cx="160" cy="62" rx="40" ry="8" fill="#5a2f1a"/><path d="M200 80h14a14 14 0 0 1 0 28h-14" stroke="#8b4d2e" stroke-width="8" fill="none"/></svg></div>
+        <div class="post" id="fAd"><span class="ring" id="fRing"></span>
+          <div class="ph"><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div></div>
+          <div class="ptxt">Storm season is here. Snow pushers and blowers in stock for your skid steer.</div>
+          <div class="adimg"><small>IN STOCK NOW</small><b>SNOW PUSHERS<br>&amp; BLOWERS</b><p>FIT YOUR SKID STEER</p><svg data-m="pusher" width="180" height="108"></svg></div>
+          <div class="adfoot"><div><small>YOURDEALERSHIP.COM</small><b>Get attachment pricing</b></div><span id="fCta">Get Quote</span></div>
+        </div>
+        <div class="post"><div class="ph"><span class="pav" style="background:#b8578f">JO</span><div><b>Jess Ortiz</b><span>5h</span></div></div><div class="ptxt">Shoveled the driveway twice already 😅</div></div>
+      </div></div>
+      <div class="scrim" id="fScrim"></div>
+      <div class="sheet" id="fSheet"><div class="grab"></div>
+        <h4>Your Bobcat Dealer</h4><div class="q">Which attachment are you looking for?</div>
+        <div class="opt" id="o1"><i></i>Snow pusher</div>
+        <div class="opt"><i></i>Snow blower</div>
+        <div class="opt"><i></i>Angle blade</div>
+        <div class="opt"><i></i>Not sure yet</div>
+        <div id="fSubmit">Get my quote</div>
+        <div class="ok" id="fOk"><span class="chk"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Quote requested!</b><span>Your Bobcat Dealer will send pricing for a snow pusher.</span></div>
+      </div>
+    </section>
+
+    <section class="sc" id="pV">
+      <div class="yh"><i><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1v8l7-4z" fill="#fff"/></svg></i>Video</div>
+      <div class="player"><b>WINTER-READY.<br>BOBCAT T76.</b><p>FINANCING AVAILABLE</p><svg data-m="track" width="170" height="102"></svg><span class="adb">Ad · 0:06</span><i class="vprog" id="vProg"></i></div>
+      <div class="vcard"><span class="fav">YD</span><div class="site"><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div></div><span class="cta">Learn more</span></div>
+      <div class="vt">How to Clear a Parking Lot Fast (Pro Tips)</div>
+      <div class="vm">Snow Pros · 96K views</div>
+    </section>
+
+    <section class="sc" id="pG">
+      <div class="gbar"><i><svg width="16" height="12" viewBox="0 0 16 12"><path d="M1 1h14v10H1z M1 1l7 6 7-6" stroke="#fff" stroke-width="1.6" fill="none"/></svg></i>Inbox</div>
+      <div class="mrow" id="gAd"><span class="ring" id="gRing"></span><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b><i class="adt">Ad</i>Your Bobcat Dealer</b><span class="sj">Winter-ready: Bobcat T76 + financing</span><span class="pv">Built for snow. See this month's offers at your local dealer.</span></div></div>
+      <div class="mrow"><span class="pav" style="background:#3f6fb0">CS</span><div><b>City Services</b><span class="sj">Snow emergency parking rules</span><span class="pv">Starting tonight at 9 PM, parking is restricted on…</span></div></div>
+      <div class="mrow"><span class="pav" style="background:#3c8d5a">LP</span><div><b>Lakeside Property Group</b><span class="sj">Lot clearing schedule</span><span class="pv">Can your crew cover the east lot by 6 AM?</span></div></div>
+      <div class="mrow"><span class="pav" style="background:#b8578f">FS</span><div><b>Fuel Supply Co.</b><span class="sj">Your winter delivery is confirmed</span><span class="pv">Thanks for your order. Delivery window…</span></div></div>
+    </section>
+
+    <section class="sc" id="pD">
+      <div class="wbar">Local Weather</div>
+      <div class="wnow"><b>28°</b><div><strong>Heavy snow</strong><span>Winter storm watch until 6 AM</span></div></div>
+      <div id="dAd"><span class="ring" id="dRing"></span><span class="adl">Ad</span><b>WINTER-READY.<br>BOBCAT T76.</b><p>FINANCING AVAILABLE</p><svg data-m="track" width="160" height="96"></svg></div>
+      <div class="wart"><b>How much snow is coming this week?</b><i></i><i style="width:88%"></i><i style="width:94%"></i><i style="width:60%"></i></div>
+    </section>
+
+    <section class="sc" id="pM" style="padding-top:0">
+      <svg id="mpBg" width="320" height="660" viewBox="0 0 320 660"><rect width="320" height="660" fill="#f4f6f8"/>
+        <path d="M0 230 Q120 210 320 260 V330 Q150 300 0 320Z" fill="#e3ecf2"/>
+        <g stroke="#fff" stroke-linecap="round" fill="none"><path d="M-10 160 L330 120" stroke-width="12"/><path d="M-10 400 L330 380" stroke-width="12"/><path d="M80 -10 L120 670" stroke-width="10"/><path d="M30 250 L180 470" stroke-width="7"/><path d="M200 -10 L220 670" stroke-width="7"/></g></svg>
+      <svg id="route" width="320" height="660" viewBox="0 0 320 660"><path id="rPath" d="M110 470 L104 395 L150 391 L150 356" stroke="#1a73e8" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle id="rMe" cx="110" cy="470" r="9" fill="#1a73e8" stroke="#fff" stroke-width="3"/></svg>
+      <div class="mbox">🔍 bobcat dealer near me</div>
+      <svg class="pin" id="pin1" style="left:60px;top:300px" viewBox="0 0 30 40"><path d="M15 39C15 39 2 23 2 14a13 13 0 0 1 26 0c0 9-13 25-13 25z" fill="#8a919c"/><circle cx="15" cy="14" r="5" fill="#fff"/></svg>
+      <svg class="pin" id="pin2" style="left:255px;top:470px" viewBox="0 0 30 40"><path d="M15 39C15 39 2 23 2 14a13 13 0 0 1 26 0c0 9-13 25-13 25z" fill="#8a919c"/><circle cx="15" cy="14" r="5" fill="#fff"/></svg>
+      <svg class="pin" id="pinMe" style="left:150px;top:350px" viewBox="0 0 30 40"><path d="M15 39C15 39 2 23 2 14a13 13 0 0 1 26 0c0 9-13 25-13 25z" fill="#ff3600"/><circle cx="15" cy="14" r="5" fill="#111"/></svg>
+      <div id="mCard"><h4>Your Bobcat Dealer</h4><div class="m1"><b>Ad</b>Equipment dealer · 3.2 mi</div><div class="m2"><b>Open</b> · Closes 6 PM</div>
+        <div class="mbtns"><span id="mDir">Get directions</span><span>Call</span></div></div>
+      <div id="mRoute"><div class="rt"><b>12 min</b><span>(3.2 mi)</span></div><div class="rs">Fastest route to Your Bobcat Dealer</div><div class="go">Start</div></div>
+    </section>
+  </div></div>
+
+  <!-- stream captions -->
+  <div class="sk" id="k1"><span data-i="snow"></span><b>SNOW RENTALS</b></div>
+  <div class="sl" id="l1">ON SEARCH</div>
+  <div class="scap" id="c1">They search for a rental. <em>You're the first ad they see.</em></div>
+  <div class="sk" id="k2"><span data-i="wrench"></span><b>ATTACHMENTS</b></div>
+  <div class="sl" id="l2">ON SOCIAL</div>
+  <div class="scap" id="c2">Your offer stops the scroll. <em>A quote request in one tap.</em></div>
+  <div class="sk" id="k3"><span data-i="loader"></span><b>SALES</b></div>
+  <div class="sl" id="l3">ON PERFORMANCE MAX</div>
+  <div class="scap" id="c3">One campaign. <em>Every Google channel.</em></div>
+  <div id="gch"><small>YOUR T76 SHOWS UP ON</small><div><span>YOUTUBE</span><span>GMAIL</span><span>DISPLAY</span><span>MAPS</span><span>SEARCH</span><span>DISCOVER</span></div></div>
+  <div id="trk"><div><b>RENTALS</b><small>SEARCH</small></div><div><b>ATTACHMENTS</b><small>SOCIAL</small></div><div><b>SALES</b><small>PERFORMANCE MAX</small></div></div>
+
+  <!-- 7. season timeline -->
+  <div class="layer" id="L7">
+    <div class="mid" id="tlCap">Running <em>all winter</em>, not just one storm.</div>
+    <div id="tl">
+      <div class="hd"><b>YOUR WINTER CAMPAIGN</b><span>Weekly clicks by channel · Example</span></div>
+      <div class="bars" id="bars"></div>
+      <div class="axis" id="axis"></div>
+      <div class="leg"><span style="--c:#ff3600">Search</span><span style="--c:#ff9a6b">Social</span><span style="--c:#1d2230">Performance Max</span></div>
+    </div>
+  </div>
+
+  <!-- 8. live dashboard -->
+  <div class="layer" id="L8">
+    <div id="dash">
+      <div class="dh"><div><b>LIVE DASHBOARD</b><span>Winter Promotions · Your Bobcat Dealer</span></div><em>EXAMPLE</em></div>
+      <div class="tiles">
+        <div class="tile"><small>IMPRESSIONS</small><b class="cnt" data-n="48200">0</b></div>
+        <div class="tile"><small>CLICKS</small><b class="cnt" data-n="1240">0</b></div>
+        <div class="tile"><small>CALLS</small><b class="cnt" data-n="61">0</b></div>
+        <div class="tile"><small>DIRECTIONS</small><b class="cnt" data-n="87">0</b></div>
+      </div>
+    </div>
+    <div id="dCap"><div class="k">ALL SEASON LONG</div><div class="mid" style="margin-top:10px">Track your results, <em>any time.</em></div><div class="sub" style="margin-top:14px">Clicks, calls and direction requests for every location, in one live dashboard.</div></div>
+  </div>
+
+  <!-- 9. you opt in, we handle the rest -->
+  <div class="layer" id="L9">
+    <div class="mid" id="vsCap">You opt in. <em>We handle the rest.</em></div>
+    <div class="vs">
+      <div class="vcol" id="vYou"><div class="who">YOU</div><div class="one"><em>1</em> CLICK</div><div class="sub" style="color:#3c4350">Pick your locations and enroll.</div><div class="vbtn" id="vBtn">ENROLL NOW</div></div>
+      <div class="vcol" id="vUs"><div class="who">FLINT DIRECT</div>
+        <ul class="ul">
+          <li><i></i>Winter creative for every channel</li>
+          <li><i></i>Targeting built around each store</li>
+          <li><i></i>Launch on day one of the season</li>
+          <li><i></i>Reporting all winter long</li>
+        </ul></div>
+    </div>
+  </div>
+
+  <!-- end card -->
+  <div class="endc" id="end">
+    <div class="k">SEASONAL CAMPAIGN</div>
+    <h2>WINTER PROMOTIONS</h2>
+    <div class="goal">SNOW RENTALS, ATTACHMENTS + SALES</div>
+    <div class="pills"><span>SNOW RENTALS</span><span>ATTACHMENTS</span><span>SALES</span></div>
+    <div class="price"><div><b id="ePrice">$2,500</b> <span>per location · one-time</span></div><div class="co" id="eCoop">≈ $625 after 75% co-op</div></div>
+    <div class="when" id="eWhen">Runs Jan 1 – Mar 31 · <b>Enroll by Dec 17</b></div>
+    <button id="replay"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M4 3v5h5" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Replay</button>
+  </div>
+
+  <div id="snow"></div>
+  <div id="ofoot">Ads shown are examples. Offers and financing come from your dealership and current Bobcat programs. Financing on approved credit.</div>
+  <div id="rip"></div>
+  <div id="touch"></div>
+</div>
+</div>
+
+<script src="player.js"></script>
+<script>
+const D = 61, $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const wrap = $('#wrap'), stage = $('#stage');
+if (window.self !== window.top) document.body.classList.add('embed');
+
+// campaign details from the URL (the hub passes them so the end card always matches)
+const qs = new URLSearchParams(location.search);
+const money = n => '$' + Number(n).toLocaleString('en-US');
+const P = { price: +qs.get('price') || 2500, coop: +qs.get('coop') || 625, start: qs.get('start') || 'Jan 1', end: qs.get('end') || 'Mar 31', deadline: qs.get('deadline') || 'Dec 17' };
+$('#ePrice').textContent = money(P.price);
+$('#eCoop').textContent = `≈ ${money(P.coop)} after 75% co-op`;
+$('#eWhen').innerHTML = `Runs ${P.start} – ${P.end} · <b>Enroll by ${P.deadline}</b>`;
+
+// chapters for the seek bar: [start, label]
+const CHAPTERS = [[0, 'The opportunity'], [17, 'Rentals'], [25, 'Attachments'], [33.5, 'Sales'], [44, 'Why opt in'], [59, 'Recap']];
+
+// icons
+const I = {
+  hat: '<svg width="40" height="40" viewBox="0 0 24 24"><path d="M3 17h18v2H3zM5 17a7 7 0 0 1 14 0" fill="#ff3600"/><path d="M11 6h2v5h-2z" fill="#ff3600"/></svg>',
+  house: '<svg width="40" height="40" viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9H3z" fill="#ff3600"/><rect x="10" y="14" width="4" height="6" fill="#fff"/></svg>',
+  truck: '<svg width="44" height="40" viewBox="0 0 26 24"><rect x="1" y="7" width="14" height="10" rx="1.5" fill="#ff3600"/><path d="M15 10h5l4 4v3h-9z" fill="#ff3600"/><circle cx="6" cy="18.5" r="2.5" fill="#111"/><circle cx="19" cy="18.5" r="2.5" fill="#111"/><path d="M0 19l3-4" stroke="#111" stroke-width="2"/></svg>',
+  snow: '<svg width="34" height="34" viewBox="0 0 24 24"><g stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7"/><path d="M9 4l3 2 3-2M9 20l3-2 3 2"/></g></svg>',
+  wrench: '<svg width="32" height="32" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 1 5-5l-2.6 2.6 1 2 2 1 2.6-2.6a4 4 0 0 1-5 5L8 19a2.1 2.1 0 1 1-3-3z" fill="#fff"/></svg>',
+  loader: '<svg width="36" height="30" viewBox="0 0 30 24"><rect x="3" y="9" width="17" height="7" rx="2" fill="#fff"/><rect x="8" y="3" width="9" height="8" rx="1.5" fill="#fff"/><rect x="2" y="16" width="20" height="6" rx="3" fill="#fff"/><path d="M20 8l7 6v5h-6" fill="#fff"/></svg>',
+  search: '<svg width="26" height="26" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" stroke="#fff" stroke-width="3" fill="none"/><path d="M15 15l6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>',
+  social: '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4z" fill="#fff"/></svg>',
+  pmax: '<svg width="28" height="28" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".75"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".75"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#fff"/></svg>',
+  check: '<svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#1e7b45" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+};
+$$('[data-i]').forEach(el => el.innerHTML = I[el.dataset.i]);
+$$('.ul li i').forEach(el => el.innerHTML = I.check);
+
+// machines: track loader, or skid steer with a snow pusher
+$$('svg[data-m]').forEach(svg => {
+  svg.setAttribute('viewBox', '0 0 200 120');
+  const pusher = svg.dataset.m === 'pusher';
+  svg.innerHTML =
+    (pusher
+      ? '<path d="M142 40 L168 62" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/><path d="M166 34 h16 v60 h-16 z" fill="#d9dde2"/><path d="M182 34 l12 -6 v74 l-12 -8z" fill="#aeb4bc"/>'
+      : '<path d="M142 34 L176 66" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/><path d="M162 60 h26 l6 34 h-34 z" fill="#3a3d42"/>') +
+    '<rect x="40" y="54" width="112" height="36" rx="7" fill="#ff3600"/>' +
+    '<rect x="68" y="18" width="58" height="46" rx="6" fill="#0d0e10" stroke="#3a3d42" stroke-width="2"/>' +
+    '<rect x="75" y="25" width="44" height="33" rx="3" fill="#a9c6d6"/>' +
+    (pusher
+      ? '<circle cx="62" cy="96" r="16" fill="#222"/><circle cx="62" cy="96" r="6" fill="#888"/><circle cx="128" cy="96" r="16" fill="#222"/><circle cx="128" cy="96" r="6" fill="#888"/>'
+      : '<rect x="36" y="84" width="120" height="26" rx="13" fill="#2a2c30" stroke="#3a3d42" stroke-width="2"/><circle cx="52" cy="97" r="7" fill="#777"/><circle cx="96" cy="97" r="5" fill="#777"/><circle cx="140" cy="97" r="7" fill="#777"/>');
+});
+
+// the dealer lot at night: snowy ground, building with sign, light poles
+$('#lotSvg').innerHTML =
+  '<path d="M0 170 Q640 120 1280 170 V300 H0Z" fill="#e9eff7"/>' +
+  '<rect x="430" y="40" width="420" height="140" fill="#1a2233"/><rect x="430" y="40" width="420" height="30" fill="#0c0f16"/><rect x="430" y="68" width="420" height="5" fill="#ff3600"/>' +
+  '<text x="640" y="62" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="22" letter-spacing="2" fill="#fff">YOUR BOBCAT DEALER</text>' +
+  '<g fill="#2b3548"><rect x="460" y="90" width="110" height="90"/><rect x="590" y="90" width="110" height="90"/><rect x="720" y="90" width="110" height="90"/></g>' +
+  '<g id="winGlow" fill="#ffcf8a" opacity="0"><rect x="470" y="100" width="90" height="40"/><rect x="600" y="100" width="90" height="40"/><rect x="730" y="100" width="90" height="40"/></g>' +
+  '<path d="M430 40 h420 v6 h-420z" fill="#fff"/>' +
+  [180, 1100].map(x => `<rect x="${x}" y="10" width="6" height="170" fill="#2b3548"/><rect x="${x - 18}" y="6" width="42" height="10" rx="3" fill="#2b3548"/><circle class="lamp" cx="${x + 3}" cy="22" r="60" fill="#ffe7b0" opacity="0"/>`).join('') +
+  '<g transform="translate(250 120) scale(.55)"><path d="M142 40 L168 62" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/><path d="M166 34 h16 v60 h-16 z" fill="#d9dde2"/><rect x="40" y="54" width="112" height="36" rx="7" fill="#ff3600"/><rect x="68" y="18" width="58" height="46" rx="6" fill="#0d0e10"/><circle cx="62" cy="96" r="16" fill="#222"/><circle cx="128" cy="96" r="16" fill="#222"/></g>' +
+  '<g transform="translate(900 118) scale(.55)"><rect x="40" y="54" width="112" height="36" rx="7" fill="#ff3600"/><rect x="68" y="18" width="58" height="46" rx="6" fill="#0d0e10"/><rect x="36" y="84" width="120" height="26" rx="13" fill="#2a2c30"/><path d="M142 34 L176 66" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/></g>';
+
+// snow: deterministic flakes so ?t=N frames are repeatable
+const FL = Array.from({ length: 110 }, (_, i) => ({ x: (i * 97) % 1280, o: (i * 53) % 760, s: 30 + (i * 17) % 50, r: 2 + (i % 4), w: (i % 7) * 0.4 }));
+$('#snow').innerHTML = FL.map(f => `<i style="width:${f.r * 2}px;height:${f.r * 2}px;opacity:${.45 + (f.r / 10)}"></i>`).join('');
+
+// counties: a jittered grid of shapes; the ones nearest the store light up in order
+const CW = 5, CR = 4, MW = 460, MH = 370, PIN = [236, 178];
+const V = [];
+for (let r = 0; r <= CR; r++) for (let c = 0; c <= CW; c++)
+  V.push([c * MW / CW + (c === 0 || c === CW ? 0 : ((r * 7 + c * 13) % 9 - 4) * 5), r * MH / CR + (r === 0 || r === CR ? 0 : ((r * 11 + c * 5) % 9 - 4) * 5)]);
+const CELLS = [];
+for (let r = 0; r < CR; r++) for (let c = 0; c < CW; c++) {
+  const pts = [V[r * (CW + 1) + c], V[r * (CW + 1) + c + 1], V[(r + 1) * (CW + 1) + c + 1], V[(r + 1) * (CW + 1) + c]];
+  const cx = pts.reduce((a, p) => a + p[0], 0) / 4, cy = pts.reduce((a, p) => a + p[1], 0) / 4;
+  CELLS.push({ pts, cx, cy, d: Math.hypot(cx - PIN[0], cy - PIN[1]) });
+}
+const NAMES = ['CEDAR CO.', 'MAPLE CO.', 'RIVER CO.', 'PINE CO.', 'LAKE CO.', 'OAK CO.'];
+const HL = CELLS.map((c, i) => [i, c.d]).filter(([, d]) => d < 150).sort((a, b) => a[1] - b[1]).slice(0, NAMES.length).map(([i]) => i);
+$('#cMap').innerHTML =
+  CELLS.map((c, i) => `<polygon class="cty" data-i="${i}" points="${c.pts.map(p => p.join(',')).join(' ')}" fill="#1f2a40" stroke="#2e3a52" stroke-width="2"/>`).join('') +
+  `<circle id="cRing" cx="${PIN[0]}" cy="${PIN[1]}" r="0" fill="rgba(255,54,0,.06)" stroke="#ff3600" stroke-width="2" stroke-dasharray="6 6"/>` +
+  HL.map((ci, k) => `<text class="lbl" data-k="${k}" x="${CELLS[ci].cx}" y="${CELLS[ci].cy + 5}" opacity="0">${NAMES[k]}</text>`).join('');
+$('#cPin').style.left = (80 + PIN[0] - 23) + 'px';
+$('#cPin').style.top = (214 + PIN[1] - 60) + 'px';
+
+// season timeline: 13 weeks of example clicks by channel [search, social, pmax]
+const WK = [[2, 3, 1], [4, 5, 1], [6, 6, 2], [5, 7, 1], [7, 6, 2], [4, 5, 2], [6, 7, 2], [5, 4, 1], [4, 5, 2], [3, 3, 1], [3, 2, 2], [2, 2, 1], [1, 1, 1]];
+$('#bars').innerHTML = WK.map(w => `<div class="wk">${w.map((v, j) => `<i data-v="${v}" style="background:${['#ff3600', '#ff9a6b', '#1d2230'][j]};height:0"></i>`).join('')}</div>`).join('');
+const MKS = [[0.06, P.deadline.toUpperCase(), 'Enrollment closes', 'dl'], [0.2, P.start.toUpperCase(), 'Campaign launches', ''], [0.6, 'ALL WINTER', 'Ads run every week', ''], [0.97, P.end.toUpperCase(), 'Campaign ends', '']];
+$('#axis').innerHTML = MKS.map(([x, b, s, c]) => `<div class="mk ${c}" style="left:${x * 100}%"><i></i><b>${b}</b><small>${s}</small></div>`).join('');
+
+let scale = 1;
+// fit the 1280×720 stage inside the frame, letterboxed if needed (full screen can be any shape)
+function fit() {
+  scale = Math.min(wrap.clientWidth / 1280, wrap.clientHeight / 720);
+  stage.style.transform = `translate(${(wrap.clientWidth - 1280 * scale) / 2}px,${(wrap.clientHeight - 720 * scale) / 2}px) scale(${scale})`;
+}
+new ResizeObserver(fit).observe(wrap); fit();
+
+const clamp = v => Math.max(0, Math.min(1, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+const out3 = x => 1 - Math.pow(1 - x, 3);
+const win = (t, a, b, f = .3) => seg(t, a, a + f) * (1 - seg(t, b - f, b));
+const fade = (el, o, dy = 0) => { el.style.opacity = o; if (dy) el.style.transform = `translateY(${(1 - o) * dy}px)`; };
+function center(sel) {
+  const r = $(sel).getBoundingClientRect(), s = stage.getBoundingClientRect();
+  return { x: (r.left - s.left + r.width / 2) / scale, y: (r.top - s.top + r.height / 2) / scale };
+}
+
+// taps on the phone: [time, target]
+const TAPS = [[17.3, '#sBox'], [22.3, '#sCall'], [27.9, '#fCta'], [29.8, '#o1'], [30.8, '#fSubmit'], [41.1, '#mDir']];
+const SQ = 'rent skid steer for snow removal';
+// Performance Max placements: [chip index, time it appears]; Search + Discover light up together at the end
+const GCH = [[0, 33.5], [1, 35.5], [2, 37.5], [3, 39.5], [4, 42.6], [5, 42.6]];
+
+function render(t) {
+  // snow: heavy during the hook, light the rest of the way
+  const snowO = t < 4 ? seg(t, .2, 1.2) : .35 * (1 - seg(t, 58.4, 59)) + (t > 59 ? .5 : 0);
+  $('#snow').style.opacity = snowO;
+  $$('#snow i').forEach((el, i) => {
+    const f = FL[i], y = ((t * f.s + f.o) % 760) - 20, x = f.x + Math.sin(t * .8 + i) * 14 * f.w;
+    el.style.transform = `translate(${x}px,${y}px)`;
+  });
+
+  // ACT 1 ─ the opportunity
+  fade($('#L1'), seg(t, 0, .5) * (1 - seg(t, 3.7, 4.1)));
+  $$('.lamp').forEach((l, i) => l.setAttribute('opacity', (.22 * seg(t, 1.0 + i * .15, 1.3 + i * .15) * (t > 1.15 + i * .15 && t < 1.25 + i * .15 ? .3 : 1)).toFixed(2)));
+  $('#winGlow').setAttribute('opacity', (.8 * seg(t, 1.4, 1.9)).toFixed(2));
+  fade($('#hookA'), seg(t, .5, .9), 16);
+  fade($('#hookB'), seg(t, 1.9, 2.3), 16);
+
+  fade($('#L2'), seg(t, 4.0, 4.4) * (1 - seg(t, 9.6, 10.0)));
+  $$('.buyer').forEach((el, i) => { const a = seg(t, 4.6 + i * .45, 5.0 + i * .45); el.style.opacity = a; el.style.transform = `translateY(${(1 - out3(a)) * 30}px)`; });
+
+  fade($('#L3'), seg(t, 9.9, 10.3) * (1 - seg(t, 16.6, 17.0)));
+  $('#cPin').style.transform = `translateY(${(1 - out3(seg(t, 10.2, 10.6))) * -24}px)`;
+  $('#cRing').setAttribute('r', (150 * out3(seg(t, 10.5, 11.3))).toFixed(1));
+  HL.forEach((ci, k) => {
+    const on = t >= 10.8 + k * .22, poly = $$('.cty')[ci];
+    poly.setAttribute('fill', on ? 'rgba(255,54,0,.24)' : '#1f2a40'); poly.setAttribute('stroke', on ? '#ff3600' : '#2e3a52');
+    $(`#cMap .lbl[data-k="${k}"]`).setAttribute('opacity', seg(t, 10.8 + k * .22, 11.0 + k * .22).toFixed(2));
+  });
+  $$('.row').forEach((el, i) => {
+    const a = seg(t, 11.2 + i * .6, 11.6 + i * .6); el.style.opacity = a; el.style.transform = `translateX(${(1 - out3(a)) * 30}px)`;
+    const p = win(t, 11.4 + i * .6, 12.2 + i * .6, .25), dot = el.querySelector('span');
+    dot.style.transform = `scale(${1 + .18 * p})`; dot.style.boxShadow = `0 0 0 ${14 * p}px rgba(255,54,0,${.35 * p})`;
+  });
+
+  // ACT 2 ─ three revenue streams on the phone
+  $('#phone').style.opacity = seg(t, 16.9, 17.3) * (1 - seg(t, 43.7, 44.1));
+  const z = ease(seg(t, 17.4, 17.9)) * (1 - ease(seg(t, 19.9, 20.4)));
+  $('#phone').style.transform = z ? `scale(${1 + .85 * z})` : '';
+  fade($('#pS'), 1 - seg(t, 24.8, 25.1));
+  fade($('#pF'), seg(t, 24.8, 25.1) * (1 - seg(t, 33.3, 33.6)));
+  fade($('#pV'), seg(t, 33.3, 33.6) * (1 - seg(t, 35.4, 35.7)));
+  fade($('#pG'), seg(t, 35.4, 35.7) * (1 - seg(t, 37.4, 37.7)));
+  fade($('#pD'), seg(t, 37.4, 37.7) * (1 - seg(t, 39.4, 39.7)));
+  fade($('#pM'), seg(t, 39.4, 39.7));
+  $('#status').style.color = t > 22.6 && t < 24.95 ? '#fff' : '#111';
+
+  // rentals: zoom in on the search bar while it's typed → ad first → tap call
+  const n = Math.round(seg(t, 18.0, 19.7) * SQ.length);
+  $('#sq').textContent = SQ.slice(0, n);
+  $('#sCaret').style.opacity = t > 17.4 && t < 19.9 && (n < SQ.length || Math.floor(t * 2.5) % 2 === 0) ? 1 : 0;
+  $$('#pS .r').forEach((el, i) => { const a = seg(t, 20.4 + i * .12, 20.8 + i * .12); el.style.opacity = a * (el.classList.contains('org') ? .55 : 1); el.style.transform = `translateY(${(1 - ease(a)) * 12}px)`; });
+  $('#sRing').style.opacity = win(t, 20.8, 22.4, .3);
+  $('#sCall').style.transform = t >= 22.3 && t < 22.45 ? 'scale(.94)' : '';
+  $('#sCallUi').style.opacity = seg(t, 22.55, 22.85);
+
+  // attachments: scroll → ad → quote form with options → confirmation
+  const ad = $('#fAd').offsetTop - 6;
+  $('#feedIn').style.transform = `translateY(${-ad * out3(seg(t, 25.4, 26.7))}px)`;
+  $('#fRing').style.opacity = win(t, 26.7, 28.0, .3);
+  const sh = ease(seg(t, 28.1, 28.7));
+  $('#fSheet').style.transform = `translateY(${(1 - sh) * 110}%)`;
+  $('#fScrim').style.opacity = sh;
+  $$('.opt').forEach((el, i) => { const a = seg(t, 28.7 + i * .2, 29.0 + i * .2); el.style.opacity = a; el.style.transform = `translateY(${(1 - out3(a)) * 10}px)`; });
+  $('#o1').classList.toggle('on', t >= 29.8);
+  $('#fSubmit').style.transform = t >= 30.8 && t < 30.95 ? 'scale(.97)' : '';
+  $('#fOk').style.opacity = seg(t, 31.0, 31.3);
+
+  // sales: Performance Max on video → mail → display → maps → quote
+  $('#vProg').style.width = seg(t, 33.6, 35.5) * 100 + '%';
+  $('#gRing').style.opacity = win(t, 35.9, 37.4, .3);
+  $('#dRing').style.opacity = win(t, 37.9, 39.4, .3);
+  [['#pin1', 39.8], ['#pin2', 39.9], ['#pinMe', 40.05]].forEach(([s, a]) => { const p = seg(t, a, a + .35); $(s).style.opacity = p; $(s).style.transform = `translateY(${(1 - out3(p)) * -24}px)`; });
+  $('#mCard').style.transform = `translateY(${(1 - ease(seg(t, 40.2, 40.6)) * (1 - ease(seg(t, 41.25, 41.55)))) * 110}%)`;
+  $('#mDir').style.transform = t >= 41.1 && t < 41.25 ? 'scale(.95)' : '';
+  const rp = $('#rPath'), rl = rp.getTotalLength();
+  rp.style.strokeDasharray = rl; rp.style.strokeDashoffset = rl * (1 - ease(seg(t, 41.35, 42.2)));
+  $('#rMe').style.opacity = seg(t, 41.3, 41.5);
+  $('#mRoute').style.transform = `translateY(${(1 - ease(seg(t, 41.6, 41.95))) * 110}%)`;
+  const chips = $$('#gch span'), cur = t >= 42.6 ? -1 : GCH.filter(([, a]) => t >= a).length - 1;
+  GCH.forEach(([i, a]) => chips[i].className = i === cur ? 'on' : t >= a ? 'lit' : '');
+
+  // stream captions + tracker (rentals captions wait until the search zoom is done)
+  [[1, 20.0, 24.9], [2, 25.0, 33.4], [3, 33.5, 43.9]].forEach(([i, a, b]) => {
+    const o = win(t, a, b, .35);
+    fade($('#k' + i), o, 14); fade($('#l' + i), o); fade($('#c' + i), win(t, a + .3, b, .35), 14);
+  });
+  fade($('#gch'), win(t, 34.0, 43.9, .35), 14);
+  $('#trk').style.opacity = seg(t, 20.0, 20.4) * (1 - seg(t, 43.7, 44.1));
+  [[17, 25], [25, 33.5], [33.5, 44]].forEach(([a, b], i) => { $('#trk').children[i].className = t >= a && t < b ? 'on' : t >= b ? 'past' : ''; });
+
+  // ACT 3 ─ why opt in
+  fade($('#L7'), seg(t, 44.1, 44.5) * (1 - seg(t, 49.3, 49.7)));
+  $$('.wk').forEach((w, i) => w.querySelectorAll('i').forEach(b => { b.style.height = (+b.dataset.v * 9 * out3(seg(t, 44.8 + i * .18, 45.3 + i * .18))) + 'px'; }));
+
+  fade($('#L8'), seg(t, 49.7, 50.1) * (1 - seg(t, 54.4, 54.8)));
+  $$('.cnt').forEach(b => b.textContent = Math.round(+b.dataset.n * out3(seg(t, 50.3, 52.2))).toLocaleString('en-US'));
+  fade($('#dCap'), seg(t, 50.2, 50.6), 14);
+
+  fade($('#L9'), seg(t, 54.8, 55.2) * (1 - seg(t, 58.6, 59.0)));
+  fade($('#vYou'), seg(t, 55.1, 55.5), 20);
+  fade($('#vUs'), seg(t, 55.5, 55.9), 20);
+  $('#vBtn').style.transform = t >= 56.0 && t < 56.15 ? 'scale(.96)' : '';
+  $$('.ul li').forEach((li, i) => li.style.opacity = .2 + .8 * seg(t, 56.2 + i * .4, 56.5 + i * .4));
+
+  // example-offer note while the financing ads are on screen
+  $('#ofoot').style.opacity = seg(t, 33.8, 34.2) * (1 - seg(t, 43.6, 44.0));
+
+  // end card
+  $('#end').style.opacity = seg(t, 59.0, 59.6);
+  const ro = seg(t, 59.9, 60.3), rb = $('#replay');
+  rb.style.opacity = ro; rb.style.pointerEvents = ro > .5 ? 'auto' : 'none';
+
+  // touch indicator for phone taps
+  const dot = $('#touch'), rip = $('#rip'), tap = TAPS.find(([k]) => t >= k - .4 && t < k + .35);
+  if (tap) {
+    const [k, sel] = tap, c = center(sel), press = t >= k && t < k + .14;
+    dot.style.opacity = win(t, k - .4, k + .35, .15);
+    dot.style.transform = `translate(${c.x}px,${c.y}px) scale(${press ? .8 : 1})`;
+    if (t >= k) { const p = (t - k) / .35; rip.style.opacity = 1 - p; rip.style.transform = `translate(${c.x}px,${c.y}px) scale(${.5 + p})`; } else rip.style.opacity = 0;
+  } else { dot.style.opacity = 0; rip.style.opacity = 0; }
+}
+
+// player: shared seek bar + controls (player.js); plays once and stops on the end card
+startPlayer({ D, render, chapters: CHAPTERS, replay: '#replay' });
+</script>
+</body>
+</html>

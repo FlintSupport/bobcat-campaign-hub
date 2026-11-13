@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fall Equipment Push Trailer</title>
+<!--
+  "See it in action" trailer for the Fall Equipment Push seasonal campaign (~76s with reading holds, plays once, then Replay).
+  Radio-led format, so it doesn't repeat Winter/Spring (three streams) or Summer (one customer's story):
+  Hook → HEARD IT (sample Digital Radio spot in a truck, captioned word by word) → SEARCHED IT (Search at lunch)
+  → BOOKED IT (Social lead form after dinner) → why it works → live dashboard → end card.
+  Featured machine: Bobcat T66 compact track loader with a brush cutter (land clearing, fence lines, food plots).
+  Price, co-op, dates and deadline come from the URL so the end card matches the campaign:
+    fall.html?price=1500&coop=375&start=Aug%201&end=Sep%2030&deadline=Jul%2017
+  Controls: seek bar with chapters, Space to play/pause, ←/→ to skip 5s. Review a single frame: fall.html?t=20 (real time)
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--page:#eef0f3;--ink:#16181d;--muted:#65676b;--line:#e4e6ea;--orange:#ff3600;--link:#1f6fd1;--green:#1e7b45;
+  --amber:#e3a73b;--rust:#b5452b;--pumpkin:#d9822b;
+  --cond:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--shadow:0 18px 40px rgba(80,40,10,.14)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#121417}}
+:root[data-theme="dark"]{--page:#121417}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page)}
+body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);display:grid;place-items:center;min-height:100vh;padding:16px}
+body.embed{padding:0;overflow:hidden}
+body.embed .wrap{width:min(100%,calc(100vh * 16 / 9))}
+.wrap{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#fdf1e1;container-type:inline-size}
+.stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(800px 480px at 95% -10%,rgba(227,167,59,.38),transparent 60%),radial-gradient(900px 520px at 8% 115%,rgba(181,69,43,.12),transparent 60%),linear-gradient(160deg,#fff6e8,#fbe5cc 72%)}
+.layer{position:absolute;inset:0;opacity:0}
+.k{font:800 18px var(--cond);letter-spacing:4px;color:var(--orange)}
+.mid{font:800 58px/.98 var(--cond);letter-spacing:.5px;color:var(--ink);text-transform:uppercase}
+.sub{font-size:24px;font-weight:600;color:#4a3f35;line-height:1.35}
+em{font-style:normal;color:var(--orange)}
+.fav{width:24px;height:24px;border-radius:50%;background:#111;color:var(--orange);font-weight:800;font-size:9.5px;display:grid;place-items:center;flex:none}
+.fav.g{background:#d0d4da}
+.pav{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex:none}
+.ring{position:absolute;inset:-3px;border:3px solid var(--orange);border-radius:10px;opacity:0;pointer-events:none}
+.caret{display:inline-block;width:2px;height:18px;background:var(--ink);vertical-align:middle;margin-left:1px}
+
+/* 0. hook: a country road in fall */
+#L0{background:linear-gradient(180deg,#f6c27a 0%,#fbdcae 50%,#fff1dc 90%)}
+#road{position:absolute;left:0;bottom:0}
+.hook{position:absolute;left:0;right:0;text-align:center;opacity:0;font:800 80px/.95 var(--cond);letter-spacing:.5px;color:var(--ink);text-transform:uppercase}
+#hookA{top:100px}#hookB{top:194px;color:var(--orange)}
+
+/* beat tracker: heard it → searched it → booked it */
+#beats{position:absolute;left:80px;right:80px;top:30px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;opacity:0;z-index:8}
+.bt{position:relative;overflow:hidden;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.75);border:2px solid #ead7c2;border-radius:12px;padding:8px 14px}
+.bt span{width:28px;height:28px;border-radius:50%;background:#e8d9c8;color:#fff;font:800 17px var(--cond);display:grid;place-items:center;flex:none}
+.bt b{font:800 24px var(--cond);letter-spacing:2px;color:#a08f7e}
+.bt small{font:800 15px var(--cond);letter-spacing:1.5px;color:#a08f7e;margin-left:auto}
+.bt i{position:absolute;left:0;bottom:0;height:4px;width:0;background:var(--orange)}
+.bt.on{background:#fff;border-color:var(--orange)}
+.bt.on span{background:var(--orange)}
+.bt.on b{color:var(--ink)}
+.bt.on small{color:#c72a00}
+.bt.past span{background:#4a3f35}
+.bt.past b,.bt.past small{color:#4a3f35}
+
+/* captions on the right */
+.cap{position:absolute;left:800px;top:150px;width:420px;opacity:0}
+.cap .tm{font:800 92px/.88 var(--cond);letter-spacing:1px}
+.cap .tm small{display:block;font:800 22px var(--cond);letter-spacing:3px;color:#8a6f55;margin-top:6px}
+.cap .pill{display:inline-block;margin-top:14px;background:var(--orange);color:#fff;font:800 18px var(--cond);letter-spacing:2px;border-radius:6px;padding:5px 12px}
+.cap p{margin-top:20px;font-size:34px;font-weight:700;line-height:1.2;letter-spacing:-.3px}
+
+/* 1. HEARD IT: truck cab with the radio spot */
+#cab{position:absolute;left:60px;top:110px;width:690px;height:540px}
+#wind{position:absolute;left:0;top:0;border-radius:26px 26px 0 0;overflow:hidden;border:10px solid #2a2622;border-bottom:0}
+.dash{position:absolute;left:0;top:300px;width:690px;height:240px;background:linear-gradient(#2e2a26,#1d1b19);border-radius:0 0 26px 26px;box-shadow:var(--shadow)}
+.player{position:absolute;left:105px;top:22px;width:480px;height:196px;background:#0f1113;border-radius:16px;border:3px solid #3a3530;display:flex;gap:16px;padding:16px;color:#fff}
+.art{width:158px;height:158px;border-radius:12px;flex:none;position:relative;overflow:hidden;background:linear-gradient(135deg,#111 0 58%,var(--orange) 58% 62%,#1f2125 62%);display:grid;place-items:center}
+.art b{font:800 34px var(--cond);color:var(--orange);letter-spacing:1px}
+.art svg{position:absolute;right:10px;top:10px}
+.pinfo{flex:1;display:flex;flex-direction:column}
+.pinfo small{font:800 13px var(--cond);letter-spacing:2px;color:#a9b1ba}
+.pinfo .adl{display:inline-block;margin-top:8px;align-self:flex-start;background:#f7c948;color:#111;font-size:11px;font-weight:800;padding:2px 6px;border-radius:3px}
+.pinfo b{font-size:19px;margin-top:6px}
+.pinfo span{font-size:13px;color:#c9ced6;margin-top:2px}
+.wave{display:flex;align-items:center;gap:3px;height:34px;margin-top:auto}
+.wave i{display:block;width:6px;border-radius:3px;background:var(--orange)}
+.prog{position:relative;height:4px;border-radius:2px;background:#3a3f45;margin-top:10px}
+.prog i{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:2px;background:#fff}
+.ptime{display:flex;justify-content:space-between;font-size:11px;color:#a9b1ba;margin-top:5px;font-variant-numeric:tabular-nums}
+#spotLbl{font:800 18px var(--cond);letter-spacing:3px;color:#8a6f55}
+#spot{margin-top:14px}
+#spot div{font-size:39px;font-weight:800;line-height:1.16;letter-spacing:-.4px;margin-bottom:8px}
+#spot span{opacity:.18}
+#spot span.on{opacity:1}
+#spotFoot{margin-top:18px;font-size:22px;font-weight:600;color:#4a3f35;line-height:1.35;opacity:0}
+
+/* 2-3. phone: SEARCHED IT, BOOKED IT */
+.phone{position:absolute;left:170px;top:20px;width:340px;height:680px;border-radius:50px;background:#0b0c0e;box-shadow:0 30px 60px rgba(80,40,10,.25),inset 0 0 0 2px #2a2d33;opacity:0;z-index:5;transform-origin:170px 96px}
+.screen{position:absolute;left:10px;top:10px;width:320px;height:660px;border-radius:40px;overflow:hidden;background:#fff}
+.notch{position:absolute;left:50%;top:9px;width:96px;height:26px;margin-left:-48px;border-radius:14px;background:#0b0c0e;z-index:9}
+.status{position:absolute;left:0;right:0;top:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:6px 26px 0 30px;font-size:14px;font-weight:600;z-index:8}
+.status i{display:inline-block;width:22px;height:11px;border:1.5px solid currentColor;border-radius:3px;position:relative}
+.status i::after{content:"";position:absolute;inset:1.5px 4px 1.5px 1.5px;background:currentColor;border-radius:1px}
+.sc{position:absolute;inset:0;padding-top:44px;opacity:0;overflow:hidden;background:#fff}
+.sbox{height:42px;border:1px solid #d6dae0;border-radius:21px;display:flex;align-items:center;gap:9px;padding:0 14px;font-size:13.5px;margin:8px 12px 10px}
+.r{opacity:0}
+#sAd{position:relative;margin:0 12px 8px;padding:10px;border-radius:10px}
+.spons{font-size:12px;font-weight:700;margin-bottom:5px}
+.site{display:flex;gap:8px;align-items:center}
+.site b{display:block;font-size:12.5px}
+.site span{display:block;font-size:10.5px;color:var(--muted)}
+.ttl{font-size:17px;line-height:1.25;color:var(--link);margin:6px 0 4px}
+.desc{font-size:12.5px;color:#4a505b;line-height:1.45}
+.chips{display:flex;gap:6px;margin-top:8px}
+.chips span{border:1px solid #d6dae0;border-radius:14px;padding:5px 10px;font-size:12px;color:var(--link)}
+.chips #sCall{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700}
+.org{padding:8px 16px}
+.org .ttl{font-size:15px}
+.callui{position:absolute;inset:0;background:linear-gradient(180deg,#3a2f27,#161210);color:#fff;display:flex;flex-direction:column;align-items:center;padding-top:130px;opacity:0;z-index:6}
+.callui .av{width:90px;height:90px;border-radius:50%;background:#111;color:var(--orange);display:grid;place-items:center;font-weight:800;font-size:28px}
+.callui b{font-size:23px;margin-top:18px}
+.callui span{font-size:15px;color:#d9cfc6;margin-top:6px}
+.callui .endb{width:66px;height:66px;border-radius:50%;background:#e5484d;display:grid;place-items:center;margin-top:auto;margin-bottom:70px}
+.appbar{height:46px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);font-size:26px;font-weight:800;letter-spacing:-1px;color:#4c5bd4;background:#fff;position:relative;z-index:2}
+.feedv{position:absolute;left:0;right:0;top:90px;bottom:0;overflow:hidden;background:#e9ebef}
+.post{background:#fff;margin-bottom:8px}
+.ph{display:flex;align-items:center;gap:9px;padding:10px 12px 8px}
+.ph b{font-size:14px;display:block}
+.ph span{font-size:12px;color:var(--muted)}
+.ptxt{font-size:13.5px;padding:0 12px 9px;line-height:1.35}
+.pimg{display:block;width:320px;height:170px}
+#fAd{position:relative}
+.adimg{position:relative;height:240px;overflow:hidden;color:#fff;padding:16px;background:linear-gradient(118deg,#111 0 60%,var(--orange) 60% 62.5%,#1f2125 62.5%)}
+.adimg small{font:800 12.5px var(--cond);letter-spacing:2px;color:var(--amber)}
+.adimg b{display:block;font:800 38px/.98 var(--cond);margin-top:4px}
+.adimg p{font:800 15px var(--cond);letter-spacing:1px;color:#e8dccf;margin-top:8px}
+.adimg svg{position:absolute;right:-8px;bottom:16px}
+.leaves{position:absolute;left:0;right:0;bottom:0;height:18px;background:repeating-linear-gradient(90deg,#d9822b 0 14px,#b5452b 14px 26px,#e3a73b 26px 40px)}
+.adfoot{display:flex;align-items:center;gap:10px;background:#f0f2f5;padding:10px 12px}
+.adfoot small{display:block;font-size:10.5px;color:var(--muted)}
+.adfoot b{font-size:14px;display:block}
+#fCta{margin-left:auto;background:#e2e5e9;border-radius:6px;padding:9px 13px;font-size:13px;font-weight:700}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;z-index:6}
+.sheet{position:absolute;left:0;right:0;top:130px;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:7;transform:translateY(110%);padding:10px 16px}
+.grab{width:40px;height:5px;border-radius:3px;background:#d0d3d8;margin:0 auto 12px}
+.sheet h4{font-size:17px;margin-bottom:4px}
+.sheet .q{font-size:14px;color:var(--muted);margin-bottom:12px}
+.opt{height:46px;border:1.5px solid #d5d9df;border-radius:10px;margin-bottom:9px;display:flex;align-items:center;gap:10px;padding:0 14px;font-size:15px;font-weight:600;color:#3c4350;opacity:0}
+.opt i{width:18px;height:18px;border-radius:50%;border:2px solid #c9ced6;flex:none}
+.opt.on{border-color:var(--orange);background:#fff0ea;color:#a92600}
+.opt.on i{border-color:var(--orange);background:radial-gradient(var(--orange) 45%,#fff 50%)}
+#fSubmit{margin-top:12px;height:46px;border-radius:10px;background:#4c5bd4;color:#fff;font-weight:700;font-size:15px;display:grid;place-items:center}
+.ok{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:10px;opacity:0;border-radius:16px 16px 0 0}
+.ok .chk{width:64px;height:64px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.ok b{font-size:20px}
+.ok span{font-size:14px;color:var(--muted);line-height:1.45}
+
+/* 4. why it works */
+#wTitle{position:absolute;left:0;right:0;top:110px;text-align:center}
+.steps{position:absolute;left:90px;top:220px;display:flex;align-items:center;gap:16px}
+.step{width:340px;background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:24px 26px;opacity:0}
+.step .n{width:56px;height:56px;border-radius:50%;background:var(--orange);display:grid;place-items:center}
+.step b{display:block;font:800 40px/1 var(--cond);letter-spacing:1px;margin-top:14px}
+.step small{display:block;font:800 17px var(--cond);letter-spacing:2px;color:#c72a00;margin-top:4px}
+.step p{font-size:21px;line-height:1.35;color:#4a3f35;margin-top:10px}
+.arw{opacity:0}
+#wLine{position:absolute;left:0;right:0;top:540px;text-align:center;font-size:36px;font-weight:700;line-height:1.25;opacity:0}
+
+/* 5. live dashboard */
+#dash{position:absolute;left:110px;top:190px;width:560px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.dh{background:#111;border-bottom:4px solid var(--orange);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:flex-end}
+.dh b{font:800 24px var(--cond);letter-spacing:1px;display:block}
+.dh span{font-size:12px;color:#b9bec7}
+.dh em{font-size:11px;letter-spacing:1px;color:#b9bec7;font-weight:700}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 20px 20px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.tile small{font:800 15px var(--cond);letter-spacing:2px;color:var(--muted)}
+.tile b{display:block;font:800 54px/1 var(--cond);margin-top:2px}
+#dCap{position:absolute;left:740px;top:230px;width:480px}
+
+/* end card */
+.endc{position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,246,232,.97),rgba(251,229,204,.97));display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink);opacity:0;text-align:center;z-index:15}
+.endc .k{letter-spacing:5px}
+.endc h2{font:800 92px/.95 var(--cond);letter-spacing:1px;margin:6px 0 4px}
+.endc .goal{font:800 26px var(--cond);letter-spacing:3px;color:#4a3f35}
+.pills{display:flex;gap:12px;margin:22px 0 24px}
+.pills span{border:2px solid #ead7c2;background:#fff;border-radius:30px;padding:8px 20px;font:800 22px var(--cond);letter-spacing:1.5px}
+.price{display:flex;gap:28px;align-items:baseline;justify-content:center}
+.price b{font:800 56px/1 var(--cond)}
+.price span{font-size:18px;color:#4a3f35}
+.price .co{color:var(--green);font-weight:700}
+.when{margin-top:12px;font-size:19px;color:#4a3f35}
+.when b{color:#c72a00}
+#replay{margin-top:28px;opacity:0;border:2px solid #c9b29a;border-radius:30px;background:#fff;color:var(--ink);font:800 22px var(--cond);letter-spacing:1.5px;text-transform:uppercase;padding:14px 30px;cursor:pointer;display:flex;align-items:center;gap:10px}
+#touch{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.9);box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:0;z-index:20}
+#rip{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid var(--orange);opacity:0;z-index:19}
+
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+<div class="stage" id="stage">
+
+  <!-- 0. hook -->
+  <div class="layer" id="L0">
+    <svg id="road" width="1280" height="360" viewBox="0 0 1280 360"></svg>
+    <div class="hook" id="hookA">Your next customer is listening.</div>
+    <div class="hook" id="hookB">Make sure they hear your name.</div>
+  </div>
+
+  <!-- 1. HEARD IT: the radio spot in the truck -->
+  <div class="layer" id="L1">
+    <div id="cab">
+      <svg id="wind" width="690" height="300" viewBox="0 0 670 290"></svg>
+      <div class="dash"><div class="player">
+        <div class="art"><svg width="34" height="34" viewBox="0 0 24 24"><path d="M5 9a10 10 0 0 1 14 0M8 12a6 6 0 0 1 8 0" stroke="#ff3600" stroke-width="2.4" fill="none" stroke-linecap="round"/><circle cx="12" cy="15.5" r="2" fill="#ff3600"/></svg><b>YD</b></div>
+        <div class="pinfo"><small>DIGITAL RADIO · COUNTRY HITS LIVE</small><span class="adl">AD</span><b>Your Bobcat Dealer</b><span>Fall Projects Don't Wait</span>
+          <div class="wave" id="wave"></div>
+          <div class="prog"><i id="pFill"></i></div><div class="ptime"><span id="pNow">0:00</span><span>0:15</span></div></div>
+      </div></div>
+    </div>
+    <div class="cap" id="cpR" style="top:140px;width:440px;left:790px">
+      <div id="spotLbl">SAMPLE 15-SECOND RADIO SPOT</div>
+      <div id="spot"></div>
+      <div id="spotFoot">Plays on streaming radio to listeners in the counties around your store.</div>
+    </div>
+  </div>
+
+  <!-- 2-3. phone: SEARCHED IT (lunch) → BOOKED IT (after dinner) -->
+  <div class="phone" id="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="status" id="status"><span id="clock">12:15</span><i></i></div>
+    <section class="sc" id="pS">
+      <div class="sbox" id="sBox"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" stroke="#8a919c" stroke-width="2.5" fill="none"/><path d="M15.5 15.5l5 5" stroke="#8a919c" stroke-width="2.5" stroke-linecap="round"/></svg><span><span id="sq"></span><span class="caret" id="sCaret"></span></span></div>
+      <div id="sAd" class="r"><span class="ring" id="sRing"></span>
+        <div class="spons">Sponsored</div>
+        <div class="site"><span class="fav">YD</span><div><b>Your Bobcat Dealer</b><span>yourdealership.com › fall-rentals</span></div></div>
+        <div class="ttl">Rent a Bobcat T66 + Brush Cutter | Fall Land Clearing</div>
+        <div class="desc">Heard us on the radio? Fall rental rates on track loaders and brush cutters. Same-week pickup.</div>
+        <div class="chips"><span id="sCall">📞 Call</span><span>Fall rental rates</span></div>
+      </div>
+      <div class="org r"><div class="site"><span class="fav g"></span><div><b>Equipment Rental Hub</b><span>rentalhub.com</span></div></div><div class="ttl">Brush Cutter Rentals Near You</div></div>
+      <div class="org r"><div class="site"><span class="fav g"></span><div><b>Landowner Guide</b><span>landownerguide.com</span></div></div><div class="ttl">How to Clear Brush Before Winter</div></div>
+      <div class="callui" id="sCallUi"><span class="av">YD</span><b>Your Bobcat Dealer</b><span>Rentals · Calling…</span><span class="endb"><svg width="28" height="28" viewBox="0 0 24 24"><path d="M3 15.5c5-4.5 13-4.5 18 0l-2.4 2.6-3.4-1.5v-2.8a13 13 0 0 0-6.4 0v2.8l-3.4 1.5z" fill="#fff"/></svg></span></div>
+    </section>
+    <section class="sc" id="pF">
+      <div class="appbar">feed</div>
+      <div class="feedv"><div id="feedIn">
+        <div class="post"><div class="ph"><span class="pav" style="background:#3f6fb0">MK</span><div><b>Mia Kowalski</b><span>1h</span></div></div><div class="ptxt">Pumpkin patch day 🎃</div>
+          <svg class="pimg" viewBox="0 0 320 170"><rect width="320" height="170" fill="#f8dcae"/><rect y="104" width="320" height="66" fill="#9c7a3c"/><g fill="#e07b22"><ellipse cx="70" cy="122" rx="30" ry="22"/><ellipse cx="160" cy="130" rx="38" ry="28"/><ellipse cx="250" cy="120" rx="26" ry="19"/></g><g fill="#4f7a2c"><rect x="66" y="96" width="7" height="10"/><rect x="156" y="98" width="8" height="10"/><rect x="246" y="96" width="6" height="9"/></g></svg></div>
+        <div class="post"><div class="ph"><span class="pav" style="background:#3c8d5a">TB</span><div><b>Tyler Brooks</b><span>3h</span></div></div><div class="ptxt">The leaves are turning 🍂</div>
+          <svg class="pimg" viewBox="0 0 320 170"><rect width="320" height="170" fill="#cfe6f4"/><rect y="130" width="320" height="40" fill="#b98a4a"/><g><rect x="66" y="90" width="8" height="45" fill="#5b4330"/><circle cx="70" cy="76" r="30" fill="#d9822b"/><rect x="156" y="84" width="8" height="50" fill="#5b4330"/><circle cx="160" cy="66" r="36" fill="#b5452b"/><rect x="246" y="92" width="8" height="42" fill="#5b4330"/><circle cx="250" cy="78" r="28" fill="#e3a73b"/></g></svg></div>
+        <div class="post" id="fAd"><span class="ring" id="fRing"></span>
+          <div class="ph"><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div></div>
+          <div class="ptxt">Fall projects don't wait. Clear it, fence it, plant it with a Bobcat T66.</div>
+          <div class="adimg"><small>LAND CLEARING · FENCE LINES · FOOD PLOTS</small><b>BOBCAT T66<br>+ BRUSH CUTTER</b><p>FALL PROJECTS DON'T WAIT</p><svg data-m="cutter" width="180" height="108"></svg><span class="leaves"></span></div>
+          <div class="adfoot"><div><small>YOURDEALERSHIP.COM</small><b>Get a fall project quote</b></div><span id="fCta">Get Quote</span></div>
+        </div>
+        <div class="post"><div class="ph"><span class="pav" style="background:#b8578f">JO</span><div><b>Jess Ortiz</b><span>5h</span></div></div><div class="ptxt">Football Friday 🏈</div></div>
+      </div></div>
+      <div class="scrim" id="fScrim"></div>
+      <div class="sheet" id="fSheet"><div class="grab"></div>
+        <h4>Your Bobcat Dealer</h4><div class="q">What's your fall project?</div>
+        <div class="opt" id="o1"><i></i>Land clearing</div>
+        <div class="opt"><i></i>Fence lines</div>
+        <div class="opt"><i></i>Food plots</div>
+        <div class="opt"><i></i>Something else</div>
+        <div id="fSubmit">Get my quote</div>
+        <div class="ok" id="fOk"><span class="chk"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Quote requested!</b><span>Your Bobcat Dealer will reach out about your land-clearing project.</span></div>
+      </div>
+    </section>
+  </div></div>
+
+  <div class="cap" id="cp1"><div class="tm">12:15 PM<small>LUNCH BREAK</small></div><span class="pill">SEARCH</span><p>They heard your spot on the morning drive. At lunch they search, and <em>your ad is first.</em></p></div>
+  <div class="cap" id="cp2"><div class="tm">7:30 PM<small>AFTER DINNER</small></div><span class="pill">SOCIAL</span><p>Scrolling on the couch, your fall offer shows up. <em>A quote request in two taps.</em></p></div>
+
+  <!-- 4. why it works -->
+  <div class="layer" id="L4">
+    <div class="mid" id="wTitle">One message. <em>Three channels.</em></div>
+    <div class="steps">
+      <div class="step"><span class="n" data-i="radio"></span><b>HEARD IT</b><small>DIGITAL RADIO</small><p>Your spot plays on their morning drive.</p></div>
+      <svg class="arw" width="30" height="30" viewBox="0 0 24 24"><path d="M5 12h12M12 6l6 6-6 6" stroke="#ff3600" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="step"><span class="n" data-i="search"></span><b>SEARCHED IT</b><small>SEARCH</small><p>Your ad is first when they look you up.</p></div>
+      <svg class="arw" width="30" height="30" viewBox="0 0 24 24"><path d="M5 12h12M12 6l6 6-6 6" stroke="#ff3600" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="step"><span class="n" data-i="social"></span><b>BOOKED IT</b><small>SOCIAL</small><p>A quote request from the couch.</p></div>
+    </div>
+    <div id="wLine">Radio makes them think of you.<br><em>Search and social catch them when they're ready.</em></div>
+  </div>
+
+  <!-- 5. live dashboard -->
+  <div class="layer" id="L5">
+    <div id="dash">
+      <div class="dh"><div><b>LIVE DASHBOARD</b><span>Fall Equipment Push · Your Bobcat Dealer</span></div><em>EXAMPLE</em></div>
+      <div class="tiles">
+        <div class="tile"><small>IMPRESSIONS</small><b class="cnt" data-n="52800">0</b></div>
+        <div class="tile"><small>CLICKS</small><b class="cnt" data-n="980">0</b></div>
+        <div class="tile"><small>CALLS</small><b class="cnt" data-n="47">0</b></div>
+        <div class="tile"><small>FORM FILLS</small><b class="cnt" data-n="33">0</b></div>
+      </div>
+    </div>
+    <div id="dCap"><div class="k">ALL SEASON LONG</div><div class="mid" style="margin-top:10px">Track your results, <em>any time.</em></div><div class="sub" style="margin-top:14px">Impressions, clicks, calls and form fills for every location, in one live dashboard.</div></div>
+  </div>
+
+  <!-- beat tracker -->
+  <div id="beats">
+    <div class="bt"><span>1</span><b>HEARD IT</b><small>DIGITAL RADIO</small><i></i></div>
+    <div class="bt"><span>2</span><b>SEARCHED IT</b><small>SEARCH</small><i></i></div>
+    <div class="bt"><span>3</span><b>BOOKED IT</b><small>SOCIAL</small><i></i></div>
+  </div>
+
+  <!-- end card -->
+  <div class="endc" id="end">
+    <div class="k">SEASONAL CAMPAIGN</div>
+    <h2>FALL EQUIPMENT PUSH</h2>
+    <div class="goal">FALL PROJECT LEADS</div>
+    <div class="pills"><span>DIGITAL RADIO</span><span>SEARCH</span><span>SOCIAL</span></div>
+    <div class="price"><div><b id="ePrice">$1,500</b> <span>per location · one-time</span></div><div class="co" id="eCoop">≈ $375 after 75% co-op</div></div>
+    <div class="when" id="eWhen">Runs Aug 1 – Sep 30 · <b>Enroll by Jul 17</b></div>
+    <button id="replay"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M4 3v5h5" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Replay</button>
+  </div>
+
+  <div id="rip"></div>
+  <div id="touch"></div>
+</div>
+</div>
+
+<script src="player.js"></script>
+<script>
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const wrap = $('#wrap'), stage = $('#stage');
+if (window.self !== window.top) document.body.classList.add('embed');
+// The animation is scripted on a 56s timeline; HOLDS pause it at fully shown moments so there's time to read.
+// [script time, extra seconds]. Real playback time = script time + every hold before it.
+const D0 = 56;
+const HOLDS = [[3.0, 1.5], [18.9, 2.5], [25.0, 2.5], [27.0, 2.0], [34.0, 2.0], [36.2, 1.5], [38.0, 2.5], [45.8, 3.0], [51.8, 2.5]];
+const D = D0 + HOLDS.reduce((a, [, x]) => a + x, 0);
+function script(r) {
+  let off = 0;
+  for (const [h, x] of HOLDS) { if (r <= h + off) return r - off; if (r <= h + off + x) return h; off += x; }
+  return Math.min(r - off, D0);
+}
+const toReal = s => s + HOLDS.filter(([h]) => h < s).reduce((a, [, x]) => a + x, 0);
+
+// campaign details from the URL (the hub passes them so the end card always matches)
+const qs = new URLSearchParams(location.search);
+const money = n => '$' + Number(n).toLocaleString('en-US');
+const P = { price: +qs.get('price') || 1500, coop: +qs.get('coop') || 375, start: qs.get('start') || 'Aug 1', end: qs.get('end') || 'Sep 30', deadline: qs.get('deadline') || 'Jul 17' };
+$('#ePrice').textContent = money(P.price);
+$('#eCoop').textContent = `≈ ${money(P.coop)} after 75% co-op`;
+$('#eWhen').innerHTML = `Runs ${P.start} – ${P.end} · <b>Enroll by ${P.deadline}</b>`;
+
+// chapters for the seek bar: [start in real playback time, label]
+const CHAPTERS = [[0, 'Hook'], [5, 'Heard it'], [20, 'Searched it'], [31.5, 'Booked it'], [43.1, 'Why it works'], [49, 'Results'], [54, 'Recap']].map(([s, l]) => [toReal(s), l]);
+// beat tracker: [start, end] of each beat
+const BEATS = [[5, 20], [20, 31.5], [31.5, 43.1]];
+
+const I = {
+  radio: '<svg width="30" height="30" viewBox="0 0 24 24"><path d="M4 9a11 11 0 0 1 16 0M7.5 12.5a6 6 0 0 1 9 0" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="12" cy="16.5" r="2.4" fill="#fff"/></svg>',
+  search: '<svg width="28" height="28" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" stroke="#fff" stroke-width="3" fill="none"/><path d="M15 15l6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>',
+  social: '<svg width="28" height="28" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4z" fill="#fff"/></svg>',
+};
+$$('[data-i]').forEach(el => el.innerHTML = I[el.dataset.i]);
+
+// machine: Bobcat T66 track loader with a brush cutter on the front
+const MACH = {
+  cutter: '<path d="M140 40 L166 64" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/>' +
+    '<path d="M150 76 h46 l4 18 h-54z" fill="#2a2c30"/><path d="M154 76 q19 -16 38 0z" fill="#3a3d42"/><rect x="148" y="92" width="54" height="5" rx="2" fill="#ff3600"/>' +
+    '<rect x="40" y="54" width="112" height="36" rx="7" fill="#ff3600"/><rect x="68" y="18" width="58" height="46" rx="6" fill="#0d0e10" stroke="#3a3d42" stroke-width="2"/><rect x="75" y="25" width="44" height="33" rx="3" fill="#a9c6d6"/>' +
+    '<rect x="36" y="84" width="120" height="26" rx="13" fill="#2a2c30" stroke="#3a3d42" stroke-width="2"/><circle cx="52" cy="97" r="7" fill="#777"/><circle cx="96" cy="97" r="5" fill="#777"/><circle cx="140" cy="97" r="7" fill="#777"/>',
+};
+$$('svg[data-m]').forEach(svg => { svg.setAttribute('viewBox', '0 0 205 120'); svg.innerHTML = MACH[svg.dataset.m]; });
+
+// fall trees + fence posts, shared by the hook road and the windshield view
+const FOLIAGE = ['#d9822b', '#b5452b', '#e3a73b', '#c9642a'];
+const tree = (x, y, s, i) => `<g transform="translate(${x} ${y}) scale(${s})"><rect x="-5" y="-6" width="10" height="56" fill="#5b4330"/><circle cx="0" cy="-26" r="34" fill="${FOLIAGE[i % 4]}"/><circle cx="-22" cy="-10" r="20" fill="${FOLIAGE[(i + 1) % 4]}"/><circle cx="22" cy="-12" r="22" fill="${FOLIAGE[(i + 2) % 4]}"/></g>`;
+const fence = (x0, x1, y, step) => { let s = `<path d="M${x0} ${y - 14} H${x1} M${x0} ${y - 4} H${x1}" stroke="#8a6b48" stroke-width="3"/>`; for (let x = x0; x <= x1; x += step) s += `<rect x="${x - 2}" y="${y - 22}" width="5" height="24" fill="#6b5034"/>`; return s; };
+$('#road').innerHTML =
+  '<path d="M0 120 Q320 70 640 110 T1280 90 V360 H0Z" fill="#c9a25a"/><path d="M0 170 Q640 130 1280 170 V360 H0Z" fill="#b98a4a"/>' +
+  '<path d="M560 360 L630 150 H650 L720 360Z" fill="#6b6f75"/><path d="M640 160 V360" stroke="#f2d06b" stroke-width="5" stroke-dasharray="18 16"/>' +
+  fence(40, 520, 250, 40) + fence(760, 1240, 250, 40) +
+  [[120, 170, 1.1], [300, 150, .8], [440, 140, .6], [860, 140, .6], [1000, 152, .85], [1170, 172, 1.15]].map(([x, y, s], i) => tree(x, y, s, i)).join('') +
+  '<g transform="translate(180 236) scale(.62)">' + MACH.cutter + '</g>';
+$('#wind').innerHTML =
+  '<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4b866"/><stop offset="1" stop-color="#fde6c2"/></linearGradient></defs>' +
+  '<rect width="670" height="290" fill="url(#sky)"/><circle cx="520" cy="120" r="34" fill="#fff1c4" opacity=".9"/>' +
+  '<path d="M0 170 Q170 130 335 160 T670 150 V290 H0Z" fill="#c9a25a"/>' +
+  '<path d="M255 290 L325 170 H345 L415 290Z" fill="#5f6368"/><path d="M335 175 V290" stroke="#f2d06b" stroke-width="4" stroke-dasharray="14 12"/>' +
+  fence(10, 240, 230, 30) + fence(430, 660, 230, 30) +
+  [[60, 190, .9], [180, 175, .6], [470, 175, .6], [600, 192, .95]].map(([x, y, s], i) => tree(x, y, s, i + 1)).join('');
+
+// waveform bars
+$('#wave').innerHTML = Array.from({ length: 34 }, () => '<i></i>').join('');
+
+// the sample radio spot, captioned word by word: [line, start, end] in script time
+const SPOT = [['Fall projects don’t wait.', 6.5, 8.6], ['Land clearing. Fence lines. Food plots.', 8.8, 11.8], ['Get it done with a Bobcat T66 and a brush cutter.', 12.0, 15.4], ['Rent it or own it at Your Bobcat Dealer.', 15.6, 18.5]];
+$('#spot').innerHTML = SPOT.map(([line]) => `<div>${line.split(' ').map(w => `<span>${w}</span>`).join(' ')}</div>`).join('');
+const WORDS = [];
+SPOT.forEach(([line, a, b], li) => { const ws = $$('#spot div')[li].querySelectorAll('span'); ws.forEach((el, i) => WORDS.push([el, a + (b - a) * i / ws.length])); });
+
+let scale = 1;
+// fit the 1280×720 stage inside the frame, letterboxed if needed (full screen can be any shape)
+function fit() {
+  scale = Math.min(wrap.clientWidth / 1280, wrap.clientHeight / 720);
+  stage.style.transform = `translate(${(wrap.clientWidth - 1280 * scale) / 2}px,${(wrap.clientHeight - 720 * scale) / 2}px) scale(${scale})`;
+}
+new ResizeObserver(fit).observe(wrap); fit();
+
+const clamp = v => Math.max(0, Math.min(1, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+const out3 = x => 1 - Math.pow(1 - x, 3);
+const win = (t, a, b, f = .3) => seg(t, a, a + f) * (1 - seg(t, b - f, b));
+const fade = (el, o, dy = 0) => { el.style.opacity = o; if (dy) el.style.transform = `translateY(${(1 - o) * dy}px)`; };
+function center(sel) {
+  const r = $(sel).getBoundingClientRect(), s = stage.getBoundingClientRect();
+  return { x: (r.left - s.left + r.width / 2) / scale, y: (r.top - s.top + r.height / 2) / scale };
+}
+const press = (sel, k, t) => { $(sel).style.transform = t >= k && t < k + .15 ? 'scale(.95)' : ''; };
+
+// taps on the phone: [time, target]
+const TAPS = [[20.6, '#sBox'], [25.8, '#sCall'], [34.6, '#fCta'], [36.6, '#o1'], [37.4, '#fSubmit']];
+const SQ = 'brush cutter rental near me';
+
+function render(t) {
+  // 0 ─ hook
+  fade($('#L0'), seg(t, 0, .4) * (1 - seg(t, 4.6, 5.0)));
+  fade($('#hookA'), seg(t, .5, .9), 16);
+  fade($('#hookB'), seg(t, 1.7, 2.1), 16);
+
+  // beat tracker (steps aside while the phone zooms in on the search bar)
+  $('#beats').style.opacity = seg(t, 5.4, 5.8) * (1 - seg(t, 48.6, 49.0)) * (1 - win(t, 20.5, 23.8, .25));
+  BEATS.forEach(([a, b], i) => {
+    const bt = $('#beats').children[i];
+    bt.className = 'bt' + (t >= a && t < b ? ' on' : t >= b ? ' past' : '');
+    bt.querySelector('i').style.width = seg(t, a, b) * 100 + '%';
+  });
+
+  // 1 ─ HEARD IT: the spot plays, captions light up word by word
+  fade($('#L1'), seg(t, 5.0, 5.5) * (1 - seg(t, 19.6, 20.0)), 20);
+  const playing = t >= 6.5 && t < 18.5, sp = seg(t, 6.5, 18.5);
+  $('#pFill').style.width = sp * 100 + '%';
+  $('#pNow').textContent = `0:${String(Math.floor(sp * 15)).padStart(2, '0')}`;
+  $$('#wave i').forEach((b, i) => { b.style.height = (playing ? 8 + 24 * Math.abs(Math.sin(t * 7 + i * .7) * Math.cos(t * 3.1 + i * .3)) : 6) + 'px'; });
+  $('#cpR').style.opacity = seg(t, 5.5, 6.0) * (1 - seg(t, 19.6, 20.0));
+  fade($('#spotLbl'), seg(t, 5.6, 6.0));
+  WORDS.forEach(([el, a]) => el.classList.toggle('on', t >= a));
+  fade($('#spotFoot'), seg(t, 18.6, 19.0), 10);
+
+  // 2-3 ─ phone
+  $('#phone').style.opacity = seg(t, 20.0, 20.4) * (1 - seg(t, 42.7, 43.1));
+  const z = ease(seg(t, 20.7, 21.2)) * (1 - ease(seg(t, 23.2, 23.7)));
+  $('#phone').style.transform = z ? `scale(${1 + .85 * z})` : '';
+  fade($('#pS'), 1 - seg(t, 31.4, 31.7));
+  fade($('#pF'), seg(t, 31.4, 31.7));
+  $('#clock').textContent = t < 31.5 ? '12:15' : '7:30';
+  $('#status').style.color = t > 26.0 && t < 31.5 ? '#fff' : '#111';
+
+  // SEARCHED IT: zoom on the search bar while it's typed → ad first → call
+  const n = Math.round(seg(t, 21.3, 23.0) * SQ.length);
+  $('#sq').textContent = SQ.slice(0, n);
+  $('#sCaret').style.opacity = t > 20.7 && t < 23.2 && (n < SQ.length || Math.floor(t * 2.5) % 2 === 0) ? 1 : 0;
+  $$('#pS .r').forEach((el, i) => { const a = seg(t, 23.7 + i * .12, 24.1 + i * .12); el.style.opacity = a * (el.classList.contains('org') ? .55 : 1); el.style.transform = `translateY(${(1 - ease(a)) * 12}px)`; });
+  $('#sRing').style.opacity = win(t, 24.1, 25.7, .3);
+  press('#sCall', 25.8, t);
+  $('#sCallUi').style.opacity = seg(t, 26.0, 26.3);
+
+  // BOOKED IT: scroll the feed → fall ad → quote form with project types → confirmed
+  const ad = $('#fAd').offsetTop - 6;
+  $('#feedIn').style.transform = `translateY(${-ad * out3(seg(t, 32.0, 33.2))}px)`;
+  $('#fRing').style.opacity = win(t, 33.2, 34.5, .3);
+  const sh = ease(seg(t, 34.8, 35.3));
+  $('#fSheet').style.transform = `translateY(${(1 - sh) * 110}%)`; $('#fScrim').style.opacity = sh;
+  $$('#fSheet .opt').forEach((el, i) => { const a = seg(t, 35.3 + i * .2, 35.6 + i * .2); el.style.opacity = a; el.style.transform = `translateY(${(1 - out3(a)) * 10}px)`; });
+  $('#o1').classList.toggle('on', t >= 36.6);
+  press('#fSubmit', 37.4, t);
+  $('#fOk').style.opacity = seg(t, 37.6, 37.9);
+
+  fade($('#cp1'), win(t, 23.7, 31.4, .35), 14);
+  fade($('#cp2'), win(t, 31.6, 42.9, .35), 14);
+
+  // 4 ─ why it works
+  fade($('#L4'), seg(t, 43.1, 43.5) * (1 - seg(t, 48.6, 49.0)));
+  $$('.step').forEach((el, i) => fade(el, seg(t, 43.5 + i * .6, 43.9 + i * .6), 24));
+  $$('.arw').forEach((el, i) => el.style.opacity = seg(t, 43.9 + i * .6, 44.1 + i * .6));
+  fade($('#wLine'), seg(t, 45.4, 45.8), 12);
+
+  // 5 ─ dashboard
+  fade($('#L5'), seg(t, 49.0, 49.4) * (1 - seg(t, 53.6, 54.0)));
+  $$('.cnt').forEach(b => b.textContent = Math.round(+b.dataset.n * out3(seg(t, 49.6, 51.5))).toLocaleString('en-US'));
+  fade($('#dCap'), seg(t, 49.5, 49.9), 14);
+
+  // end card
+  $('#end').style.opacity = seg(t, 54.0, 54.6);
+  const ro = seg(t, 54.9, 55.3), rb = $('#replay');
+  rb.style.opacity = ro; rb.style.pointerEvents = ro > .5 ? 'auto' : 'none';
+
+  // touch indicator for phone taps
+  const dot = $('#touch'), rip = $('#rip'), tap = TAPS.find(([k]) => t >= k - .4 && t < k + .35);
+  if (tap) {
+    const [k, sel] = tap, c = center(sel);
+    dot.style.opacity = win(t, k - .4, k + .35, .15);
+    dot.style.transform = `translate(${c.x}px,${c.y}px) scale(${t >= k && t < k + .14 ? .8 : 1})`;
+    if (t >= k) { const p = (t - k) / .35; rip.style.opacity = 1 - p; rip.style.transform = `translate(${c.x}px,${c.y}px) scale(${.5 + p})`; } else rip.style.opacity = 0;
+  } else { dot.style.opacity = 0; rip.style.opacity = 0; }
+}
+
+// player: shared seek bar + controls (player.js); plays once and stops on the end card
+startPlayer({ D: D0, holds: HOLDS, render, chapters: CHAPTERS, replay: '#replay' });
+</script>
+</body>
+</html>

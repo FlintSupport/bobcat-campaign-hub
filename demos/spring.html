@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Spring Kickoff Trailer</title>
+<!--
+  "See it in action" trailer for the Spring Kickoff seasonal campaign (~70s with reading holds, plays once, then Replay).
+  "Spring to-do list" format: a customer's to-do list on a clipboard gets checked off by the campaign, one channel per item.
+  Hook → built for your market (county map + tactics) → 1 Find a deal (Search) → 2 Compare offers (Social + quote form)
+  → 3 See it in person (Email: spring sales event, demo day as a "plus") → 4 Get to the dealer (Performance Max: YouTube → Maps)
+  → every item leads back to you → dashboard → end card. The 0% for 60 months + $3,000 cash back offer runs through all of it.
+  Price, co-op, dates and deadline come from the URL so the end card matches the campaign:
+    spring.html?price=2000&coop=500&start=Mar%201&end=Apr%2030&deadline=Feb%2014
+  Player (seek bar, chapters, keys) is shared in player.js. Review a single frame: spring.html?t=20 (real time)
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--page:#eef0f3;--ink:#16181d;--muted:#65676b;--line:#e4e6ea;--orange:#ff3600;--link:#1f6fd1;--green:#1e7b45;--sunny:#ffd166;
+  --cond:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--shadow:0 18px 40px rgba(20,50,30,.13)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#121417}}
+:root[data-theme="dark"]{--page:#121417}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page)}
+body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);display:grid;place-items:center;min-height:100vh;padding:16px}
+body.embed{padding:0;overflow:hidden}
+body.embed .wrap{width:min(100%,calc(100vh * 16 / 9))}
+.wrap{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#e6f4fb}
+.stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(900px 520px at 18% 112%,rgba(255,54,0,.10),transparent 60%),radial-gradient(800px 460px at 92% -10%,rgba(255,214,102,.40),transparent 60%),linear-gradient(160deg,#e3f3fb,#f3f9ec 70%)}
+.layer{position:absolute;inset:0;opacity:0}
+.k{font:800 18px var(--cond);letter-spacing:4px;color:var(--orange)}
+.mid{font:800 58px/.98 var(--cond);letter-spacing:.5px;color:var(--ink);text-transform:uppercase}
+.sub{font-size:24px;font-weight:600;color:#3c4350;line-height:1.35}
+em{font-style:normal;color:var(--orange)}
+.fav{width:24px;height:24px;border-radius:50%;background:#111;color:var(--orange);font-weight:800;font-size:9.5px;display:grid;place-items:center;flex:none}
+.fav.g{background:#d0d4da}
+.pav{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex:none}
+.ring{position:absolute;inset:-3px;border:3px solid var(--orange);border-radius:10px;opacity:0;pointer-events:none}
+.caret{display:inline-block;width:2px;height:18px;background:var(--ink);vertical-align:middle;margin-left:1px}
+.grass{position:absolute;left:0;right:0;bottom:0;height:22px;background:linear-gradient(#5da544,#3f7f31)}
+.sunb{position:absolute;right:16px;top:12px;width:34px;height:34px;border-radius:50%;background:var(--sunny);box-shadow:0 0 0 6px rgba(255,209,102,.25)}
+.cash{display:inline-block;background:var(--sunny);color:#111;font:800 17px var(--cond);letter-spacing:1px;border-radius:5px;padding:4px 9px}
+
+/* 0. hook: the lot on a bright spring morning */
+#L0{background:linear-gradient(180deg,#8fd0f3 0%,#c8e9f8 50%,#fff1d4 85%)}
+#sun{position:absolute;left:930px;top:300px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,#ffe7a3 0 30%,rgba(255,200,110,.45) 45%,transparent 70%)}
+#lot{position:absolute;left:0;right:0;bottom:0;height:300px}
+.hook{position:absolute;left:0;right:0;text-align:center;opacity:0;font:800 80px/.95 var(--cond);letter-spacing:.5px;color:var(--ink);text-transform:uppercase}
+#hookA{top:112px}#hookB{top:206px;color:var(--orange)}
+
+/* 1. built for your market: counties around the store */
+#mTitle{position:absolute;left:0;right:0;top:70px;text-align:center}
+#mSub{position:absolute;left:0;right:0;top:136px;text-align:center}
+#cMap{position:absolute;left:80px;top:200px;overflow:visible}
+#cMap .lbl{font:800 14px var(--cond);letter-spacing:1px;fill:#16181d;text-anchor:middle}
+#cPin{position:absolute;width:46px;height:60px}
+.rows{position:absolute;left:660px;top:206px;display:flex;flex-direction:column;gap:14px}
+.row{width:460px;height:74px;display:flex;align-items:center;gap:18px;padding:0 22px;border-radius:16px;background:#fff;box-shadow:0 14px 30px rgba(20,50,30,.12);opacity:0}
+.row span{width:50px;height:50px;border-radius:50%;background:var(--orange);display:grid;place-items:center;flex:none}
+.row b{font:800 34px/1 var(--cond);letter-spacing:1px}
+#mNext{position:absolute;left:0;right:0;top:612px;text-align:center;font-size:32px;font-weight:700;opacity:0}
+
+/* the spring to-do list */
+#clip{position:absolute;left:780px;top:46px;width:450px;height:646px;opacity:0;z-index:4}
+#clip .board{position:absolute;inset:0;background:linear-gradient(160deg,#d29d63,#b9814a);border-radius:20px;box-shadow:var(--shadow)}
+#clip .clipc{position:absolute;left:50%;top:-8px;width:150px;height:46px;margin-left:-75px;background:linear-gradient(#c9ced6,#8a919c);border-radius:10px 10px 16px 16px;z-index:2;box-shadow:0 4px 8px rgba(0,0,0,.2)}
+#clip .paper{position:absolute;left:16px;right:16px;top:30px;bottom:16px;background:#fff;border-radius:8px;padding:24px 20px 16px}
+#clip h3{font:800 36px var(--cond);letter-spacing:2px;margin:0 6px 6px}
+#clip h3 em{font-size:36px}
+.todo{display:flex;gap:14px;padding:9px 12px;border-radius:12px;border:2px solid transparent;margin-bottom:4px;opacity:0}
+.todo .bx{width:36px;height:36px;border:3px solid #9aa3b5;border-radius:8px;flex:none;display:grid;place-items:center;margin-top:2px}
+.todo .bx svg{opacity:0}
+.todo b{display:block;font-size:25px;font-weight:800;line-height:1.2}
+.todo small{display:block;font-size:16.5px;font-weight:600;color:#3c4350;margin-top:5px;line-height:1.3;opacity:0}
+.todo small i{font-style:normal;font:800 15px var(--cond);letter-spacing:1.5px;color:#c72a00;margin-right:6px}
+.todo.on{border-color:var(--orange);background:#fff3ec}
+.todo.done .bx{background:var(--orange);border-color:var(--orange)}
+.todo.done .bx svg{opacity:1}
+#clip .ofoot{position:absolute;left:22px;right:22px;bottom:12px;font-size:13.5px;line-height:1.35;color:var(--muted)}
+#stamp{position:absolute;left:40px;right:40px;top:262px;text-align:center;border:4px solid var(--green);color:var(--green);font:800 30px/1.1 var(--cond);letter-spacing:2px;border-radius:12px;padding:10px;background:rgba(255,255,255,.94);opacity:0;z-index:3}
+#doneLine{position:absolute;left:110px;top:250px;width:600px;opacity:0}
+#doneLine .sub{margin-top:18px}
+
+/* phone */
+.phone{position:absolute;left:220px;top:20px;width:340px;height:680px;border-radius:50px;background:#0b0c0e;box-shadow:0 30px 60px rgba(20,50,30,.25),inset 0 0 0 2px #2a2d33;opacity:0;z-index:5;transform-origin:170px 96px}
+.screen{position:absolute;left:10px;top:10px;width:320px;height:660px;border-radius:40px;overflow:hidden;background:#fff}
+.notch{position:absolute;left:50%;top:9px;width:96px;height:26px;margin-left:-48px;border-radius:14px;background:#0b0c0e;z-index:9}
+.status{position:absolute;left:0;right:0;top:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:6px 26px 0 30px;font-size:14px;font-weight:600;z-index:8}
+.status i{display:inline-block;width:22px;height:11px;border:1.5px solid currentColor;border-radius:3px;position:relative}
+.status i::after{content:"";position:absolute;inset:1.5px 4px 1.5px 1.5px;background:currentColor;border-radius:1px}
+.sc{position:absolute;inset:0;padding-top:44px;opacity:0;overflow:hidden;background:#fff}
+/* search */
+.sbox{height:42px;border:1px solid #d6dae0;border-radius:21px;display:flex;align-items:center;gap:9px;padding:0 14px;font-size:13.5px;margin:8px 12px 10px}
+.r{opacity:0}
+#sAd{position:relative;margin:0 12px 8px;padding:10px;border-radius:10px}
+.spons{font-size:12px;font-weight:700;margin-bottom:5px}
+.site{display:flex;gap:8px;align-items:center}
+.site b{display:block;font-size:12.5px}
+.site span{display:block;font-size:10.5px;color:var(--muted)}
+.ttl{font-size:17px;line-height:1.25;color:var(--link);margin:6px 0 4px}
+.desc{font-size:12.5px;color:#4a505b;line-height:1.45}
+.chips{display:flex;gap:6px;margin-top:8px}
+.chips span{border:1px solid #d6dae0;border-radius:14px;padding:5px 10px;font-size:12px;color:var(--link)}
+.chips span:first-child{background:var(--orange);border-color:var(--orange);color:#fff;font-weight:700}
+.org{padding:8px 16px}
+.org .ttl{font-size:15px}
+/* feed */
+.appbar{height:46px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);font-size:26px;font-weight:800;letter-spacing:-1px;color:#4c5bd4;background:#fff;position:relative;z-index:2}
+.feedv{position:absolute;left:0;right:0;top:90px;bottom:0;overflow:hidden;background:#e9ebef}
+.post{position:relative;background:#fff;margin-bottom:8px}
+.ph{display:flex;align-items:center;gap:9px;padding:10px 12px 8px}
+.ph b{font-size:14px;display:block}
+.ph span{font-size:12px;color:var(--muted)}
+.ptxt{font-size:13.5px;padding:0 12px 9px;line-height:1.35}
+.pimg{display:block;width:320px;height:170px}
+.adimg{position:relative;height:236px;overflow:hidden;color:#fff;padding:16px;background:linear-gradient(118deg,#111 0 60%,var(--orange) 60% 62.5%,#1f2125 62.5%)}
+.adimg small{font:800 13px var(--cond);letter-spacing:2px;color:#9fdc84}
+.adimg b{display:block;font:800 40px/.98 var(--cond);margin-top:4px}
+.adimg .cash{margin-top:8px}
+.adimg svg{position:absolute;right:-6px;bottom:18px}
+.adfoot{display:flex;align-items:center;gap:10px;background:#f0f2f5;padding:10px 12px}
+.adfoot small{display:block;font-size:10.5px;color:var(--muted)}
+.adfoot b{font-size:14px;display:block}
+.adfoot .cta{margin-left:auto;background:#e2e5e9;border-radius:6px;padding:9px 13px;font-size:13px;font-weight:700}
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;z-index:6}
+.sheet{position:absolute;left:0;right:0;top:150px;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:7;transform:translateY(110%);padding:10px 16px}
+.grab{width:40px;height:5px;border-radius:3px;background:#d0d3d8;margin:0 auto 12px}
+.sheet h4{font-size:17px;margin-bottom:4px}
+.sheet .q{font-size:14px;color:var(--muted);margin-bottom:12px}
+.fld{border:1.5px solid #d5d9df;border-radius:10px;padding:7px 12px;margin-bottom:9px}
+.fld small{display:block;font-size:11px;color:var(--muted)}
+.fld span{font-size:15px;font-weight:600}
+.subm{margin-top:12px;height:46px;border-radius:10px;background:#4c5bd4;color:#fff;font-weight:700;font-size:15px;display:grid;place-items:center}
+.ok{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:10px;opacity:0;border-radius:16px 16px 0 0}
+.ok .chk{width:64px;height:64px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.ok b{font-size:20px}
+.ok span{font-size:14px;color:var(--muted);line-height:1.45}
+/* mail */
+.gbar{height:48px;display:flex;align-items:center;gap:10px;padding:0 16px;font-size:19px;font-weight:700;border-bottom:1px solid var(--line)}
+.gbar i{width:28px;height:20px;border-radius:4px;background:#d93025;display:grid;place-items:center}
+.mrow{position:relative;display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.mrow .pav{width:36px;height:36px}
+.mrow b{display:block;font-size:14px}
+.mrow .sj{display:block;font-size:13.5px;font-weight:700;margin-top:2px;line-height:1.3}
+.mrow .pv{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+.mrow .ring{inset:2px;border-radius:8px}
+#eRow{background:#f3faef}
+.unread{position:absolute;right:14px;top:16px;width:9px;height:9px;border-radius:50%;background:#1a73e8}
+.ehead{height:48px;display:flex;align-items:center;gap:10px;padding:0 14px;border-bottom:1px solid var(--line);font-size:14px;font-weight:700}
+.eban{position:relative;height:210px;overflow:hidden;padding:18px 16px;color:#fff;background:linear-gradient(118deg,#111 0 60%,var(--orange) 60% 62.5%,#1f2125 62.5%)}
+.eban small{font:800 14px var(--cond);letter-spacing:2.5px;color:#9fdc84}
+.eban b{display:block;font:800 40px/.95 var(--cond);margin-top:2px}
+.eban .cash{margin-top:8px}
+.eban svg{position:absolute;right:-6px;bottom:20px}
+.ebody{padding:14px 16px;font-size:13.5px;line-height:1.45;color:#3c4350}
+.ebody .plus{margin-top:12px;border:1.5px dashed #b9d7a8;background:#f3faef;border-radius:10px;padding:9px 12px;font-size:13px;color:#2c5a22;font-weight:600}
+.ebody .btn{margin-top:12px;height:44px;border-radius:22px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center}
+/* video */
+.yh{height:40px;display:flex;align-items:center;gap:7px;padding:0 14px;font:800 20px var(--cond)}
+.yh i{width:26px;height:18px;border-radius:5px;background:#111;display:grid;place-items:center}
+.player{position:relative;height:190px;overflow:hidden;color:#fff;padding:16px;background:linear-gradient(118deg,#0d0e10 0 60%,var(--orange) 60% 62.5%,#1d1f23 62.5%)}
+.player small{font:800 13px var(--cond);letter-spacing:2px;color:#9fdc84}
+.player b{display:block;font:800 32px/.98 var(--cond);margin-top:2px}
+.player svg{position:absolute;right:-4px;bottom:14px}
+.adb{position:absolute;left:10px;bottom:28px;background:#f7c948;color:#111;font-size:10.5px;font-weight:800;padding:3px 6px;border-radius:3px}
+.vprog{position:absolute;left:0;bottom:0;height:3px;background:#f7c948;z-index:2}
+.vcard{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.vcard .cta{margin-left:auto;background:var(--orange);color:#fff;font-weight:700;font-size:12.5px;padding:8px 12px;border-radius:18px}
+.vt{padding:10px 12px 0;font-size:15px;font-weight:700;line-height:1.3}
+.vm{padding:4px 12px 10px;font-size:11.5px;color:var(--muted)}
+/* maps */
+#mpBg,#route{position:absolute;left:0;top:0}
+#route{z-index:1}
+.mbox{position:absolute;left:12px;right:12px;top:52px;height:44px;background:#fff;border-radius:22px;box-shadow:0 3px 12px rgba(0,0,0,.18);display:flex;align-items:center;gap:9px;padding:0 14px;font-size:14px;z-index:2}
+.pin{position:absolute;width:30px;height:40px;margin:-40px 0 0 -15px;opacity:0;z-index:2}
+#pinMe{width:40px;height:52px;margin:-52px 0 0 -20px}
+#mCard,#mRoute{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -6px 20px rgba(0,0,0,.15);padding:10px 16px 26px;transform:translateY(110%);z-index:3}
+#mCard h4{font-size:19px}
+#mCard .m1{font-size:12.5px;color:var(--muted);margin-top:3px}
+#mCard .m1 b{color:var(--ink);background:#f1f3f5;border-radius:3px;padding:1px 5px;margin-right:4px;font-size:11px}
+#mCard .m2{font-size:13px;margin-top:6px;font-weight:700;color:#c72a00}
+.mbtns{display:flex;gap:8px;margin-top:14px}
+.mbtns span{flex:1;height:40px;border-radius:20px;border:1.5px solid #c9ced6;display:grid;place-items:center;font-size:13px;font-weight:700;color:#1f4e8c}
+.mbtns #mDir{background:var(--orange);border-color:var(--orange);color:#fff}
+#mRoute{padding:14px 16px 28px}
+#mRoute .rt{display:flex;align-items:baseline;gap:6px}
+#mRoute .rt b{font-size:24px;color:var(--green)}
+#mRoute .rt span{font-size:15px;color:var(--muted)}
+#mRoute .rs{font-size:12.5px;color:var(--muted);margin-top:3px}
+#mRoute .go{margin-top:14px;height:42px;border-radius:21px;background:#1a73e8;color:#fff;font-size:14px;font-weight:700;display:grid;place-items:center}
+
+/* live dashboard */
+#dash{position:absolute;left:110px;top:190px;width:560px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.dh{background:#111;border-bottom:4px solid var(--orange);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:flex-end}
+.dh b{font:800 24px var(--cond);letter-spacing:1px;display:block}
+.dh span{font-size:12px;color:#b9bec7}
+.dh em{font-size:11px;letter-spacing:1px;color:#b9bec7;font-weight:700}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 20px 20px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.tile small{font:800 15px var(--cond);letter-spacing:2px;color:var(--muted)}
+.tile b{display:block;font:800 54px/1 var(--cond);margin-top:2px}
+#dCap{position:absolute;left:740px;top:230px;width:480px}
+
+/* end card */
+.endc{position:absolute;inset:0;background:linear-gradient(160deg,rgba(234,246,252,.97),rgba(245,250,238,.97));display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink);opacity:0;text-align:center;z-index:15}
+.endc .k{letter-spacing:5px}
+.endc h2{font:800 92px/.95 var(--cond);letter-spacing:1px;margin:6px 0 4px}
+.endc .goal{font:800 26px var(--cond);letter-spacing:3px;color:#3c4350}
+.pills{display:flex;gap:12px;margin:22px 0 24px}
+.pills span{border:2px solid #c9d6cf;background:#fff;border-radius:30px;padding:8px 20px;font:800 22px var(--cond);letter-spacing:1.5px}
+.price{display:flex;gap:28px;align-items:baseline;justify-content:center}
+.price b{font:800 56px/1 var(--cond)}
+.price span{font-size:18px;color:#3c4350}
+.price .co{color:var(--green);font-weight:700}
+.when{margin-top:12px;font-size:19px;color:#3c4350}
+.when b{color:#c72a00}
+#replay{margin-top:28px;opacity:0;border:2px solid #9fb0a8;border-radius:30px;background:#fff;color:var(--ink);font:800 22px var(--cond);letter-spacing:1.5px;text-transform:uppercase;padding:14px 30px;cursor:pointer;display:flex;align-items:center;gap:10px}
+#touch{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.9);box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:0;z-index:20}
+#rip{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid var(--orange);opacity:0;z-index:19}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+<div class="stage" id="stage">
+
+  <!-- 0. hook -->
+  <div class="layer" id="L0">
+    <div id="sun"></div>
+    <div id="lot"><svg id="lotSvg" width="1280" height="300" viewBox="0 0 1280 300"></svg></div>
+    <div class="hook" id="hookA">Your customers are planning spring.</div>
+    <div class="hook" id="hookB">Make sure you're in the plan.</div>
+  </div>
+
+  <!-- 1. built for your market -->
+  <div class="layer" id="L1">
+    <div class="mid" id="mTitle">Built for <em>your</em> market.</div>
+    <div class="sub" id="mSub">The counties around your store, your local keywords, your spring offers.</div>
+    <svg id="cMap" width="460" height="370" viewBox="0 0 460 370"></svg>
+    <svg id="cPin" viewBox="0 0 30 40"><path d="M15 39C15 39 2 23 2 14a13 13 0 0 1 26 0c0 9-13 25-13 25z" fill="#ff3600" stroke="#fff" stroke-width="1.5"/><circle cx="15" cy="14" r="5" fill="#111"/></svg>
+    <div class="rows">
+      <div class="row"><span data-i="search"></span><b>SEARCH</b></div>
+      <div class="row"><span data-i="social"></span><b>SOCIAL</b></div>
+      <div class="row"><span data-i="mail"></span><b>EMAIL</b></div>
+      <div class="row"><span data-i="pmax"></span><b>PERFORMANCE MAX</b></div>
+    </div>
+    <div id="mNext">Here's how your campaign checks off <em>their spring to-do list.</em></div>
+  </div>
+
+  <!-- the spring to-do list -->
+  <div id="clip"><div class="board"></div><div class="clipc"></div>
+    <div class="paper"><h3>SPRING <em>TO-DO LIST</em></h3>
+      <div class="todo"><span class="bx"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Find a deal on a track loader</b><small><i>SEARCH</i>Your 0% + $3,000 cash back offer shows first.</small></div></div>
+      <div class="todo"><span class="bx"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Compare offers</b><small><i>SOCIAL</i>The offer in their feed, with a quote form.</small></div></div>
+      <div class="todo"><span class="bx"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>See it in person</b><small><i>EMAIL</i>Your Demo Day invite, with an RSVP.</small></div></div>
+      <div class="todo"><span class="bx"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>Get to the dealer</b><small><i>PERFORMANCE MAX</i>From YouTube to Maps, with directions to you.</small></div></div>
+      <div class="ofoot">Example offer. Real offers come from your dealership and current Bobcat programs. On approved credit.</div>
+    </div>
+    <div id="stamp">ALL DONE AT<br>YOUR BOBCAT DEALER</div>
+  </div>
+  <div id="doneLine"><div class="mid">Every item on their list <em>leads back to you.</em></div><div class="sub">Search, social, email and Performance Max, all carrying your spring offer.</div></div>
+
+  <!-- phone -->
+  <div class="phone" id="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="status"><span>9:41</span><i></i></div>
+
+    <section class="sc" id="pS">
+      <div class="sbox" id="sBox"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" stroke="#8a919c" stroke-width="2.5" fill="none"/><path d="M15.5 15.5l5 5" stroke="#8a919c" stroke-width="2.5" stroke-linecap="round"/></svg><span><span id="sq"></span><span class="caret" id="sCaret"></span></span></div>
+      <div id="sAd" class="r"><span class="ring" id="sRing"></span>
+        <div class="spons">Sponsored</div>
+        <div class="site"><span class="fav">YD</span><div><b>Your Bobcat Dealer</b><span>yourdealership.com › spring-offers</span></div></div>
+        <div class="ttl">0% for 60 Months + $3,000 Cash Back | Bobcat T66 Track Loader</div>
+        <div class="desc">Spring offer on the Bobcat T66, in stock at your local dealer. On approved credit; offer ends Apr 30.</div>
+        <div class="chips"><span>📞 Call</span><span>See spring offers</span></div>
+      </div>
+      <div class="org r"><div class="site"><span class="fav g"></span><div><b>Landscape Supply Co.</b><span>landscapesupply.com</span></div></div><div class="ttl">Spring Landscaping Equipment Checklist</div></div>
+      <div class="org r"><div class="site"><span class="fav g"></span><div><b>Equipment Buyer's Guide</b><span>buyersguide.com</span></div></div><div class="ttl">How to Choose a Compact Track Loader</div></div>
+    </section>
+
+    <section class="sc" id="pF">
+      <div class="appbar">feed</div>
+      <div class="feedv"><div id="feedIn">
+        <div class="post"><div class="ph"><span class="pav" style="background:#3f6fb0">MK</span><div><b>Mia Kowalski</b><span>1h</span></div></div><div class="ptxt">First mow of the year! 🌱</div>
+          <svg class="pimg" viewBox="0 0 320 170"><rect width="320" height="170" fill="#bfe3f5"/><rect y="96" width="320" height="74" fill="#6fb552"/><g fill="#5aa040"><rect y="96" width="320" height="8"/><rect y="120" width="320" height="10" opacity=".5"/><rect y="146" width="320" height="10" opacity=".5"/></g><circle cx="262" cy="38" r="20" fill="#ffd166"/></svg></div>
+        <div class="post" id="fAd"><span class="ring" id="fRing"></span>
+          <div class="ph"><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div></div>
+          <div class="ptxt">Spring is here. Get 0% for 60 months plus $3,000 cash back on the Bobcat T66.</div>
+          <div class="adimg"><small>SPRING OFFER · BOBCAT T66</small><b>0% FOR<br>60 MONTHS</b><span class="cash">+ $3,000 CASH BACK</span><svg data-m="track" width="150" height="90"></svg><span class="grass"></span></div>
+          <div class="adfoot"><div><small>YOURDEALERSHIP.COM</small><b>Claim your spring offer</b></div><span class="cta" id="fCta">Get Offer</span></div>
+        </div>
+      </div></div>
+      <div class="scrim" id="fScrim"></div>
+      <div class="sheet" id="fSheet"><div class="grab"></div>
+        <h4>Your Bobcat Dealer</h4><div class="q">Claim 0% for 60 months + $3,000 cash back on the T66</div>
+        <div class="fld"><small>Full name</small><span>Sam Rivera</span></div>
+        <div class="fld"><small>Phone number</small><span>(555) 014-2290</span></div>
+        <div class="fld"><small>ZIP code</small><span>55405</span></div>
+        <div class="subm" id="fSubmit">Submit</div>
+        <div class="ok" id="fOk"><span class="chk"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Offer on its way!</b><span>Your Bobcat Dealer will be in touch about the T66.</span></div>
+      </div>
+    </section>
+
+    <section class="sc" id="pE">
+      <div class="gbar"><i><svg width="16" height="12" viewBox="0 0 16 12"><path d="M1 1h14v10H1z M1 1l7 6 7-6" stroke="#fff" stroke-width="1.6" fill="none"/></svg></i>Inbox</div>
+      <div class="mrow" id="eRow"><span class="ring" id="eRing"></span><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b>Your Bobcat Dealer</b><span class="sj">You're invited: Spring Demo Day, Sat, Mar 20 🌷</span><span class="pv">Try the T66 and E35 on our lot. RSVP to save your spot.</span></div><span class="unread"></span></div>
+      <div class="mrow"><span class="pav" style="background:#3c8d5a">GC</span><div><b>Green Thumb Garden Center</b><span class="sj">Your spring planting guide</span><span class="pv">It's almost time to get seeds in the ground…</span></div></div>
+      <div class="mrow"><span class="pav" style="background:#3f6fb0">CS</span><div><b>City Services</b><span class="sj">Street sweeping starts Monday</span><span class="pv">Please move vehicles on your scheduled day…</span></div></div>
+      <div class="mrow"><span class="pav" style="background:#b8578f">LP</span><div><b>Lakeside Property Group</b><span class="sj">Spring cleanup bids due Friday</span><span class="pv">We're looking for crews for 12 properties…</span></div></div>
+    </section>
+
+    <section class="sc" id="pO">
+      <div class="ehead"><svg width="16" height="16" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" stroke="#16181d" stroke-width="2.6" fill="none" stroke-linecap="round"/></svg>Your Bobcat Dealer</div>
+      <div class="eban"><small>YOU'RE INVITED</small><b>SPRING<br>DEMO DAY</b><span class="cash">SAT, MAR 20 · 9 AM – 2 PM</span><svg data-m="track" width="150" height="90"></svg><span class="grass"></span></div>
+      <div class="ebody">Come try the Bobcat T66 and E35 on our lot. Food, giveaways and hands-on demos all day.
+        <div class="plus">🌷 Spring offers at the event: 0% for 60 months + $3,000 cash back on the T66.</div>
+        <div class="btn" id="eBtn">RSVP for Demo Day</div></div>
+    </section>
+
+    <section class="sc" id="pV">
+      <div class="yh"><i><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1v8l7-4z" fill="#fff"/></svg></i>Video</div>
+      <div class="player"><small>SPRING OFFER · BOBCAT T66</small><b>0% FOR 60 MO.<br>+ $3,000 BACK</b><svg data-m="track" width="140" height="84"></svg><span class="adb">Ad · 0:06</span><span class="grass"></span><i class="vprog" id="vProg"></i></div>
+      <div class="vcard"><span class="fav">YD</span><div class="site"><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div></div><span class="cta">Learn more</span></div>
+      <div class="vt">Spring Yard Makeover: Start to Finish</div>
+      <div class="vm">Weekend Projects · 212K views</div>
+    </section>
+
+    <section class="sc" id="pM" style="padding-top:0">
+      <svg id="mpBg" width="320" height="660" viewBox="0 0 320 660"><rect width="320" height="660" fill="#eef4ea"/>
+        <path d="M0 230 Q120 210 320 260 V330 Q150 300 0 320Z" fill="#cfe7f2"/>
+        <path d="M200 440 h120 v110 h-120z" fill="#d6ebcb"/><path d="M0 0 h70 v130 h-70z" fill="#d6ebcb"/>
+        <g stroke="#fff" stroke-linecap="round" fill="none"><path d="M-10 160 L330 120" stroke-width="12"/><path d="M-10 400 L330 380" stroke-width="12"/><path d="M80 -10 L120 670" stroke-width="10"/><path d="M30 250 L180 470" stroke-width="7"/><path d="M200 -10 L220 670" stroke-width="7"/></g></svg>
+      <svg id="route" width="320" height="660" viewBox="0 0 320 660"><path id="rPath" d="M110 470 L104 395 L150 391 L150 356" stroke="#1a73e8" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle id="rMe" cx="110" cy="470" r="9" fill="#1a73e8" stroke="#fff" stroke-width="3"/></svg>
+      <div class="mbox">🔍 bobcat dealer near me</div>
+      <svg class="pin" id="pin1" style="left:60px;top:300px" viewBox="0 0 30 40"><path d="M15 39C15 39 2 23 2 14a13 13 0 0 1 26 0c0 9-13 25-13 25z" fill="#8a919c"/><circle cx="15" cy="14" r="5" fill="#fff"/></svg>
+      <svg class="pin" id="pin2" style="left:255px;top:470px" viewBox="0 0 30 40"><path d="M15 39C15 39 2 23 2 14a13 13 0 0 1 26 0c0 9-13 25-13 25z" fill="#8a919c"/><circle cx="15" cy="14" r="5" fill="#fff"/></svg>
+      <svg class="pin" id="pinMe" style="left:150px;top:350px" viewBox="0 0 30 40"><path d="M15 39C15 39 2 23 2 14a13 13 0 0 1 26 0c0 9-13 25-13 25z" fill="#ff3600"/><circle cx="15" cy="14" r="5" fill="#111"/></svg>
+      <div id="mCard"><h4>Your Bobcat Dealer</h4><div class="m1"><b>Ad</b>Equipment dealer · 3.2 mi</div><div class="m2">Spring offers on the T66 · In stock</div>
+        <div class="mbtns"><span id="mDir">Get directions</span><span>Call</span></div></div>
+      <div id="mRoute"><div class="rt"><b>12 min</b><span>(3.2 mi)</span></div><div class="rs">Fastest route to Your Bobcat Dealer</div><div class="go">Start</div></div>
+    </section>
+  </div></div>
+
+  <!-- live dashboard -->
+  <div class="layer" id="L6">
+    <div id="dash">
+      <div class="dh"><div><b>LIVE DASHBOARD</b><span>Spring Kickoff · Your Bobcat Dealer</span></div><em>EXAMPLE</em></div>
+      <div class="tiles">
+        <div class="tile"><small>CLICKS</small><b class="cnt" data-n="1180">0</b></div>
+        <div class="tile"><small>CALLS</small><b class="cnt" data-n="54">0</b></div>
+        <div class="tile"><small>DIRECTIONS</small><b class="cnt" data-n="72">0</b></div>
+        <div class="tile"><small>FORM FILLS</small><b class="cnt" data-n="38">0</b></div>
+      </div>
+    </div>
+    <div id="dCap"><div class="k">ALL SEASON LONG</div><div class="mid" style="margin-top:10px">Track your results, <em>any time.</em></div><div class="sub" style="margin-top:14px">Clicks, calls, directions and form fills for every location, in one live dashboard.</div></div>
+  </div>
+
+  <!-- end card -->
+  <div class="endc" id="end">
+    <div class="k">SEASONAL CAMPAIGN</div>
+    <h2>SPRING KICKOFF</h2>
+    <div class="goal">GEAR UP FOR SPRING + SUMMER</div>
+    <div class="pills"><span>SEARCH</span><span>SOCIAL</span><span>PERFORMANCE MAX</span><span>EMAIL</span></div>
+    <div class="price"><div><b id="ePrice">$2,000</b> <span>per location · one-time</span></div><div class="co" id="eCoop">≈ $500 after 75% co-op</div></div>
+    <div class="when" id="eWhen">Runs Mar 1 – Apr 30 · <b>Enroll by Feb 14</b></div>
+    <button id="replay"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M4 3v5h5" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Replay</button>
+  </div>
+  <div id="rip"></div>
+  <div id="touch"></div>
+</div>
+</div>
+
+<script src="player.js"></script>
+<script>
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const wrap = $('#wrap'), stage = $('#stage');
+if (window.self !== window.top) document.body.classList.add('embed');
+// The animation is scripted on a 50.5s timeline; HOLDS pause it at fully shown moments so there's time to read.
+// [script time, extra seconds]. Real playback time = script time + every hold before it.
+const D0 = 50.5;
+const HOLDS = [[3.0, 1.5], [9.6, 2.5], [18.4, 2.0], [23.0, 1.5], [25.8, 1.5], [30.6, 2.5], [33.9, 1.0], [37.8, 1.5], [41.2, 2.5], [46.2, 2.5]];
+const toReal = s => s + HOLDS.filter(([h]) => h < s).reduce((a, [, x]) => a + x, 0);
+
+// campaign details from the URL (the hub passes them so the end card always matches)
+const qs = new URLSearchParams(location.search);
+const money = n => '$' + Number(n).toLocaleString('en-US');
+const P = { price: +qs.get('price') || 2000, coop: +qs.get('coop') || 500, start: qs.get('start') || 'Mar 1', end: qs.get('end') || 'Apr 30', deadline: qs.get('deadline') || 'Feb 14' };
+$('#ePrice').textContent = money(P.price);
+$('#eCoop').textContent = `≈ ${money(P.coop)} after 75% co-op`;
+$('#eWhen').innerHTML = `Runs ${P.start} – ${P.end} · <b>Enroll by ${P.deadline}</b>`;
+
+// chapters for the seek bar: [start in real playback time, label]
+const CHAPTERS = [[0, 'Hook'], [5, 'Your market'], [12, 'Find a deal'], [21, 'Compare offers'], [27.6, 'See it in person'], [32.8, 'Get there'], [40, 'All done'], [43.6, 'Results'], [48.4, 'Recap']].map(([s, l]) => [toReal(s), l]);
+// to-do items: [active from, active until, checked at]
+const TODO = [[13.5, 20.6, 19.2], [21.0, 27.6, 26.0], [27.6, 32.8, 31.4], [32.8, 39.8, 38.0]];
+
+const I = {
+  search: '<svg width="26" height="26" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" stroke="#fff" stroke-width="3" fill="none"/><path d="M15 15l6 6" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>',
+  social: '<svg width="26" height="26" viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4z" fill="#fff"/></svg>',
+  pmax: '<svg width="28" height="28" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="2" fill="#fff"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#fff" opacity=".75"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#fff" opacity=".75"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#fff"/></svg>',
+  mail: '<svg width="26" height="26" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="#fff"/><path d="M4 7l8 6 8-6" stroke="#ff3600" stroke-width="2" fill="none"/></svg>',
+};
+$$('[data-i]').forEach(el => el.innerHTML = I[el.dataset.i]);
+
+// machines: T66 track loader, E35 mini excavator
+const MACH = {
+  track: '<path d="M142 34 L176 66" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/><path d="M162 60 h26 l6 34 h-34 z" fill="#3a3d42"/>' +
+    '<rect x="40" y="54" width="112" height="36" rx="7" fill="#ff3600"/><rect x="68" y="18" width="58" height="46" rx="6" fill="#0d0e10" stroke="#3a3d42" stroke-width="2"/><rect x="75" y="25" width="44" height="33" rx="3" fill="#a9c6d6"/>' +
+    '<rect x="36" y="84" width="120" height="26" rx="13" fill="#2a2c30" stroke="#3a3d42" stroke-width="2"/><circle cx="52" cy="97" r="7" fill="#777"/><circle cx="96" cy="97" r="5" fill="#777"/><circle cx="140" cy="97" r="7" fill="#777"/>',
+  ex: '<path d="M112 66 L150 26 L180 70" stroke="#ff3600" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M172 64 l20 8 l-8 18 l-16 -8z" fill="#3a3d42"/>' +
+    '<rect x="34" y="60" width="90" height="28" rx="6" fill="#ff3600"/><rect x="40" y="22" width="48" height="44" rx="6" fill="#0d0e10" stroke="#3a3d42" stroke-width="2"/><rect x="46" y="28" width="36" height="30" rx="3" fill="#a9c6d6"/>' +
+    '<rect x="28" y="88" width="104" height="22" rx="11" fill="#2a2c30" stroke="#3a3d42" stroke-width="2"/><circle cx="42" cy="99" r="6" fill="#777"/><circle cx="118" cy="99" r="6" fill="#777"/><path d="M12 96 h18 v12 h-22z" fill="#3a3d42"/>',
+};
+$$('svg[data-m]').forEach(svg => { svg.setAttribute('viewBox', '0 0 200 120'); svg.innerHTML = MACH[svg.dataset.m]; });
+
+// the dealer lot on a spring morning: green ground, blossom trees, building with sign, machines out front
+const tree = (x, s) => `<g transform="translate(${x} 0) scale(${s})"><rect x="-5" y="110" width="10" height="70" fill="#5b4330"/><g fill="#ffc7d9"><circle cx="0" cy="96" r="34"/><circle cx="-26" cy="112" r="22"/><circle cx="26" cy="112" r="22"/></g><g fill="#ff9fbd"><circle cx="-10" cy="88" r="6"/><circle cx="14" cy="104" r="5"/><circle cx="-20" cy="114" r="4"/></g></g>`;
+$('#lotSvg').innerHTML =
+  '<path d="M0 170 Q640 120 1280 170 V300 H0Z" fill="#5f9e47"/><path d="M0 210 Q640 170 1280 210 V300 H0Z" fill="#4f8a3b"/>' +
+  '<rect x="430" y="40" width="420" height="140" fill="#1a2a2f"/><rect x="430" y="40" width="420" height="30" fill="#0c1416"/><rect x="430" y="68" width="420" height="5" fill="#ff3600"/>' +
+  '<text x="640" y="62" text-anchor="middle" font-family="Barlow Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="22" letter-spacing="2" fill="#fff">YOUR BOBCAT DEALER</text>' +
+  '<g fill="#a9c6d6"><rect x="460" y="90" width="110" height="90"/><rect x="590" y="90" width="110" height="90"/><rect x="720" y="90" width="110" height="90"/></g>' +
+  tree(150, 1) + tree(1150, .9) + tree(300, .7) +
+  '<g transform="translate(240 126) scale(.55)">' + MACH.track + '</g><g transform="translate(880 120) scale(.6)">' + MACH.ex + '</g>';
+
+// counties: a jittered grid of shapes; the ones nearest the store light up in order
+const CW = 5, CR = 4, MW = 460, MH = 370, PIN = [236, 178];
+const V = [];
+for (let r = 0; r <= CR; r++) for (let c = 0; c <= CW; c++)
+  V.push([c * MW / CW + (c === 0 || c === CW ? 0 : ((r * 7 + c * 13) % 9 - 4) * 5), r * MH / CR + (r === 0 || r === CR ? 0 : ((r * 11 + c * 5) % 9 - 4) * 5)]);
+const CELLS = [];
+for (let r = 0; r < CR; r++) for (let c = 0; c < CW; c++) {
+  const pts = [V[r * (CW + 1) + c], V[r * (CW + 1) + c + 1], V[(r + 1) * (CW + 1) + c + 1], V[(r + 1) * (CW + 1) + c]];
+  const cx = pts.reduce((a, p) => a + p[0], 0) / 4, cy = pts.reduce((a, p) => a + p[1], 0) / 4;
+  CELLS.push({ pts, cx, cy, d: Math.hypot(cx - PIN[0], cy - PIN[1]) });
+}
+const NAMES = ['CEDAR CO.', 'MAPLE CO.', 'RIVER CO.', 'PINE CO.', 'LAKE CO.', 'OAK CO.'];
+const HL = CELLS.map((c, i) => [i, c.d]).filter(([, d]) => d < 150).sort((a, b) => a[1] - b[1]).slice(0, NAMES.length).map(([i]) => i);
+$('#cMap').innerHTML =
+  CELLS.map((c, i) => `<polygon class="cty" data-i="${i}" points="${c.pts.map(p => p.join(',')).join(' ')}" fill="#d9e8d0" stroke="#ffffff" stroke-width="3"/>`).join('') +
+  `<circle id="cRing" cx="${PIN[0]}" cy="${PIN[1]}" r="0" fill="rgba(255,54,0,.06)" stroke="#ff3600" stroke-width="2" stroke-dasharray="6 6"/>` +
+  HL.map((ci, k) => `<text class="lbl" data-k="${k}" x="${CELLS[ci].cx}" y="${CELLS[ci].cy + 5}" opacity="0">${NAMES[k]}</text>`).join('');
+$('#cPin').style.left = (80 + PIN[0] - 23) + 'px';
+$('#cPin').style.top = (200 + PIN[1] - 60) + 'px';
+
+let scale = 1;
+// fit the 1280×720 stage inside the frame, letterboxed if needed (full screen can be any shape)
+function fit() {
+  scale = Math.min(wrap.clientWidth / 1280, wrap.clientHeight / 720);
+  stage.style.transform = `translate(${(wrap.clientWidth - 1280 * scale) / 2}px,${(wrap.clientHeight - 720 * scale) / 2}px) scale(${scale})`;
+}
+new ResizeObserver(fit).observe(wrap); fit();
+
+const clamp = v => Math.max(0, Math.min(1, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+const out3 = x => 1 - Math.pow(1 - x, 3);
+const win = (t, a, b, f = .3) => seg(t, a, a + f) * (1 - seg(t, b - f, b));
+const fade = (el, o, dy = 0) => { el.style.opacity = o; if (dy) el.style.transform = `translateY(${(1 - o) * dy}px)`; };
+function center(sel) {
+  const r = $(sel).getBoundingClientRect(), s = stage.getBoundingClientRect();
+  return { x: (r.left - s.left + r.width / 2) / scale, y: (r.top - s.top + r.height / 2) / scale };
+}
+const press = (sel, k, t) => { $(sel).style.transform = t >= k && t < k + .15 ? 'scale(.95)' : ''; };
+
+// taps on the phone: [time, target]
+const TAPS = [[13.8, '#sBox'], [23.6, '#fCta'], [25.0, '#fSubmit'], [29.1, '#eRow'], [36.5, '#mDir']];
+const SQ = 'compact track loader deals near me';
+
+function render(t) {
+  // 0 ─ hook
+  fade($('#L0'), seg(t, 0, .4) * (1 - seg(t, 4.6, 5.0)));
+  $('#sun').style.transform = `translateY(${-130 * ease(seg(t, 0, 3.4))}px)`;
+  fade($('#hookA'), seg(t, .5, .9), 16);
+  fade($('#hookB'), seg(t, 1.8, 2.2), 16);
+
+  // 1 ─ built for your market
+  fade($('#L1'), seg(t, 5.0, 5.4) * (1 - seg(t, 11.6, 12.0)));
+  $('#cPin').style.transform = `translateY(${(1 - out3(seg(t, 5.4, 5.8))) * -24}px)`;
+  $('#cRing').setAttribute('r', (150 * out3(seg(t, 5.7, 6.5))).toFixed(1));
+  HL.forEach((ci, k) => {
+    const on = t >= 6.0 + k * .22, poly = $$('.cty')[ci];
+    poly.setAttribute('fill', on ? 'rgba(255,54,0,.2)' : '#d9e8d0'); poly.setAttribute('stroke', on ? '#ff3600' : '#ffffff');
+    $(`#cMap .lbl[data-k="${k}"]`).setAttribute('opacity', seg(t, 6.0 + k * .22, 6.2 + k * .22).toFixed(2));
+  });
+  $$('.row').forEach((el, i) => {
+    const a = seg(t, 6.4 + i * .5, 6.8 + i * .5); el.style.opacity = a; el.style.transform = `translateX(${(1 - out3(a)) * 30}px)`;
+    const p = win(t, 6.6 + i * .5, 7.4 + i * .5, .25), dot = el.querySelector('span');
+    dot.style.transform = `scale(${1 + .18 * p})`; dot.style.boxShadow = `0 0 0 ${14 * p}px rgba(255,54,0,${.3 * p})`;
+  });
+  fade($('#mNext'), seg(t, 9.0, 9.4), 12);
+
+  // the to-do list: slides in, each item lights up while its channel plays, then gets checked off
+  const cin = ease(seg(t, 12.0, 12.5));
+  $('#clip').style.opacity = cin * (1 - seg(t, 43.2, 43.6));
+  $('#clip').style.transform = `translateX(${(1 - cin) * 60}px)`;
+  $$('.todo').forEach((el, i) => {
+    const [a, b, chk] = TODO[i];
+    el.style.opacity = seg(t, 12.4 + i * .15, 12.7 + i * .15);
+    el.classList.toggle('on', t >= a && t < b);
+    el.classList.toggle('done', t >= chk);
+    el.querySelector('small').style.opacity = seg(t, a, a + .4);
+    const sv = el.querySelector('.bx'); sv.style.transform = t >= chk && t < chk + .2 ? 'scale(1.2)' : '';
+  });
+  const st = seg(t, 40.3, 40.5);
+  $('#stamp').style.opacity = st; $('#stamp').style.transform = `rotate(-4deg) scale(${1.5 - .5 * out3(st)})`;
+  fade($('#doneLine'), seg(t, 40.6, 41.0) * (1 - seg(t, 43.2, 43.6)), 16);
+
+  // phone
+  $('#phone').style.opacity = seg(t, 12.6, 13.0) * (1 - seg(t, 39.8, 40.2));
+  const z = ease(seg(t, 13.9, 14.4)) * (1 - ease(seg(t, 16.5, 17.0)));
+  $('#phone').style.transform = z ? `scale(${1 + .85 * z})` : '';
+  fade($('#pS'), 1 - seg(t, 20.6, 20.9));
+  fade($('#pF'), seg(t, 20.6, 20.9) * (1 - seg(t, 27.4, 27.7)));
+  fade($('#pE'), seg(t, 27.4, 27.7) * (1 - seg(t, 29.3, 29.6)));
+  fade($('#pO'), seg(t, 29.3, 29.6) * (1 - seg(t, 32.6, 32.9)));
+  fade($('#pV'), seg(t, 32.6, 32.9) * (1 - seg(t, 34.6, 34.9)));
+  fade($('#pM'), seg(t, 34.6, 34.9));
+
+  // 1 · find a deal: search (zoomed while typed) → the offer is the first ad
+  const n = Math.round(seg(t, 14.5, 16.3) * SQ.length);
+  $('#sq').textContent = SQ.slice(0, n);
+  $('#sCaret').style.opacity = t > 13.9 && t < 16.5 && (n < SQ.length || Math.floor(t * 2.5) % 2 === 0) ? 1 : 0;
+  $$('#pS .r').forEach((el, i) => { const a = seg(t, 17.0 + i * .12, 17.4 + i * .12); el.style.opacity = a * (el.classList.contains('org') ? .55 : 1); el.style.transform = `translateY(${(1 - ease(a)) * 12}px)`; });
+  $('#sRing').style.opacity = win(t, 17.4, 20.4, .3);
+  // 2 · compare offers: the offer in their feed → quote form
+  const ad = $('#fAd').offsetTop - 6;
+  $('#feedIn').style.transform = `translateY(${-ad * out3(seg(t, 21.2, 22.2))}px)`;
+  $('#fRing').style.opacity = win(t, 22.2, 23.5, .3);
+  press('#fCta', 23.6, t);
+  const sh = ease(seg(t, 23.8, 24.3));
+  $('#fSheet').style.transform = `translateY(${(1 - sh) * 110}%)`; $('#fScrim').style.opacity = sh;
+  press('#fSubmit', 25.0, t);
+  $('#fOk').style.opacity = seg(t, 25.2, 25.5);
+  // 3 · see it in person: the Demo Day invite email with its RSVP button
+  $('#eRing').style.opacity = win(t, 28.0, 29.0, .3);
+  $('#eBtn').style.boxShadow = t > 29.8 && t < 32.4 ? `0 0 0 ${4 + 3 * Math.abs(Math.sin(t * 4))}px rgba(255,54,0,.3)` : '';
+  // 4 · get to the dealer: YouTube → Maps → directions
+  $('#vProg').style.width = seg(t, 33.0, 34.6) * 100 + '%';
+  [['#pin1', 35.0], ['#pin2', 35.1], ['#pinMe', 35.25]].forEach(([s, a]) => { const p = seg(t, a, a + .35); $(s).style.opacity = p; $(s).style.transform = `translateY(${(1 - out3(p)) * -24}px)`; });
+  $('#mCard').style.transform = `translateY(${(1 - ease(seg(t, 35.6, 36.0)) * (1 - ease(seg(t, 36.65, 36.95)))) * 110}%)`;
+  press('#mDir', 36.5, t);
+  const rp = $('#rPath'), rl = rp.getTotalLength();
+  rp.style.strokeDasharray = rl; rp.style.strokeDashoffset = rl * (1 - ease(seg(t, 36.75, 37.6)));
+  $('#rMe').style.opacity = seg(t, 36.7, 36.9);
+  $('#mRoute').style.transform = `translateY(${(1 - ease(seg(t, 37.0, 37.35))) * 110}%)`;
+
+  // dashboard
+  fade($('#L6'), seg(t, 43.6, 44.0) * (1 - seg(t, 48.0, 48.4)));
+  $$('.cnt').forEach(b => b.textContent = Math.round(+b.dataset.n * out3(seg(t, 44.2, 46.0))).toLocaleString('en-US'));
+  fade($('#dCap'), seg(t, 44.1, 44.5), 14);
+
+  // end card
+  $('#end').style.opacity = seg(t, 48.4, 49.0);
+  const ro = seg(t, 49.3, 49.7), rb = $('#replay');
+  rb.style.opacity = ro; rb.style.pointerEvents = ro > .5 ? 'auto' : 'none';
+
+  // touch indicator for phone taps
+  const dot = $('#touch'), rip = $('#rip'), tap = TAPS.find(([k]) => t >= k - .4 && t < k + .35);
+  if (tap) {
+    const [k, sel] = tap, c = center(sel);
+    dot.style.opacity = win(t, k - .4, k + .35, .15);
+    dot.style.transform = `translate(${c.x}px,${c.y}px) scale(${t >= k && t < k + .14 ? .8 : 1})`;
+    if (t >= k) { const p = (t - k) / .35; rip.style.opacity = 1 - p; rip.style.transform = `translate(${c.x}px,${c.y}px) scale(${.5 + p})`; } else rip.style.opacity = 0;
+  } else { dot.style.opacity = 0; rip.style.opacity = 0; }
+}
+
+// player: shared seek bar + controls (player.js); plays once and stops on the end card
+startPlayer({ D: D0, holds: HOLDS, render, chapters: CHAPTERS, replay: '#replay' });
+</script>
+</body>
+</html>

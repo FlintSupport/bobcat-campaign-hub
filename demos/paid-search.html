@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Paid Search Demo</title>
+<!--
+  "See it in action" animation for the Paid Search campaign (about 28s, plays once, then Replay).
+  On a laptop: search "skid steers for sale" → sponsored ad at the top → Bobcat-style landing page
+  (call, request a quote, contact form) → form fills in → example results.
+  Embed: <iframe src="demos/paid-search.html" style="width:100%;aspect-ratio:16/9;border:0"></iframe>
+  Review a single frame: paid-search.html?t=5  (freezes at 5 seconds)
+  Space or the button toggles pause.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--page:#eef0f3;--ink:#16181d;--muted:#5d6470;--line:#e3e6ea;--orange:#ff3600;--link:#1f4fd1;--green:#1e7b45;
+  --cond:"Barlow Condensed","Arial Narrow",Arial,sans-serif}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#121417}}
+:root[data-theme="dark"]{--page:#121417}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page)}
+body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);display:grid;place-items:center;min-height:100vh;padding:16px}
+body.embed{padding:0;overflow:hidden}
+body.embed .wrap{width:min(100%,calc(100vh * 16 / 9))}
+.wrap{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#e3f3fb}
+.stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(800px 480px at 95% -10%,rgba(255,209,102,.40),transparent 60%),radial-gradient(900px 520px at 10% 115%,rgba(255,54,0,.10),transparent 60%),linear-gradient(160deg,#dcf0fb,#fff8e8 72%)}
+
+/* laptop */
+#laptop{position:absolute;left:24px;top:150px;width:592px;opacity:0}
+.lid{position:relative;width:592px;height:374px;border-radius:16px;background:#0b0c0e;box-shadow:0 24px 48px rgba(20,50,30,.2),inset 0 0 0 2px #2a2d33}
+.lid::before{content:"";position:absolute;left:50%;top:5px;width:6px;height:6px;margin-left:-3px;border-radius:50%;background:#2a2d33}
+.scr{position:absolute;left:14px;top:14px;width:564px;height:346px;background:#fff;overflow:hidden;border-radius:3px}
+.base{width:636px;height:20px;margin-left:-22px;background:linear-gradient(#3a3d43,#1e2024);border-radius:0 0 18px 18px;position:relative}
+.base::before{content:"";position:absolute;left:50%;top:0;width:110px;height:7px;margin-left:-55px;background:#17181b;border-radius:0 0 8px 8px}
+.chrome{height:28px;background:#f1f3f5;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:5px;padding:0 10px}
+.dot{width:8px;height:8px;border-radius:50%;background:#d4d7dc}
+.url{margin-left:10px;width:330px;height:18px;border-radius:9px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;gap:5px;padding:0 9px;font-size:9.5px;color:var(--muted);white-space:nowrap;overflow:hidden}
+.vp{position:absolute;top:28px;left:0;right:0;bottom:0}
+.scene{position:absolute;inset:0;opacity:0;overflow:hidden;background:#fff}
+
+/* search home */
+#home{display:flex;flex-direction:column;align-items:center;padding-top:78px}
+.logo{font-size:30px;font-weight:700;letter-spacing:-1px;color:#2a2f3a;display:flex;align-items:center;gap:8px}
+.logo .mg{width:30px;height:30px;border-radius:50%;background:#2a2f3a;display:grid;place-items:center}
+.sbox{width:380px;height:38px;border:1px solid #d6dae0;border-radius:19px;margin-top:20px;display:flex;align-items:center;padding:0 16px;font-size:14px;gap:9px;box-shadow:0 2px 8px rgba(0,0,0,.07);background:#fff}
+.sbox svg{flex:none}
+.caret{display:inline-block;width:1.5px;height:16px;background:var(--ink);vertical-align:middle;margin-left:1px}
+.hbtns{display:flex;gap:8px;margin-top:18px}
+.hbtns span{background:#f1f3f5;border-radius:5px;padding:7px 12px;font-size:11px;color:#3c4350}
+
+/* results page */
+.sh{display:flex;align-items:center;gap:18px;padding:12px 20px 8px}
+.logo.sm{font-size:17px;letter-spacing:-.3px;gap:5px}
+.logo.sm .mg{width:18px;height:18px}
+.sbox.sm{width:320px;height:30px;margin:0;font-size:12px;box-shadow:none;padding:0 12px}
+.tabs{display:flex;gap:16px;padding:0 0 0 110px;font-size:10px;color:var(--muted);border-bottom:1px solid var(--line)}
+.tabs span{padding:5px 0 7px}
+.tabs .on{color:var(--ink);font-weight:600;border-bottom:2px solid #2a2f3a}
+.results{padding:8px 0 0 110px;width:520px}
+.count{font-size:10px;color:var(--muted);margin-bottom:6px}
+#ad{position:relative;padding:9px 12px;margin-left:-12px;border-radius:9px}
+#adRing{position:absolute;inset:0;border:3px solid var(--orange);border-radius:9px;background:rgba(255,54,0,.06);opacity:0}
+.spons{font-weight:700;font-size:10px;margin-bottom:5px;position:relative}
+.site{display:flex;gap:7px;align-items:center;position:relative}
+.fav{width:20px;height:20px;border-radius:50%;background:var(--orange);color:#fff;font-weight:800;font-size:8px;display:grid;place-items:center;flex:none}
+.fav.g{background:#c9ced6}
+.site b{font-size:11px;font-weight:600;display:block}
+.site span{font-size:9.5px;color:var(--muted)}
+.ttl{font-size:15px;color:var(--link);margin:4px 0 3px;display:inline-block;position:relative}
+.ttl.hov{text-decoration:underline}
+.desc{font-size:11px;color:#4a505b;line-height:1.45;position:relative}
+.links{display:flex;gap:14px;margin-top:5px;font-size:11px;color:var(--link);position:relative}
+.org{padding:8px 0}
+.org .ttl{font-size:13.5px}
+
+/* dealer landing page (Bobcat-style) */
+.lh{position:absolute;left:0;right:0;top:0;height:40px;background:#000;border-bottom:3px solid var(--orange);display:flex;align-items:center;padding:0 16px;gap:18px;color:#fff;z-index:2}
+.wm{font-family:var(--cond);font-weight:800;font-size:16px;letter-spacing:.4px;line-height:1;display:flex;gap:7px;align-items:center}
+.wm i{width:18px;height:18px;background:var(--orange);clip-path:polygon(0 0,100% 0,100% 70%,70% 100%,0 100%)}
+.wm small{display:block;font-size:7.5px;letter-spacing:1.5px;color:var(--orange);font-weight:700;margin-top:1px}
+.lh nav{display:flex;gap:13px;font-family:var(--cond);font-weight:700;font-size:11px;letter-spacing:.6px;color:#d4d7dc}
+#call{margin-left:auto;display:flex;align-items:center;gap:6px;font-family:var(--cond);font-weight:700;font-size:13px;letter-spacing:.4px;border-radius:16px;padding:2px 9px 2px 2px}
+#call .ph{width:24px;height:24px;border-radius:50%;background:var(--orange);display:grid;place-items:center}
+.lpScroll{position:absolute;top:43px;left:0;right:0;bottom:0;overflow:hidden}
+.hero{height:140px;position:relative;overflow:hidden;color:#fff;padding:20px 22px;background:linear-gradient(105deg,#111 0 56%,var(--orange) 56% 57.8%,#1d1f23 57.8%)}
+.hero small{font-family:var(--cond);color:var(--orange);font-weight:800;font-size:11px;letter-spacing:2px}
+.hero h1{font-family:var(--cond);font-size:32px;font-weight:800;line-height:.98;margin:4px 0 6px;max-width:300px}
+.hero p{font-size:10.5px;color:#c9ced6}
+.hero .hm{position:absolute;right:30px;top:16px}
+.bt{font-family:var(--cond);font-weight:800;letter-spacing:.8px;text-transform:uppercase;border-radius:3px;display:grid;place-items:center}
+.main{display:grid;grid-template-columns:1fr 178px;gap:14px;padding:14px 16px}
+.sec{font-family:var(--cond);font-weight:800;font-size:14px;letter-spacing:.8px;margin-bottom:8px;display:flex;align-items:center;gap:7px}
+.sec::after{content:"";height:2px;background:var(--orange);width:36px}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.card{border:1px solid var(--line);border-radius:5px;overflow:hidden;background:#fff}
+.card .img{height:62px;background:#f2f3f5;display:grid;place-items:center;position:relative}
+.badge{position:absolute;top:5px;left:5px;background:var(--green);color:#fff;font-size:6.5px;font-weight:800;letter-spacing:.8px;padding:2px 4px;border-radius:2px}
+.card .bd{padding:7px 8px 8px}
+.card h3{font-family:var(--cond);font-size:13px;font-weight:800;line-height:1.05}
+.card p{font-size:8.5px;color:var(--muted);margin:2px 0 6px}
+.card .bt{height:22px;background:var(--orange);color:#fff;font-size:10px}
+.card .dt{font-size:8.5px;font-weight:600;text-align:center;margin-top:5px;color:#3c4350}
+.trust{display:flex;gap:12px;margin-top:10px;font-size:9px;color:#3c4350;font-weight:600}
+.trust span::before{content:"✓ ";color:var(--green)}
+#form{border:1px solid var(--line);border-radius:5px;overflow:hidden;position:relative;background:#fff;box-shadow:0 6px 16px rgba(0,0,0,.08)}
+#form .fh{background:#000;color:#fff;padding:8px 11px;border-bottom:3px solid var(--orange)}
+#form h4{font-family:var(--cond);font-size:16px;font-weight:800;letter-spacing:.6px}
+#form .sub{font-size:8.5px;color:#b9bec7}
+#form .fb{padding:9px 11px 11px}
+.lbl{font-size:7.5px;font-weight:700;color:var(--muted);margin-bottom:2px;letter-spacing:.4px}
+.f{height:24px;border:1.5px solid #d5d9df;border-radius:3px;margin-bottom:6px;display:flex;align-items:center;padding:0 7px;font-size:10px;color:#9aa1ab}
+.f.v{color:var(--ink)}
+.f.focus{border-color:var(--orange);box-shadow:0 0 0 2px rgba(255,54,0,.2)}
+#fSubmit{height:28px;background:var(--orange);color:#fff;font-size:13px;margin-top:3px}
+.ok{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:14px;opacity:0;gap:6px}
+.ok .chk{width:40px;height:40px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.ok b{font-family:var(--cond);font-size:18px;font-weight:800;letter-spacing:.4px}
+.ok span{font-size:10px;color:var(--muted);line-height:1.4}
+.band{margin:0 16px 14px;background:#111;color:#fff;border-radius:5px;border-left:4px solid var(--orange);padding:10px 14px;display:flex;align-items:center;gap:10px}
+.band b{font-family:var(--cond);font-size:15px;font-weight:800;letter-spacing:.6px}
+.band span{font-size:9.5px;color:#b9bec7}
+.band .bt{margin-left:auto;height:24px;padding:0 12px;background:var(--orange);font-size:11px}
+
+/* option pointers */
+.tag{position:absolute;left:0;top:0;z-index:11;opacity:0;white-space:nowrap;background:var(--orange);color:#fff;font-family:var(--cond);font-weight:800;font-size:17px;letter-spacing:1px;padding:5px 11px;border-radius:5px;box-shadow:0 8px 18px rgba(0,0,0,.3)}
+.tag::after{content:"";position:absolute;border:7px solid transparent}
+.tag.up::after{left:50%;top:-13px;margin-left:-7px;border-bottom-color:var(--orange)}
+.tag.right::after{right:-13px;top:50%;margin-top:-7px;border-left-color:var(--orange)}
+
+/* live dashboard (same card as the seasonal trailers) */
+#res{position:absolute;left:44px;top:170px;width:500px;opacity:0}
+#res .k{font:800 18px var(--cond);letter-spacing:4px;color:var(--orange);margin-bottom:12px}
+.db{background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 18px 40px rgba(20,50,30,.13)}
+.db-h{background:#111;border-bottom:4px solid var(--orange);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:flex-end}
+.db-h b{font:800 24px var(--cond);letter-spacing:1px;display:block}
+.db-h span{font-size:12px;color:#b9bec7}
+.db-h em{font-style:normal;font-size:11px;letter-spacing:1px;color:#b9bec7;font-weight:700}
+.db-tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 20px 20px}
+.db-tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px;opacity:0}
+.db-tile small{font:800 15px var(--cond);letter-spacing:2px;color:#65676b}
+.db-tile b{display:block;font:800 54px/1 var(--cond);margin-top:2px}
+
+/* cursor */
+#cur{position:absolute;left:0;top:0;width:24px;height:24px;z-index:20;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));opacity:0}
+#rip{position:absolute;left:0;top:0;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;border:3px solid var(--orange);opacity:0;z-index:19}
+
+/* captions + step tracker */
+.cap-k{position:absolute;left:650px;top:228px;font:800 64px/.9 var(--cond);letter-spacing:1px;color:var(--orange)}
+.cap{position:absolute;left:650px;top:316px;width:600px;display:flex;gap:22px;opacity:0;color:var(--ink)}
+.cap .n{flex:none;width:60px;height:60px;border-radius:50%;background:var(--orange);color:#fff;display:grid;place-items:center;font-weight:800;font-size:28px;margin-top:4px}
+.cap p{font-size:50px;font-weight:700;line-height:1.14;letter-spacing:-.5px}
+.cap p em{font-style:normal;color:var(--orange)}
+.cap p small{display:block;font-size:20px;font-weight:600;line-height:1.35;letter-spacing:0;color:#3c4350;margin-top:12px}
+#chan{position:absolute;left:650px;top:540px;display:flex;gap:10px;opacity:0}
+#chan span{display:flex;align-items:center;gap:9px;border:2px solid #c9d6cf;background:rgba(255,255,255,.6);border-radius:32px;padding:8px 16px 8px 9px;font:800 23px var(--cond);letter-spacing:1px;color:#8a958f;transform-origin:50% 50%;white-space:nowrap}
+#chan span i{width:34px;height:34px;border-radius:50%;background:#e3e8e5;display:grid;place-items:center}
+#chan span.past{color:#3c4350;border-color:#9fb0a8}
+#chan span.past i{background:#d6e2db}
+#chan span.on{color:#fff;border-color:var(--orange);background:var(--orange);transform:scale(1.08);box-shadow:0 10px 24px rgba(255,54,0,.35)}
+#chan span.on i{background:#fff}
+
+.endc{position:absolute;inset:0;background:linear-gradient(160deg,#e8f5fc,#fff8e8);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink);opacity:0;text-align:center;z-index:15}
+.endc .k{font-size:16px;letter-spacing:5px;color:var(--orange);font-weight:800}
+.endc h2{font-size:64px;font-weight:800;letter-spacing:1px;margin:8px 0 34px}
+.steps{display:flex;gap:14px;align-items:center;font-size:19px;font-weight:600;color:#3c4350}
+.steps span{border:1.5px solid #c9d6cf;background:#fff;border-radius:30px;padding:10px 20px}
+.steps i{color:var(--orange);font-style:normal;font-weight:800}
+.replay{margin-top:40px;display:flex;align-items:center;gap:10px;border:0;border-radius:30px;background:var(--orange);color:#fff;font:800 20px var(--cond);letter-spacing:1.5px;text-transform:uppercase;padding:12px 26px;cursor:pointer;opacity:0;pointer-events:none}
+.replay:hover{background:#ff7a3d}
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+<div class="stage" id="stage">
+
+  <div id="laptop">
+    <div class="lid"><div class="scr">
+      <div class="chrome"><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+        <div class="url"><svg width="8" height="10" viewBox="0 0 11 13"><rect x="1" y="5.5" width="9" height="7" rx="1.5" fill="#8a919c"/><path d="M3 5.5V4a2.5 2.5 0 0 1 5 0v1.5" stroke="#8a919c" stroke-width="1.6" fill="none"/></svg><span id="url"></span></div></div>
+      <div class="vp">
+
+        <section class="scene" id="home">
+          <div class="logo"><span class="mg"><svg width="15" height="15" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" stroke="#fff" stroke-width="3" fill="none"/><path d="M15 15l5.5 5.5" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></span>Search</div>
+          <div class="sbox" id="homeBox"><svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" stroke="#8a919c" stroke-width="2.5" fill="none"/><path d="M15.5 15.5l5 5" stroke="#8a919c" stroke-width="2.5" stroke-linecap="round"/></svg><span><span id="q"></span><span class="caret" id="caret"></span></span></div>
+          <div class="hbtns"><span>Search</span><span>Feeling lucky</span></div>
+        </section>
+
+        <section class="scene" id="serp">
+          <div class="sh">
+            <div class="logo sm"><span class="mg"><svg width="9" height="9" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" stroke="#fff" stroke-width="3.5" fill="none"/><path d="M15 15l5.5 5.5" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg></span>Search</div>
+            <div class="sbox sm"><svg width="11" height="11" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7" stroke="#8a919c" stroke-width="2.5" fill="none"/><path d="M15.5 15.5l5 5" stroke="#8a919c" stroke-width="2.5" stroke-linecap="round"/></svg>skid steers for sale</div>
+          </div>
+          <div class="tabs"><span class="on">All</span><span>Shopping</span><span>Images</span><span>Maps</span><span>News</span></div>
+          <div class="results">
+            <div class="count r">About 2,140,000 results</div>
+            <div id="ad" class="r">
+              <div id="adRing"></div>
+              <div class="spons">Sponsored</div>
+              <div class="site"><span class="fav">YD</span><div><b>Your Bobcat Dealer</b><span>yourdealership.com › skid-steers</span></div></div>
+              <div class="ttl" id="adTitle">Bobcat Skid Steers for Sale | In Stock &amp; Ready to Work</div>
+              <div class="desc">Shop new Bobcat skid-steer loaders at Your Bobcat Dealer. Financing available, trade-ins welcome. Get today's price in minutes.</div>
+              <div class="links"><span>View inventory</span><span>Financing offers</span><span>Request a quote</span></div>
+            </div>
+            <div class="org r"><div class="site"><span class="fav g"></span><div><b>Equipment Marketplace</b><span>equipmentmarket.com › skid-steers</span></div></div>
+              <div class="ttl">Used Skid Steers for Sale - Browse Listings Near You</div>
+              <div class="desc">Thousands of new and used skid steer listings from dealers and private sellers.</div></div>
+            <div class="org r"><div class="site"><span class="fav g"></span><div><b>Heavy Equipment Guide</b><span>equipmentguide.com › buying-guide</span></div></div>
+              <div class="ttl">Skid Steer Buying Guide: What to Know Before You Buy</div></div>
+          </div>
+        </section>
+
+        <section class="scene" id="lp">
+          <div class="lh">
+            <div class="wm"><i></i><div>YOUR BOBCAT DEALER<small>AUTHORIZED BOBCAT DEALER</small></div></div>
+            <nav><span>INVENTORY</span><span>RENTALS</span><span>SERVICE</span><span>PARTS</span></nav>
+            <div id="call"><span class="ph"><svg width="12" height="12" viewBox="0 0 24 24"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1z" fill="#fff"/></svg></span>(555) 014-0100</div>
+          </div>
+          <div class="lpScroll"><div id="lpIn">
+            <div class="hero">
+              <small>NEW BOBCAT EQUIPMENT</small>
+              <h1>SKID-STEER LOADERS IN STOCK NOW</h1>
+              <p>Financing available · Same-week delivery · Trade-ins welcome</p>
+              <svg class="hm" data-m width="190" height="114"></svg>
+            </div>
+            <div class="main">
+              <div>
+                <div class="sec">IN-STOCK INVENTORY</div>
+                <div class="cards">
+                  <div class="card"><div class="img"><span class="badge">IN STOCK</span><svg data-m width="90" height="54"></svg></div><div class="bd"><h3>S66 SKID-STEER</h3><p>New · Ready to deliver</p><div class="bt" id="quote1">Request a quote</div><div class="dt">View details ›</div></div></div>
+                  <div class="card"><div class="img"><span class="badge">IN STOCK</span><svg data-m width="90" height="54"></svg></div><div class="bd"><h3>S76 SKID-STEER</h3><p>New · Ready to deliver</p><div class="bt">Request a quote</div><div class="dt">View details ›</div></div></div>
+                  <div class="card"><div class="img"><span class="badge">IN STOCK</span><svg data-m="track" width="90" height="54"></svg></div><div class="bd"><h3>T76 TRACK LOADER</h3><p>New · Ready to deliver</p><div class="bt">Request a quote</div><div class="dt">View details ›</div></div></div>
+                </div>
+                <div class="trust"><span>Financing available</span><span>Trade-ins welcome</span><span>Local service &amp; parts</span></div>
+              </div>
+              <div id="form">
+                <div class="fh"><h4>GET TODAY'S PRICE</h4><div class="sub">A sales rep will call you back fast.</div></div>
+                <div class="fb">
+                  <div class="lbl">NAME</div><div class="f" id="fName">Full name</div>
+                  <div class="lbl">PHONE</div><div class="f" id="fPhone">Phone number</div>
+                  <div class="lbl">MACHINE</div><div class="f v">S76 Skid-Steer Loader</div>
+                  <div class="bt" id="fSubmit">Request a quote</div>
+                </div>
+                <div class="ok" id="ok"><span class="chk"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>THANKS, JORDAN!</b><span>Your quote request is in. A sales rep will call you shortly.</span></div>
+              </div>
+            </div>
+            <div class="band"><b>FINANCING &amp; TRADE-INS AVAILABLE</b><span>Ask about current offers</span><div class="bt">SEE OFFERS</div></div>
+          </div></div>
+        </section>
+
+      </div>
+    </div></div>
+    <div class="base"></div>
+  </div>
+
+  <div class="tag up" id="tag1">TAP TO CALL</div>
+  <div class="tag up" id="tag2">REQUEST A QUOTE</div>
+  <div class="tag right" id="tag3">OR FILL OUT THE FORM</div>
+
+  <!-- live dashboard -->
+  <div id="res">
+    <div class="k">EVERY MONTH</div>
+    <div class="db">
+      <div class="db-h"><div><b>LIVE DASHBOARD</b><span>Paid Search · Your Bobcat Dealer</span></div><em>EXAMPLE</em></div>
+      <div class="db-tiles">
+        <div class="db-tile"><small>IMPRESSIONS</small><b data-n="21400">0</b></div>
+        <div class="db-tile"><small>CLICKS</small><b data-n="1240">0</b></div>
+        <div class="db-tile"><small>CALLS</small><b data-n="46">0</b></div>
+        <div class="db-tile"><small>FORM FILLS</small><b data-n="38">0</b></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- captions -->
+  <div class="cap-k">PAID SEARCH</div>
+  <div class="cap" id="cap1"><span class="n">1</span><p>Buyers search for what you sell</p></div>
+  <div class="cap" id="cap2"><span class="n">2</span><p>Your ad shows up <em>first</em> when they search</p></div>
+  <div class="cap" id="cap3"><span class="n">3</span><p>One click lands them on a page <em>built to sell</em></p></div>
+  <div class="cap" id="cap4"><span class="n">4</span><p>They request a quote in seconds</p></div>
+  <div class="cap" id="cap5"><span class="n">5</span><p>New lead sent straight to your sales team</p></div>
+  <div class="cap" id="cap6"><span class="n">6</span><p>Track your results, <em>any time</em><small>Impressions, clicks, calls and form fills for every location, in one live dashboard.</small></p></div>
+  <div id="chan"></div>
+
+  <div class="endc" id="end">
+    <div class="k">PAID SEARCH</div>
+    <h2>READY-TO-BUY LEADS</h2>
+    <div class="steps"><span>They search</span><i>→</i><span>Your ad shows first</span><i>→</i><span>They call or request a quote</span></div>
+    <button class="replay" id="replay"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M4 3v5h5" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Replay</button>
+  </div>
+
+  <div id="rip"></div>
+  <svg id="cur" viewBox="0 0 24 24"><path d="M3 2v19l5.2-5.2 3.6 7.4 3.3-1.6-3.6-7.2H19z" fill="#111" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
+</div>
+</div>
+
+<script src="player.js"></script>
+<script>
+const D = 27.8, $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const wrap = $('#wrap'), stage = $('#stage');
+if (window.self !== window.top) document.body.classList.add('embed');
+
+// step tracker
+const G = {
+  search: '<svg width="20" height="20" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" stroke="#16181d" stroke-width="2.8" fill="none"/><path d="M15 15l5.5 5.5" stroke="#16181d" stroke-width="2.8" stroke-linecap="round"/></svg>',
+  ad: '<svg width="20" height="20" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="3" fill="none" stroke="#16181d" stroke-width="2.4"/><path d="M7 15l2.5-6 2.5 6M7.8 13h3.4M15 9v6h1.5a3 3 0 0 0 0-6z" stroke="#16181d" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg>',
+  page: '<svg width="20" height="20" viewBox="0 0 24 24"><rect x="2.5" y="4" width="19" height="16" rx="2" fill="none" stroke="#16181d" stroke-width="2.2"/><path d="M2.5 8h19" stroke="#16181d" stroke-width="2.2"/><rect x="5.5" y="11" width="7" height="6" fill="#16181d"/></svg>',
+  lead: '<svg width="20" height="20" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#16181d" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+};
+const CH = [['search', 'SEARCH', .4, 4.4], ['ad', 'AD', 4.4, 9.6], ['page', 'LANDING PAGE', 9.6, 16.8], ['lead', 'LEAD', 16.8, 22.6]];
+$('#chan').innerHTML = CH.map(([k, l]) => `<span><i>${G[k]}</i>${l}</span>`).join('');
+
+// loader illustration, wheels or tracks
+$$('svg[data-m]').forEach(svg => {
+  const track = svg.dataset.m === 'track';
+  svg.setAttribute('viewBox', '0 0 200 120');
+  svg.innerHTML =
+    '<path d="M142 34 L176 66" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/>' +
+    '<path d="M162 60 h26 l6 34 h-34 z" fill="#2b2e33"/>' +
+    '<rect x="40" y="54" width="112" height="36" rx="7" fill="#ff3600"/>' +
+    '<rect x="68" y="18" width="58" height="46" rx="6" fill="#1a1c20"/>' +
+    '<rect x="75" y="25" width="44" height="33" rx="3" fill="#a9c6d6"/>' +
+    (track
+      ? '<rect x="36" y="84" width="120" height="26" rx="13" fill="#222"/><circle cx="52" cy="97" r="7" fill="#777"/><circle cx="96" cy="97" r="5" fill="#777"/><circle cx="140" cy="97" r="7" fill="#777"/>'
+      : '<circle cx="62" cy="94" r="17" fill="#222"/><circle cx="62" cy="94" r="6" fill="#888"/><circle cx="130" cy="94" r="17" fill="#222"/><circle cx="130" cy="94" r="6" fill="#888"/>');
+});
+
+let scale = 1;
+// fit the 1280×720 stage inside the frame, letterboxed if needed (full screen can be any shape)
+function fit() {
+  scale = Math.min(wrap.clientWidth / 1280, wrap.clientHeight / 720);
+  stage.style.transform = `translate(${(wrap.clientWidth - 1280 * scale) / 2}px,${(wrap.clientHeight - 720 * scale) / 2}px) scale(${scale})`;
+}
+new ResizeObserver(fit).observe(wrap); fit();
+
+const clamp = v => Math.max(0, Math.min(1, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+const out3 = x => 1 - Math.pow(1 - x, 3);
+const win = (t, a, b, f = .3) => seg(t, a, a + f) * (1 - seg(t, b - f, b));
+const fade = (sel, o, dy = 0) => { const el = $(sel); el.style.opacity = o; if (dy) el.style.transform = `translateY(${(1 - o) * dy}px)`; };
+const type = (el, text, ph, t, a, b) => {
+  const n = Math.round(seg(t, a, b) * text.length);
+  el.textContent = n ? text.slice(0, n) : ph;
+  el.classList.toggle('v', n > 0);
+};
+// element box in stage coordinates
+function box(sel) {
+  const r = $(sel).getBoundingClientRect(), s = stage.getBoundingClientRect();
+  return { x: (r.left - s.left) / scale, y: (r.top - s.top) / scale, w: r.width / scale, h: r.height / scale };
+}
+function pos(sel, ox, oy) { const b = box(sel); return { x: b.x + (ox ?? b.w / 2), y: b.y + (oy ?? b.h / 2) }; }
+const at = (x, y) => () => ({ x, y });
+const to = (sel, ox, oy) => () => pos(sel, ox, oy);
+
+// cursor path: [time, target]; consecutive equal targets = hold
+const PATH = [
+  [0, at(560, 470)], [0.9, to('#homeBox', 340)], [1.2, to('#homeBox', 340)], [1.7, at(520, 420)],
+  [4.6, at(520, 420)], [5.2, at(590, 260)], [7.9, at(590, 260)],
+  [8.7, to('#adTitle', 110)], [9.6, to('#adTitle', 110)],
+  [10.9, to('#call .ph')], [12.6, to('#call .ph')],
+  [13.2, to('#quote1')], [14.6, to('#quote1')],
+  [15.2, to('#form', 90, 22)], [16.4, to('#form', 90, 22)],
+  [16.8, to('#fName', 50)], [17.9, to('#fName', 50)],
+  [18.1, to('#fPhone', 50)], [19.5, to('#fPhone', 50)],
+  [19.8, to('#fSubmit')], [21.4, to('#fSubmit')], [22.2, at(640, 620)],
+];
+const CLICKS = [1.0, 9.1, 16.85, 18.15, 19.85];
+function cursorAt(t) {
+  for (let i = 0; i < PATH.length - 1; i++) {
+    const [a, pa] = PATH[i], [b, pb] = PATH[i + 1];
+    if (t < b) { const k = ease(seg(t, a, b)), A = pa(), B = pb(); return { x: A.x + (B.x - A.x) * k, y: A.y + (B.y - A.y) * k }; }
+  }
+  return PATH[PATH.length - 1][1]();
+}
+
+// option pointers: [tag, target, side, in, out]
+const TAGS = [['#tag1', '#call', 'up', 10.9, 16.5], ['#tag2', '#quote1', 'up', 13.2, 16.5], ['#tag3', '#form', 'right', 15.1, 16.5]];
+const Q = 'skid steers for sale';
+
+// live dashboard: card fades in at `a`, tiles drop in and count up (data-f="%" adds a percent sign)
+function dashboard(t, a) {
+  $('#res').style.opacity = seg(t, a, a + .4);
+  $$('.db-tile').forEach((el, i) => {
+    const p = seg(t, a + .3 + i * .15, a + .7 + i * .15); el.style.opacity = p; el.style.transform = `translateY(${(1 - out3(p)) * 12}px)`;
+    const b = el.querySelector('b');
+    b.textContent = Math.round(+b.dataset.n * out3(seg(t, a + .5 + i * .15, a + 2.1 + i * .15))).toLocaleString('en-US') + (b.dataset.f || '');
+  });
+}
+
+function render(t, replays) {
+  $('#laptop').style.opacity = seg(t, 0, .4) * (1 - seg(t, 22.2, 22.7));
+
+  // scenes in the browser
+  $('#home').style.opacity = 1 - seg(t, 3.6, 3.9);
+  $('#serp').style.opacity = seg(t, 3.6, 3.9) * (1 - seg(t, 9.3, 9.6));
+  $('#lp').style.opacity = seg(t, 9.3, 9.6);
+  $('#url').textContent = t < 3.6 ? 'yoursearch.com' : t < 9.3 ? 'yoursearch.com/results?q=skid+steers+for+sale' : 'yourdealership.com/skid-steers';
+
+  // 1. typing the search
+  const n = Math.round(seg(t, 1.3, 3.2) * Q.length);
+  $('#q').textContent = Q.slice(0, n);
+  $('#caret').style.opacity = t > 1.0 && t < 3.6 && (n < Q.length || Math.floor(t * 2.5) % 2 === 0) ? 1 : 0;
+
+  // 2. results, ad highlighted
+  const ring = win(t, 4.7, 9.4, .35);
+  $('#adRing').style.opacity = ring;
+  $$('#serp .r').forEach((el, i) => {
+    const a = seg(t, 3.9 + i * .12, 4.35 + i * .12);
+    el.style.opacity = a * (el.classList.contains('org') ? 1 - .6 * ring : 1);
+    el.style.transform = `translateY(${(1 - ease(a)) * 10}px)`;
+  });
+  $('#adTitle').classList.toggle('hov', t > 8.6 && t < 9.4);
+
+  // 3. landing page: cards in, scroll, point out each way to reach the dealer
+  $$('#lp .card').forEach((el, i) => { const a = seg(t, 9.6 + i * .18, 10.1 + i * .18); el.style.opacity = a; el.style.transform = `translateY(${(1 - ease(a)) * 12}px)`; });
+  $('#lpIn').style.transform = `translateY(${-118 * ease(seg(t, 10.3, 11.2))}px)`;
+  TAGS.forEach(([tag, target, side, a, b]) => {
+    const o = win(t, a, b, .25), el = $(tag), tb = box(target), w = el.offsetWidth, h = el.offsetHeight;
+    const x = side === 'up' ? tb.x + tb.w / 2 - w / 2 : tb.x - w - 14;
+    const y = side === 'up' ? tb.y + tb.h + 12 : tb.y + 40 - h / 2;
+    el.style.opacity = o;
+    el.style.transform = `translate(${x}px,${y}px) scale(${.85 + .15 * o})`;
+    $(target).style.boxShadow = o ? `0 0 0 ${3 * o}px rgba(255,54,0,${.45 * o})` : '';
+  });
+
+  // 4. the form
+  type($('#fName'), 'Jordan Miller', 'Full name', t, 17.0, 17.8);
+  type($('#fPhone'), '(555) 014-2290', 'Phone number', t, 18.3, 19.1);
+  $('#fName').classList.toggle('focus', t >= 16.85 && t < 18.15);
+  $('#fPhone').classList.toggle('focus', t >= 18.15 && t < 19.85);
+  $('#fSubmit').style.transform = t >= 19.83 && t < 19.98 ? 'scale(.97)' : '';
+  $('#ok').style.opacity = seg(t, 20.0, 20.3);
+
+  // 5. live dashboard
+  dashboard(t, 22.7);
+
+  // captions + step tracker
+  [[1, .4, 4.4], [2, 4.6, 9.5], [3, 9.7, 16.7], [4, 16.9, 20.0], [5, 20.1, 22.6], [6, 22.9, 26.6]].forEach(([i, a, b]) => fade('#cap' + i, win(t, a, b, .35), 12));
+  $('.cap-k').style.opacity = seg(t, .2, .6);
+  $('#chan').style.opacity = seg(t, .3, .7);
+  $$('#chan span').forEach((el, i) => { const [, , a, b] = CH[i]; el.className = t >= a && t < b ? 'on' : t >= b ? 'past' : ''; });
+
+  // cursor + click ripple
+  const c = cursorAt(t), click = CLICKS.find(k => t >= k && t < k + .45);
+  const cur = $('#cur'), rip = $('#rip');
+  cur.style.opacity = seg(t, .3, .6) * (1 - seg(t, 21.8, 22.2));
+  cur.style.transform = `translate(${c.x - 3}px,${c.y - 2}px) scale(${click !== undefined && t < click + .12 ? .88 : 1})`;
+  cur.style.transformOrigin = '3px 2px';
+  if (click !== undefined) { const p = (t - click) / .45; rip.style.opacity = 1 - p; rip.style.transform = `translate(${c.x}px,${c.y}px) scale(${.4 + p * 1.1})`; }
+  else rip.style.opacity = 0;
+
+  // end card + replay
+  $('#end').style.opacity = Math.max(seg(t, 26.8, 27.3), replays > 0 ? 1 - seg(t, 0, .4) : 0);
+  const rp = seg(t, 27.2, 27.6), rb = $('#replay');
+  rb.style.opacity = rp; rb.style.pointerEvents = rp > .5 ? 'auto' : 'none';
+}
+
+// player: shared seek bar + controls (player.js); plays once and stops on the end card
+startPlayer({ D, render: t => render(t, 0), replay: '#replay' });
+</script>
+</body>
+</html>

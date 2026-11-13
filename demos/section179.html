@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Section 179 Year-End Trailer</title>
+<!--
+  "See it in action" trailer for the Section 179 Year-End seasonal campaign (~103s with reading holds, plays once, then Replay).
+  Told from the buyer's side: Hook (calendar flips to Dec 31) → Section 179 in 3 steps + the deduction limit
+  → the math on a Bobcat T76 (example) → what a buyer (Carla) sees: Nov 3 awareness ad → your T76 page → Nov 16 Performance Max
+  → how retargeting works → Dec 1 reminder → Dec 15 last-call email → Dec 22 reminder + quote request → dashboard → end card.
+  Tax figures: 2025 law limit $2.5M, inflation-adjusted, phase-out above $4M in purchases. Example math: $85,000 at a 21% example rate.
+  Every tax figure is labeled as an example, not tax advice; have the tax wording signed off before going live.
+  Price, co-op, dates and deadline come from the URL so the end card matches the campaign:
+    section179.html?price=1500&coop=375&start=Nov%201&end=Dec%2031&deadline=Oct%2017
+  Controls: seek bar with chapters, Space to play/pause, ←/→ to skip 5s. Review a single frame: section179.html?t=20 (real time)
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--page:#eef0f3;--ink:#16181d;--muted:#65676b;--line:#e4e6ea;--orange:#ff3600;--link:#1f6fd1;--green:#1e7b45;--navy:#1d2b4f;
+  --cond:"Barlow Condensed","Arial Narrow",Arial,sans-serif;--shadow:0 18px 40px rgba(20,30,60,.13)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--page:#121417}}
+:root[data-theme="dark"]{--page:#121417}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--page)}
+body{font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);display:grid;place-items:center;min-height:100vh;padding:16px}
+body.embed{padding:0;overflow:hidden}
+body.embed .wrap{width:min(100%,calc(100vh * 16 / 9))}
+.wrap{position:relative;width:100%;max-width:1280px;aspect-ratio:16/9;overflow:hidden;border-radius:14px;background:#f5f6fa;container-type:inline-size}
+.stage{position:absolute;left:0;top:0;width:1280px;height:720px;transform-origin:0 0;overflow:hidden;
+  background:radial-gradient(900px 500px at 100% -10%,rgba(29,43,79,.10),transparent 60%),radial-gradient(800px 480px at 0% 115%,rgba(255,54,0,.08),transparent 60%),linear-gradient(160deg,#f7f8fc,#eef1f7 72%)}
+.layer{position:absolute;inset:0;opacity:0}
+.k{font:800 18px var(--cond);letter-spacing:4px;color:var(--orange)}
+.mid{font:800 58px/.98 var(--cond);letter-spacing:.5px;color:var(--ink);text-transform:uppercase}
+.sub{font-size:24px;font-weight:600;color:#3c4350;line-height:1.35}
+em{font-style:normal;color:var(--orange)}
+.fav{width:24px;height:24px;border-radius:50%;background:#111;color:var(--orange);font-weight:800;font-size:9.5px;display:grid;place-items:center;flex:none}
+.pav{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12px;flex:none}
+.ring{position:absolute;inset:-3px;border:3px solid var(--orange);border-radius:10px;opacity:0;pointer-events:none}
+#foot{position:absolute;right:60px;bottom:28px;text-align:right;font-size:18px;font-weight:600;color:var(--muted);opacity:0;z-index:7}
+
+/* 0. hook: the calendar flips to Dec 31 */
+#cal{position:absolute;left:130px;top:130px;width:460px;background:#fff;border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+#cal .rings{position:absolute;left:0;right:0;top:-10px;display:flex;justify-content:space-around;padding:0 70px;z-index:2}
+#cal .rings i{width:14px;height:30px;border-radius:7px;background:#9aa3b5;border:3px solid #fff}
+#calHead{height:92px;background:var(--navy);color:#fff;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 14px;transform-origin:50% 0}
+#calHead b{font:800 52px/1 var(--cond);letter-spacing:3px}
+#calHead span{font:800 26px var(--cond);letter-spacing:2px;color:#b9c3db}
+#calGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;padding:14px 18px 20px;transform-origin:50% 0}
+#calGrid .dw{font:800 15px var(--cond);letter-spacing:1px;color:var(--muted);text-align:center;padding-bottom:4px}
+#calGrid .d{position:relative;height:50px;display:grid;place-items:center;font:700 22px var(--cond);color:#3c4350;border-radius:8px}
+#calGrid .d.x{color:transparent}
+#calGrid .d.last{color:var(--ink);font-size:26px}
+#calGrid .d svg{position:absolute;left:50%;top:50%;width:76px;height:64px;margin:-32px 0 0 -38px;overflow:visible}
+.hook{position:absolute;left:660px;width:560px;font:800 72px/.95 var(--cond);letter-spacing:.5px;text-transform:uppercase;opacity:0}
+#hookA{top:230px}#hookB{top:396px;color:var(--orange)}
+
+/* 1. Section 179 in three steps */
+#sTitle{position:absolute;left:0;right:0;top:110px;text-align:center}
+.steps{position:absolute;left:110px;top:200px;display:flex;gap:24px}
+.step{width:337px;background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:24px 26px 26px;opacity:0}
+.step .n{width:56px;height:56px;border-radius:50%;background:var(--navy);color:#fff;font:800 32px var(--cond);display:grid;place-items:center}
+.step b{display:block;font-size:30px;font-weight:800;line-height:1.15;margin-top:16px}
+.step p{font-size:20px;line-height:1.35;color:#3c4350;margin-top:8px}
+#limit{position:absolute;left:110px;top:470px;width:1060px;display:flex;align-items:center;gap:26px;background:var(--navy);color:#fff;border-radius:18px;padding:20px 30px;opacity:0;box-shadow:var(--shadow)}
+#limit small{display:block;font:800 17px var(--cond);letter-spacing:3px;color:#b9c3db}
+#limit b{display:block;font:800 60px/1 var(--cond);letter-spacing:1px}
+#limit b em{color:#ff8a5c}
+#limit p{font-size:19px;line-height:1.4;color:#dfe5f3;border-left:2px solid #3a4a74;padding-left:26px}
+
+/* 2. the math on a T76 */
+#calc{position:absolute;left:110px;top:120px;width:600px;background:#fff;border-radius:20px;box-shadow:var(--shadow);overflow:hidden}
+.ch{display:flex;align-items:center;justify-content:space-between;background:var(--navy);color:#fff;padding:16px 24px}
+.ch small{display:block;font:800 15px var(--cond);letter-spacing:3px;color:#b9c3db}
+.ch b{display:block;font:800 36px/1 var(--cond);letter-spacing:1px}
+.ch svg{margin:-10px -12px -14px 0}
+.cl{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:18px 26px;border-bottom:1px solid var(--line);opacity:0}
+.cl span{font-size:22px;font-weight:600;color:#3c4350;line-height:1.3}
+.cl span small{display:block;font-size:15px;color:var(--muted);font-weight:500}
+.cl b{font:800 40px/1 var(--cond);font-variant-numeric:tabular-nums;white-space:nowrap}
+.cl.neg b{color:var(--navy)}
+.cl.save b{color:var(--green)}
+.cl.total{background:#eefaf2;border-bottom:0}
+.cl.total span{color:var(--ink);font-weight:800}
+.cl.total b{font-size:54px;color:var(--green)}
+
+/* captions on the right */
+.cap{position:absolute;left:790px;top:150px;width:430px;opacity:0}
+.cap .dt{font:800 96px/.88 var(--cond);letter-spacing:1px}
+.cap .pill{display:inline-block;margin-top:14px;background:var(--navy);color:#fff;font:800 18px var(--cond);letter-spacing:2px;border-radius:6px;padding:5px 12px}
+.cap p{margin-top:20px;font-size:34px;font-weight:700;line-height:1.2;letter-spacing:-.3px}
+#mCap{top:180px}
+#mCap p{font-size:38px;margin-top:0}
+
+/* 3a. meet the buyer */
+#bTitle{position:absolute;left:0;right:0;top:110px;text-align:center}
+#buyer{position:absolute;left:150px;top:230px;width:330px;background:#fff;border-radius:20px;box-shadow:var(--shadow);padding:28px;text-align:center;opacity:0}
+#buyer .av{width:150px;height:150px;border-radius:50%;margin:0 auto;background:#eef1f7;display:grid;place-items:center;overflow:hidden}
+#buyer b{display:block;font:800 40px/1 var(--cond);letter-spacing:2px;margin-top:16px}
+#buyer span{display:block;font-size:17px;color:var(--muted);margin-top:4px}
+#bFacts{position:absolute;left:530px;top:240px;display:flex;flex-direction:column;gap:18px}
+.fact{width:640px;display:flex;align-items:center;gap:20px;background:#fff;border-radius:16px;box-shadow:var(--shadow);padding:20px 26px;opacity:0}
+.fact span{width:50px;height:50px;border-radius:50%;background:var(--navy);color:#fff;font:800 28px var(--cond);display:grid;place-items:center;flex:none}
+.fact b{font-size:29px;font-weight:700;line-height:1.2}
+
+/* 3b. phone: what Carla sees */
+.phone{position:absolute;left:170px;top:20px;width:340px;height:680px;border-radius:50px;background:#0b0c0e;box-shadow:0 30px 60px rgba(20,30,60,.25),inset 0 0 0 2px #2a2d33;opacity:0;z-index:5}
+.screen{position:absolute;left:10px;top:10px;width:320px;height:660px;border-radius:40px;overflow:hidden;background:#fff}
+.notch{position:absolute;left:50%;top:9px;width:96px;height:26px;margin-left:-48px;border-radius:14px;background:#0b0c0e;z-index:9}
+.status{position:absolute;left:0;right:0;top:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:6px 26px 0 30px;font-size:14px;font-weight:600;z-index:8}
+.status i{display:inline-block;width:22px;height:11px;border:1.5px solid currentColor;border-radius:3px;position:relative}
+.status i::after{content:"";position:absolute;inset:1.5px 4px 1.5px 1.5px;background:currentColor;border-radius:1px}
+.sc{position:absolute;inset:0;padding-top:44px;opacity:0;overflow:hidden;background:#fff}
+.appbar{height:46px;display:flex;align-items:center;padding:0 14px;border-bottom:1px solid var(--line);font-size:26px;font-weight:800;letter-spacing:-1px;color:#4c5bd4;background:#fff;position:relative;z-index:2}
+.feedv{position:absolute;left:0;right:0;top:90px;bottom:0;overflow:hidden;background:#e9ebef}
+.post{position:relative;background:#fff;margin-bottom:8px}
+.ph{display:flex;align-items:center;gap:9px;padding:10px 12px 8px}
+.ph b{font-size:14px;display:block}
+.ph span{font-size:12px;color:var(--muted)}
+.ptxt{font-size:13.5px;padding:0 12px 9px;line-height:1.35}
+.pimg{display:block;width:320px;height:150px}
+.adimg{position:relative;height:210px;overflow:hidden;color:#fff;padding:16px;background:linear-gradient(118deg,#111 0 60%,var(--orange) 60% 62.5%,#1f2125 62.5%)}
+.adimg small{font:800 13px var(--cond);letter-spacing:2px;color:#ffb38f}
+.adimg b{display:block;font:800 38px/.98 var(--cond);margin-top:4px}
+.adimg p{font:800 15px var(--cond);letter-spacing:1px;color:#e8dccf;margin-top:8px}
+.adimg svg{position:absolute;right:-8px;bottom:10px}
+.adimg.navy{background:linear-gradient(118deg,var(--navy) 0 60%,var(--orange) 60% 62.5%,#2a385e 62.5%)}
+.adfoot{display:flex;align-items:center;gap:10px;background:#f0f2f5;padding:10px 12px}
+.adfoot small{display:block;font-size:10.5px;color:var(--muted)}
+.adfoot b{font-size:14px;display:block}
+.adfoot .cta{margin-left:auto;background:#e2e5e9;border-radius:6px;padding:9px 13px;font-size:13px;font-weight:700}
+.why{display:flex;align-items:center;gap:7px;padding:9px 12px;font-size:12.5px;color:#3c4350;background:#fff7f2;border-top:1px solid #ffd9c7}
+.why i{font-style:normal;width:18px;height:18px;border-radius:50%;border:1.5px solid #3c4350;display:grid;place-items:center;font-size:11px;font-weight:800;flex:none}
+.why b{color:var(--ink)}
+/* dealer site */
+.url{height:32px;margin:8px 12px;border-radius:16px;background:#eef0f3;display:flex;align-items:center;padding:0 14px;font-size:12.5px;color:#3c4350}
+.wsh{height:44px;display:flex;align-items:center;gap:8px;padding:0 16px;background:#111;border-bottom:3px solid var(--orange);color:#fff;font:800 16px var(--cond);letter-spacing:1.5px}
+.whero{position:relative;height:220px;overflow:hidden;padding:16px;background:var(--navy);color:#fff}
+.whero small{font:800 13px var(--cond);letter-spacing:2.5px;color:#ff8a5c}
+.whero b{display:block;font:800 40px/.95 var(--cond);margin-top:2px}
+.whero svg{position:absolute;right:-6px;bottom:6px}
+.wbody{padding:14px 16px;font-size:14.5px;line-height:1.45;color:#3c4350}
+.wbody .btn{margin-top:14px;height:44px;border-radius:10px;background:var(--orange);color:#fff;font-weight:800;font-size:15px;display:grid;place-items:center}
+.wbody small{display:block;margin-top:10px;font-size:11.5px;color:var(--muted)}
+#leave{position:absolute;left:16px;right:16px;bottom:22px;background:#111;color:#fff;border-radius:12px;padding:12px 14px;font-size:14px;font-weight:700;text-align:center;opacity:0;z-index:4}
+/* video */
+.yh{height:40px;display:flex;align-items:center;gap:7px;padding:0 14px;font:800 20px var(--cond)}
+.yh i{width:26px;height:18px;border-radius:5px;background:#111;display:grid;place-items:center}
+.player{position:relative;height:190px;overflow:hidden;color:#fff;padding:18px 16px;background:linear-gradient(118deg,#0d0e10 0 60%,var(--orange) 60% 62.5%,#1d1f23 62.5%)}
+.player small{font:800 13px var(--cond);letter-spacing:2px;color:#ffb38f}
+.player b{display:block;font:800 34px/.98 var(--cond);margin-top:2px}
+.player svg{position:absolute;right:-4px;bottom:12px}
+.adb{position:absolute;left:10px;bottom:10px;background:#f7c948;color:#111;font-size:10.5px;font-weight:800;padding:3px 6px;border-radius:3px}
+.vprog{position:absolute;left:0;bottom:0;height:3px;background:#f7c948}
+.vcard{position:relative;display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.vcard b{font-size:12.5px;display:block}
+.vcard span{font-size:10.5px;color:var(--muted);display:block}
+.vcard .cta{margin-left:auto;background:var(--orange);color:#fff;font-weight:700;font-size:12.5px;padding:8px 12px;border-radius:18px}
+.vt{padding:10px 12px 0;font-size:15px;font-weight:700;line-height:1.3}
+.vm{padding:4px 12px 10px;font-size:11.5px;color:var(--muted)}
+/* mail */
+.gbar{height:48px;display:flex;align-items:center;gap:10px;padding:0 16px;font-size:19px;font-weight:700;border-bottom:1px solid var(--line)}
+.gbar i{width:28px;height:20px;border-radius:4px;background:#d93025;display:grid;place-items:center}
+.mrow{position:relative;display:flex;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line)}
+.mrow .pav{width:36px;height:36px}
+.mrow b{display:block;font-size:14px}
+.mrow .sj{display:block;font-size:13.5px;font-weight:700;margin-top:2px}
+.mrow .pv{display:block;font-size:12.5px;color:var(--muted);margin-top:2px;line-height:1.35}
+.mrow.hl{background:#fff6ef}
+.mrow .ring{inset:2px;border-radius:8px}
+.unread{position:absolute;right:14px;top:16px;width:9px;height:9px;border-radius:50%;background:#1a73e8}
+/* lead form */
+.scrim{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;z-index:6}
+.sheet{position:absolute;left:0;right:0;top:150px;bottom:0;background:#fff;border-radius:16px 16px 0 0;z-index:7;transform:translateY(110%);padding:10px 16px}
+.grab{width:40px;height:5px;border-radius:3px;background:#d0d3d8;margin:0 auto 12px}
+.sheet h4{font-size:17px;margin-bottom:4px}
+.sheet .q{font-size:14px;color:var(--muted);margin-bottom:12px}
+.fld{border:1.5px solid #d5d9df;border-radius:10px;padding:7px 12px;margin-bottom:9px}
+.fld small{display:block;font-size:11px;color:var(--muted)}
+.fld span{font-size:15px;font-weight:600}
+#fSubmit{margin-top:12px;height:46px;border-radius:10px;background:#4c5bd4;color:#fff;font-weight:700;font-size:15px;display:grid;place-items:center}
+.ok{position:absolute;inset:0;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;gap:10px;opacity:0;border-radius:16px 16px 0 0}
+.ok .chk{width:64px;height:64px;border-radius:50%;background:var(--green);display:grid;place-items:center}
+.ok b{font-size:20px}
+.ok span{font-size:14px;color:var(--muted);line-height:1.45}
+
+/* 3c. how retargeting works */
+#rTitle{position:absolute;left:0;right:0;top:100px;text-align:center}
+.rsteps{position:absolute;left:90px;top:200px;display:flex;align-items:center;gap:14px}
+.rstep{width:345px;background:#fff;border-radius:18px;box-shadow:var(--shadow);padding:24px 26px;opacity:0}
+.rstep .n{width:60px;height:60px;border-radius:50%;background:var(--orange);display:grid;place-items:center}
+.rstep b{display:block;font-size:27px;font-weight:800;line-height:1.2;margin-top:16px}
+.rstep p{font-size:19px;line-height:1.4;color:#3c4350;margin-top:8px}
+.arw{opacity:0;flex:none}
+#rLine{position:absolute;left:0;right:0;top:520px;text-align:center;font-size:36px;font-weight:700;line-height:1.25;opacity:0}
+
+/* 4. live dashboard */
+#dash{position:absolute;left:110px;top:190px;width:560px;background:#fff;border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.dh{background:#111;border-bottom:4px solid var(--orange);color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:flex-end}
+.dh b{font:800 24px var(--cond);letter-spacing:1px;display:block}
+.dh span{font-size:12px;color:#b9bec7}
+.dh em{font-size:11px;letter-spacing:1px;color:#b9bec7;font-weight:700}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:18px 20px 20px}
+.tile{border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.tile small{font:800 15px var(--cond);letter-spacing:2px;color:var(--muted)}
+.tile b{display:block;font:800 54px/1 var(--cond);margin-top:2px}
+#dCap{position:absolute;left:740px;top:230px;width:480px}
+
+/* end card */
+.endc{position:absolute;inset:0;background:linear-gradient(160deg,rgba(247,248,252,.97),rgba(238,241,247,.97));display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink);opacity:0;text-align:center;z-index:15}
+.endc .k{letter-spacing:5px}
+.endc h2{font:800 92px/.95 var(--cond);letter-spacing:1px;margin:6px 0 4px}
+.endc .goal{font:800 26px var(--cond);letter-spacing:3px;color:#3c4350}
+.pills{display:flex;gap:12px;margin:22px 0 24px}
+.pills span{border:2px solid #d8deea;background:#fff;border-radius:30px;padding:8px 18px;font:800 21px var(--cond);letter-spacing:1.5px}
+.price{display:flex;gap:28px;align-items:baseline;justify-content:center}
+.price b{font:800 56px/1 var(--cond)}
+.price span{font-size:18px;color:#3c4350}
+.price .co{color:var(--green);font-weight:700}
+.when{margin-top:12px;font-size:19px;color:#3c4350}
+.when b{color:#c72a00}
+#replay{margin-top:28px;opacity:0;border:2px solid #9aa3b5;border-radius:30px;background:#fff;color:var(--ink);font:800 22px var(--cond);letter-spacing:1.5px;text-transform:uppercase;padding:14px 30px;cursor:pointer;display:flex;align-items:center;gap:10px}
+#touch{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.55);border:2px solid rgba(255,255,255,.9);box-shadow:0 4px 14px rgba(0,0,0,.35);opacity:0;z-index:20}
+#rip{position:absolute;left:0;top:0;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:3px solid var(--orange);opacity:0;z-index:19}
+
+</style>
+</head>
+<body>
+<div class="wrap" id="wrap">
+<div class="stage" id="stage">
+
+  <!-- 0. hook -->
+  <div class="layer" id="L0">
+    <div id="cal"><div class="rings"><i></i><i></i><i></i></div>
+      <div id="calHead"><b id="calMon">NOVEMBER</b><span>2027</span></div>
+      <div id="calGrid"></div></div>
+    <div class="hook" id="hookA">The year ends December 31.</div>
+    <div class="hook" id="hookB">So does this deduction.</div>
+  </div>
+
+  <!-- 1. Section 179 in three steps -->
+  <div class="layer" id="L1">
+    <div class="mid" id="sTitle">Section 179 <em>in three steps</em></div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><b>Buy qualifying equipment</b><p>New or used machines and attachments, for business use.</p></div>
+      <div class="step"><span class="n">2</span><b>Put it to work by Dec 31</b><p>It has to be in service before the tax year ends.</p></div>
+      <div class="step"><span class="n">3</span><b>Deduct the full purchase price</b><p>This tax year, instead of a little each year.</p></div>
+    </div>
+    <div id="limit"><div><small>THE 2025 TAX LAW</small><b>DEDUCT UP TO <em>$2.5 MILLION</em></b></div><p>The limit adjusts for inflation each year and phases out above $4 million in equipment purchases.</p></div>
+  </div>
+
+  <!-- 2. the math -->
+  <div class="layer" id="L2">
+    <div id="calc">
+      <div class="ch"><div><small>EXAMPLE</small><b>BOBCAT T76 TRACK LOADER</b></div><svg data-m="track" width="150" height="90"></svg></div>
+      <div class="cl"><span>Purchase price</span><b>$85,000</b></div>
+      <div class="cl neg"><span>Section 179 deduction<small>Taken off taxable income this year</small></span><b>−$85,000</b></div>
+      <div class="cl save"><span>Estimated tax savings<small>At a 21% example tax rate</small></span><b id="save">$0</b></div>
+      <div class="cl total"><span>Effective cost after savings</span><b id="eff">$85,000</b></div>
+    </div>
+    <div class="cap" id="mCap"><span class="pill">THE MATH</span><p style="margin-top:16px">Buy a T76 before Dec 31, and the deduction could save <em>about $17,850</em> this year.</p></div>
+  </div>
+
+  <!-- 3a. meet the buyer -->
+  <div class="layer" id="L3a">
+    <div class="mid" id="bTitle">Here's what <em>your buyer</em> sees.</div>
+    <div id="buyer"><div class="av"><svg width="150" height="150" viewBox="0 0 150 150">
+      <rect width="150" height="150" fill="#eef1f7"/>
+      <path d="M30 150 Q34 108 75 104 Q116 108 120 150Z" fill="#2f7d4a"/>
+      <rect x="66" y="88" width="18" height="20" fill="#c98e63"/>
+      <path d="M46 64 Q44 30 75 28 Q106 30 104 64 L108 96 Q96 90 92 70 Z" fill="#4a2e1f"/>
+      <circle cx="75" cy="66" r="27" fill="#d9a074"/>
+      <path d="M48 60 Q52 34 75 34 Q98 34 102 60 Q88 48 75 48 Q62 48 48 60Z" fill="#4a2e1f"/>
+      <circle cx="66" cy="66" r="2.8" fill="#2b2b2b"/><circle cx="84" cy="66" r="2.8" fill="#2b2b2b"/>
+      <path d="M66 78 Q75 85 84 78" fill="none" stroke="#7a4a2a" stroke-width="2.6" stroke-linecap="round"/>
+      <path d="M44 50 Q46 22 75 20 Q104 22 106 50 Z" fill="#ff3600"/><path d="M75 46 Q112 42 124 52 Q110 56 75 52Z" fill="#c72a00"/></svg></div>
+      <b>MEET CARLA</b><span>Example buyer</span></div>
+    <div id="bFacts">
+      <div class="fact"><span>1</span><b>Owns a landscaping company</b></div>
+      <div class="fact"><span>2</span><b>Thinking about a new track loader</b></div>
+      <div class="fact"><span>3</span><b>Hasn't heard of Section 179 yet</b></div>
+    </div>
+  </div>
+
+  <!-- 3c. how retargeting works -->
+  <div class="layer" id="L3c">
+    <div class="mid" id="rTitle">How <em>retargeting</em> works</div>
+    <div class="rsteps">
+      <div class="rstep"><span class="n" data-i="web"></span><b>Carla visits your T76 page</b><p>Your website notes the visit anonymously. No names or contact info are shared.</p></div>
+      <svg class="arw" width="30" height="30" viewBox="0 0 24 24"><path d="M5 12h12M12 6l6 6-6 6" stroke="#ff3600" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="rstep"><span class="n" data-i="group"></span><b>She joins a "showed interest" audience</b><p>Only people who visited, clicked or engaged with your ads are in it.</p></div>
+      <svg class="arw" width="30" height="30" viewBox="0 0 24 24"><path d="M5 12h12M12 6l6 6-6 6" stroke="#ff3600" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="rstep"><span class="n" data-i="bell"></span><b>Only that audience sees your reminders</b><p>Follow-up ads go to people already thinking about buying, as the deadline gets closer.</p></div>
+    </div>
+    <div id="rLine">Your budget goes to people who already <em>raised their hand.</em></div>
+  </div>
+
+  <!-- 3b. phone -->
+  <div class="phone" id="phone"><div class="screen">
+    <div class="notch"></div>
+    <div class="status"><span>9:41</span><i></i></div>
+
+    <section class="sc" id="pF">
+      <div class="appbar">feed</div>
+      <div class="feedv"><div id="feedIn">
+        <div class="post"><div class="ph"><span class="pav" style="background:#3f6fb0">MK</span><div><b>Mia Kowalski</b><span>1h</span></div></div><div class="ptxt">Last mow of the season 🍂</div>
+          <svg class="pimg" viewBox="0 0 320 150"><rect width="320" height="150" fill="#cfe2f0"/><rect y="90" width="320" height="60" fill="#8fae5a"/><circle cx="70" cy="70" r="26" fill="#d9822b"/><rect x="66" y="88" width="8" height="20" fill="#5b4330"/><circle cx="250" cy="66" r="30" fill="#b5452b"/><rect x="246" y="88" width="8" height="22" fill="#5b4330"/></svg></div>
+        <div class="post" id="fAd1"><span class="ring" id="fRing1"></span>
+          <div class="ph"><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div></div>
+          <div class="ptxt">Buying equipment for your business this year? Section 179 could let you deduct the full price.*</div>
+          <div class="adimg navy"><small>SECTION 179</small><b>BUY BY DEC 31.<br>DEDUCT IT<br>THIS YEAR.*</b><p>*TALK TO YOUR TAX ADVISOR</p></div>
+          <div class="adfoot"><div><small>YOURDEALERSHIP.COM</small><b>Section 179 deals on the T76</b></div><span class="cta" id="fCta1">Learn more</span></div>
+        </div>
+      </div></div>
+    </section>
+
+    <section class="sc" id="pW">
+      <div class="url">🔒 yourdealership.com/section-179</div>
+      <div class="wsh"><span class="fav">YD</span>YOUR BOBCAT DEALER</div>
+      <div class="whero"><small>SECTION 179 YEAR-END</small><b>BOBCAT T76<br>TRACK LOADER</b><svg data-m="track" width="190" height="114"></svg></div>
+      <div class="wbody">Buy and put it to work by Dec 31, and you may be able to deduct the full purchase price this year.*
+        <div class="btn">Get a year-end quote</div><small>*Not tax advice. Talk to your tax advisor.</small></div>
+      <div id="leave">Carla closes the page… for now.</div>
+    </section>
+
+    <section class="sc" id="pV">
+      <div class="yh"><i><svg width="10" height="10" viewBox="0 0 10 10"><path d="M2 1v8l7-4z" fill="#fff"/></svg></i>Video</div>
+      <div class="player"><small>SECTION 179 · BUY BY DEC 31</small><b>BOBCAT T76.<br>DEDUCT IT<br>THIS YEAR.*</b><svg data-m="track" width="150" height="90"></svg><span class="adb">Ad · 0:06</span><i class="vprog" id="vProg"></i></div>
+      <div class="vcard"><span class="ring" id="vRing"></span><span class="fav">YD</span><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div><span class="cta">Learn more</span></div>
+      <div class="vt">Section 179 Explained for Small Business Owners</div>
+      <div class="vm">Small Biz Money · 140K views</div>
+    </section>
+
+    <section class="sc" id="pR1">
+      <div class="appbar">feed</div>
+      <div class="feedv">
+        <div class="post"><span class="ring" id="rRing1"></span>
+          <div class="ph"><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div></div>
+          <div class="ptxt">Still thinking about the T76, Carla? There's still time to buy it and deduct it this year.*</div>
+          <div class="adimg"><small>STILL THINKING ABOUT THE T76?</small><b>1 MONTH LEFT</b><p>BUY BY DEC 31</p><svg data-m="track" width="150" height="90"></svg></div>
+          <div class="why"><i>i</i><span>Why you're seeing this: <b>you visited yourdealership.com</b></span></div>
+          <div class="adfoot"><div><small>YOURDEALERSHIP.COM</small><b>Get a year-end quote</b></div><span class="cta">Get Quote</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sc" id="pE">
+      <div class="gbar"><i><svg width="16" height="12" viewBox="0 0 16 12"><path d="M1 1h14v10H1z M1 1l7 6 7-6" stroke="#fff" stroke-width="1.6" fill="none"/></svg></i>Inbox</div>
+      <div class="mrow hl"><span class="ring" id="eRing"></span><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b>Your Bobcat Dealer</b><span class="sj">Last call: buy by Dec 31, deduct it this year*</span><span class="pv">Carla, thanks for being a customer. Your year-end T76 quote is one click away.</span></div><span class="unread"></span></div>
+      <div class="mrow"><span class="pav" style="background:#3f6fb0">AC</span><div><b>Accounting Co.</b><span class="sj">Your year-end tax checklist</span><span class="pv">A few things to wrap up before Dec 31…</span></div></div>
+      <div class="mrow"><span class="pav" style="background:#3c8d5a">GS</span><div><b>Green Supply</b><span class="sj">Winter hours</span><span class="pv">Our hours are changing for the season…</span></div></div>
+      <div class="mrow"><span class="pav" style="background:#b8578f">JR</span><div><b>J. Ramirez</b><span class="sj">Spring contract</span><span class="pv">Can we lock in next year's schedule?</span></div></div>
+    </section>
+
+    <section class="sc" id="pR2">
+      <div class="appbar">feed</div>
+      <div class="feedv">
+        <div class="post"><span class="ring" id="rRing2"></span>
+          <div class="ph"><span class="pav" style="background:#111;color:var(--orange)">YD</span><div><b>Your Bobcat Dealer</b><span>Sponsored</span></div></div>
+          <div class="ptxt">10 days left to buy a T76 and deduct it this year.* Get your quote today.</div>
+          <div class="adimg"><small>SECTION 179 DEADLINE</small><b>10 DAYS LEFT</b><p>BUY BY DEC 31</p><svg data-m="track" width="150" height="90"></svg></div>
+          <div class="why"><i>i</i><span>Why you're seeing this: <b>you visited yourdealership.com</b></span></div>
+          <div class="adfoot"><div><small>YOURDEALERSHIP.COM</small><b>Get a year-end quote</b></div><span class="cta" id="fCta2">Get Quote</span></div>
+        </div>
+      </div>
+      <div class="scrim" id="fScrim"></div>
+      <div class="sheet" id="fSheet"><div class="grab"></div>
+        <h4>Your Bobcat Dealer</h4><div class="q">Get your year-end T76 quote</div>
+        <div class="fld"><small>Full name</small><span>Carla Diaz</span></div>
+        <div class="fld"><small>Phone number</small><span>(555) 014-3381</span></div>
+        <div class="fld"><small>Machine</small><span>Bobcat T76 track loader</span></div>
+        <div id="fSubmit">Get my quote</div>
+        <div class="ok" id="fOk"><span class="chk"><svg width="32" height="32" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><b>Quote requested!</b><span>Your Bobcat Dealer will call Carla today, in time to buy before Dec 31.</span></div>
+      </div>
+    </section>
+  </div></div>
+
+  <!-- captions beside the phone -->
+  <div class="cap" id="c1"><div class="dt">NOV 3</div><span class="pill">AWARENESS SOCIAL</span><p>Carla sees your Section 179 ad in her feed and <em>checks out the T76.</em></p></div>
+  <div class="cap" id="c2"><div class="dt">NOV 16</div><span class="pill">PERFORMANCE MAX</span><p>Researching the deduction on YouTube, <em>your T76 shows up again.</em></p></div>
+  <div class="cap" id="c3"><div class="dt">DEC 1</div><span class="pill">RETARGETED SOCIAL</span><p>Because she visited your T76 page, <em>Carla gets a reminder.</em></p></div>
+  <div class="cap" id="c4"><div class="dt">DEC 15</div><span class="pill">EMAIL</span><p>She's bought from you before, so <em>your last-call email lands in her inbox.</em></p></div>
+  <div class="cap" id="c5"><div class="dt">DEC 22</div><span class="pill">RETARGETED SOCIAL</span><p>Ten days left. <em>Carla requests a year-end quote.</em></p></div>
+
+  <!-- 4. live dashboard -->
+  <div class="layer" id="L4">
+    <div id="dash">
+      <div class="dh"><div><b>LIVE DASHBOARD</b><span>Section 179 Year-End · Your Bobcat Dealer</span></div><em>EXAMPLE</em></div>
+      <div class="tiles">
+        <div class="tile"><small>IMPRESSIONS</small><b class="cnt" data-n="61400">0</b></div>
+        <div class="tile"><small>CLICKS</small><b class="cnt" data-n="1090">0</b></div>
+        <div class="tile"><small>CALLS</small><b class="cnt" data-n="52">0</b></div>
+        <div class="tile"><small>FORM FILLS</small><b class="cnt" data-n="39">0</b></div>
+      </div>
+    </div>
+    <div id="dCap"><div class="k">THROUGH DEC 31</div><div class="mid" style="margin-top:10px">Track your results, <em>any time.</em></div><div class="sub" style="margin-top:14px">Impressions, clicks, calls and form fills for every location, in one live dashboard.</div></div>
+  </div>
+
+  <div id="foot">*Example only. Not tax advice. Buyers should talk to their tax advisor.</div>
+
+  <!-- end card -->
+  <div class="endc" id="end">
+    <div class="k">SEASONAL CAMPAIGN</div>
+    <h2>SECTION 179 YEAR-END</h2>
+    <div class="goal">YEAR-END EQUIPMENT SALES</div>
+    <div class="pills"><span>AWARENESS SOCIAL</span><span>PERFORMANCE MAX</span><span>RETARGETED SOCIAL</span><span>EMAIL</span></div>
+    <div class="price"><div><b id="ePrice">$1,500</b> <span>per location · one-time</span></div><div class="co" id="eCoop">≈ $375 after 75% co-op</div></div>
+    <div class="when" id="eWhen">Runs Nov 1 – Dec 31 · <b>Enroll by Oct 17</b></div>
+    <button id="replay"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M4 3v5h5" stroke="currentColor" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>Replay</button>
+  </div>
+  <div id="rip"></div>
+  <div id="touch"></div>
+</div>
+</div>
+
+<script src="player.js"></script>
+<script>
+const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
+const wrap = $('#wrap'), stage = $('#stage');
+if (window.self !== window.top) document.body.classList.add('embed');
+// The animation is scripted on a 72s timeline; HOLDS pause it at fully shown moments so there's time to read.
+// [script time, extra seconds]. Real playback time = script time + every hold before it.
+const D0 = 72;
+const HOLDS = [[4.4, 1.5], [7.4, 1.5], [8.8, 1.5], [10.2, 1.5], [12.0, 3.0], [18.2, 1.5], [19.2, 1.5], [20.4, 2.0], [21.6, 3.5],
+  [29.6, 2.0], [33.0, 1.5], [36.0, 2.0], [39.6, 2.0], [45.6, 3.5], [51.0, 2.5], [55.6, 2.0], [59.8, 1.5], [62.2, 2.5], [67.6, 2.5]];
+const D = D0 + HOLDS.reduce((a, [, x]) => a + x, 0);
+function script(r) {
+  let off = 0;
+  for (const [h, x] of HOLDS) { if (r <= h + off) return r - off; if (r <= h + off + x) return h; off += x; }
+  return Math.min(r - off, D0);
+}
+const toReal = s => s + HOLDS.filter(([h]) => h < s).reduce((a, [, x]) => a + x, 0);
+
+// campaign details from the URL (the hub passes them so the end card always matches)
+const qs = new URLSearchParams(location.search);
+const money = n => '$' + Math.round(Number(n)).toLocaleString('en-US');
+const P = { price: +qs.get('price') || 1500, coop: +qs.get('coop') || 375, start: qs.get('start') || 'Nov 1', end: qs.get('end') || 'Dec 31', deadline: qs.get('deadline') || 'Oct 17' };
+$('#ePrice').textContent = money(P.price);
+$('#eCoop').textContent = `≈ ${money(P.coop)} after 75% co-op`;
+$('#eWhen').innerHTML = `Runs ${P.start} – ${P.end} · <b>Enroll by ${P.deadline}</b>`;
+
+// chapters for the seek bar: [start in real playback time, label]
+const CHAPTERS = [[0, 'Hook'], [6, 'How it works'], [17, 'The math'], [27, 'What a buyer sees'], [42, 'How retargeting works'], [49, 'The reminders'], [65, 'Results'], [70, 'Recap']].map(([s, l]) => [toReal(s), l]);
+
+// example math
+const PRICE = 85000, RATE = .21, SAVE = PRICE * RATE;
+
+const I = {
+  web: '<svg width="30" height="30" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5" fill="none" stroke="#fff" stroke-width="2.4"/><path d="M3 9h18" stroke="#fff" stroke-width="2.4"/><circle cx="6.5" cy="6.6" r="1" fill="#fff"/></svg>',
+  group: '<svg width="32" height="30" viewBox="0 0 26 24"><circle cx="9" cy="8" r="4" fill="#fff"/><circle cx="18" cy="9" r="3.2" fill="#fff" opacity=".8"/><path d="M2 21c0-5 3-8 7-8s7 3 7 8z" fill="#fff"/><path d="M15 21c0-3.5 1.5-6 4-6s5 2.5 5 6z" fill="#fff" opacity=".8"/></svg>',
+  bell: '<svg width="30" height="30" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z" fill="#fff"/><circle cx="12" cy="20.5" r="2" fill="#fff"/></svg>',
+};
+$$('[data-i]').forEach(el => el.innerHTML = I[el.dataset.i]);
+
+// machine: Bobcat T76 track loader
+const MACH = { track: '<path d="M142 34 L176 66" stroke="#ff3600" stroke-width="11" stroke-linecap="round"/><path d="M162 60 h26 l6 34 h-34 z" fill="#3a3d42"/>' +
+  '<rect x="40" y="54" width="112" height="36" rx="7" fill="#ff3600"/><rect x="68" y="18" width="58" height="46" rx="6" fill="#0d0e10" stroke="#3a3d42" stroke-width="2"/><rect x="75" y="25" width="44" height="33" rx="3" fill="#a9c6d6"/>' +
+  '<rect x="36" y="84" width="120" height="26" rx="13" fill="#2a2c30" stroke="#3a3d42" stroke-width="2"/><circle cx="52" cy="97" r="7" fill="#777"/><circle cx="96" cy="97" r="5" fill="#777"/><circle cx="140" cy="97" r="7" fill="#777"/>' };
+$$('svg[data-m]').forEach(svg => { svg.setAttribute('viewBox', '0 0 200 120'); svg.innerHTML = MACH[svg.dataset.m]; });
+
+// calendar grids: November 2027 starts on a Monday, December 2027 on a Wednesday
+const grid = (offset, days) => ['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => `<div class="dw">${d}</div>`).join('') +
+  Array.from({ length: offset }, () => '<div class="d x">.</div>').join('') +
+  Array.from({ length: days }, (_, i) => `<div class="d${i + 1 === days && days === 31 ? ' last' : ''}">${i + 1}${i + 1 === 31 ? '<svg viewBox="0 0 76 64"><path id="circ" d="M60 12 C78 22 74 52 40 58 C8 62 -2 36 10 20 C20 6 46 2 64 14" fill="none" stroke="#ff3600" stroke-width="5" stroke-linecap="round"/></svg>' : ''}</div>`).join('');
+const NOV = grid(1, 30), DEC = grid(3, 31);
+let calState = '';
+
+let scale = 1;
+// fit the 1280×720 stage inside the frame, letterboxed if needed (full screen can be any shape)
+function fit() {
+  scale = Math.min(wrap.clientWidth / 1280, wrap.clientHeight / 720);
+  stage.style.transform = `translate(${(wrap.clientWidth - 1280 * scale) / 2}px,${(wrap.clientHeight - 720 * scale) / 2}px) scale(${scale})`;
+}
+new ResizeObserver(fit).observe(wrap); fit();
+
+const clamp = v => Math.max(0, Math.min(1, v));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const ease = x => x < .5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+const out3 = x => 1 - Math.pow(1 - x, 3);
+const win = (t, a, b, f = .3) => seg(t, a, a + f) * (1 - seg(t, b - f, b));
+const fade = (el, o, dy = 0) => { el.style.opacity = o; if (dy) el.style.transform = `translateY(${(1 - o) * dy}px)`; };
+function center(sel) {
+  const r = $(sel).getBoundingClientRect(), s = stage.getBoundingClientRect();
+  return { x: (r.left - s.left + r.width / 2) / scale, y: (r.top - s.top + r.height / 2) / scale };
+}
+const press = (sel, k, t) => { $(sel).style.transform = t >= k && t < k + .15 ? 'scale(.95)' : ''; };
+
+// taps on the phone: [time, target]
+const TAPS = [[33.2, '#fCta1'], [60.2, '#fCta2'], [61.6, '#fSubmit']];
+
+function render(t) {
+  // 0 ─ hook: November flips to December, then Dec 31 gets circled
+  fade($('#L0'), seg(t, 0, .4) * (1 - seg(t, 5.6, 6.0)));
+  const isDec = t >= 2.0, want = isDec ? 'dec' : 'nov';
+  if (calState !== want) { $('#calGrid').innerHTML = isDec ? DEC : NOV; $('#calMon').textContent = isDec ? 'DECEMBER' : 'NOVEMBER'; calState = want; }
+  const flip = Math.abs(Math.cos(Math.PI * seg(t, 1.8, 2.2)));
+  $('#calHead').style.transform = $('#calGrid').style.transform = t > 1.8 && t < 2.2 ? `scaleY(${Math.max(.05, flip)})` : '';
+  const c = $('#circ');
+  if (c) { const L = c.getTotalLength(); c.style.strokeDasharray = L; c.style.strokeDashoffset = L * (1 - ease(seg(t, 2.6, 3.4))); }
+  fade($('#hookA'), seg(t, .8, 1.2), 16);
+  fade($('#hookB'), seg(t, 3.8, 4.2), 16);
+
+  // disclaimer, whenever tax claims are on screen
+  $('#foot').style.opacity = seg(t, 6.2, 6.6) * (1 - seg(t, 64.4, 64.8));
+
+  // 1 ─ three steps + the limit
+  fade($('#L1'), seg(t, 6.0, 6.4) * (1 - seg(t, 16.6, 17.0)));
+  $$('.step').forEach((el, i) => fade(el, seg(t, 7.0 + i * 1.4, 7.4 + i * 1.4), 24));
+  fade($('#limit'), seg(t, 11.4, 11.8), 20);
+
+  // 2 ─ the math, line by line
+  fade($('#L2'), seg(t, 17.0, 17.4) * (1 - seg(t, 26.6, 27.0)));
+  [17.8, 18.8, 19.8, 21.0].forEach((a, i) => { const el = $$('.cl')[i], p = seg(t, a, a + .4); el.style.opacity = p; el.style.transform = `translateX(${(1 - out3(p)) * 30}px)`; });
+  $('#save').textContent = money(SAVE * out3(seg(t, 19.9, 20.4)));
+  $('#eff').textContent = money(PRICE - SAVE * seg(t, 21.0, 21.5));
+  fade($('#mCap'), seg(t, 21.2, 21.6), 14);
+
+  // 3a ─ meet Carla
+  fade($('#L3a'), seg(t, 27.0, 27.4) * (1 - seg(t, 30.2, 30.6)));
+  fade($('#buyer'), seg(t, 27.2, 27.6), 24);
+  $$('.fact').forEach((f, i) => { const a = seg(t, 27.6 + i * .6, 28.0 + i * .6); f.style.opacity = a; f.style.transform = `translateX(${(1 - out3(a)) * 40}px)`; });
+
+  // 3b ─ what Carla sees on her phone (hidden while retargeting is explained)
+  $('#phone').style.opacity = seg(t, 30.4, 30.8) * (1 - seg(t, 41.8, 42.2)) + seg(t, 48.8, 49.2) * (1 - seg(t, 64.6, 65.0));
+  fade($('#pF'), 1 - seg(t, 33.3, 33.6));
+  fade($('#pW'), seg(t, 33.3, 33.6) * (1 - seg(t, 37.3, 37.6)));
+  fade($('#pV'), seg(t, 37.3, 37.6) * (1 - seg(t, 42.1, 42.2)));
+  fade($('#pR1'), seg(t, 48.9, 49.2) * (1 - seg(t, 53.3, 53.6)));
+  fade($('#pE'), seg(t, 53.3, 53.6) * (1 - seg(t, 57.8, 58.1)));
+  fade($('#pR2'), seg(t, 57.8, 58.1));
+  // Nov 3: awareness ad → T76 page → she leaves
+  const ad = $('#fAd1').offsetTop - 6;
+  $('#feedIn').style.transform = `translateY(${-ad * out3(seg(t, 31.0, 32.0))}px)`;
+  $('#fRing1').style.opacity = win(t, 32.0, 33.2, .3);
+  press('#fCta1', 33.2, t);
+  fade($('#leave'), seg(t, 35.4, 35.8), 10);
+  // Nov 16: Performance Max on YouTube
+  $('#vProg').style.width = seg(t, 37.6, 41.4) * 100 + '%';
+  $('#vRing').style.opacity = win(t, 38.4, 41.6, .3);
+  // Dec 1, Dec 15, Dec 22: the reminders
+  $('#rRing1').style.opacity = win(t, 49.8, 53.2, .3);
+  $('#eRing').style.opacity = win(t, 54.4, 57.6, .3);
+  $('#rRing2').style.opacity = win(t, 58.6, 60.1, .3);
+  press('#fCta2', 60.2, t);
+  const sh = ease(seg(t, 60.4, 60.9));
+  $('#fSheet').style.transform = `translateY(${(1 - sh) * 110}%)`; $('#fScrim').style.opacity = sh;
+  press('#fSubmit', 61.6, t);
+  $('#fOk').style.opacity = seg(t, 61.8, 62.1);
+  [['#c1', 30.6, 37.4], ['#c2', 37.5, 41.9], ['#c3', 49.1, 53.4], ['#c4', 53.5, 57.9], ['#c5', 58.0, 64.6]].forEach(([s, a, b]) => fade($(s), win(t, a, b, .35), 14));
+
+  // 3c ─ how retargeting works
+  fade($('#L3c'), seg(t, 42.0, 42.4) * (1 - seg(t, 48.4, 48.8)));
+  $$('.rstep').forEach((el, i) => fade(el, seg(t, 42.8 + i * .8, 43.2 + i * .8), 24));
+  $$('#L3c .arw').forEach((el, i) => el.style.opacity = seg(t, 43.2 + i * .8, 43.4 + i * .8));
+  fade($('#rLine'), seg(t, 45.2, 45.6), 12);
+
+  // 4 ─ dashboard
+  fade($('#L4'), seg(t, 65.0, 65.4) * (1 - seg(t, 69.6, 70.0)));
+  $$('.cnt').forEach(b => b.textContent = Math.round(+b.dataset.n * out3(seg(t, 65.6, 67.4))).toLocaleString('en-US'));
+  fade($('#dCap'), seg(t, 65.5, 65.9), 14);
+
+  // end card
+  $('#end').style.opacity = seg(t, 70.0, 70.6);
+  const ro = seg(t, 70.9, 71.3), rb = $('#replay');
+  rb.style.opacity = ro; rb.style.pointerEvents = ro > .5 ? 'auto' : 'none';
+
+  // touch indicator for phone taps
+  const dot = $('#touch'), rip = $('#rip'), tap = TAPS.find(([k]) => t >= k - .4 && t < k + .35);
+  if (tap) {
+    const [k, sel] = tap, c2 = center(sel);
+    dot.style.opacity = win(t, k - .4, k + .35, .15);
+    dot.style.transform = `translate(${c2.x}px,${c2.y}px) scale(${t >= k && t < k + .14 ? .8 : 1})`;
+    if (t >= k) { const p = (t - k) / .35; rip.style.opacity = 1 - p; rip.style.transform = `translate(${c2.x}px,${c2.y}px) scale(${.5 + p})`; } else rip.style.opacity = 0;
+  } else { dot.style.opacity = 0; rip.style.opacity = 0; }
+}
+
+// player: shared seek bar + controls (player.js); plays once and stops on the end card
+startPlayer({ D: D0, holds: HOLDS, render, chapters: CHAPTERS, replay: '#replay' });
+</script>
+</body>
+</html>
